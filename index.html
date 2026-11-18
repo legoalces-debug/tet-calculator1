@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070c15">
+<title>Тет — боевой калькулятор</title>
+<style>
+:root{color-scheme:dark;--bg:#070c15;--panel:#101a2b;--panel2:#152138;--line:#28374f;--text:#edf3ff;--muted:#9db0cd;--accent:#7ea7ff;--bright:#c4d7ff;--green:#69e0b8;--orange:#ffbd7e;--red:#ff8495;--shadow:0 14px 42px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 1100px 700px at 10% -10%,#20365c 0%,transparent 65%),radial-gradient(ellipse 800px 700px at 100% 5%,#122844 0%,transparent 55%),var(--bg);font:15px/1.48 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}a{color:var(--accent)}.shell{max-width:1490px;margin:auto;padding:24px clamp(12px,3vw,36px) 52px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:3px 0 22px}.overline{font-size:11px;letter-spacing:.22em;font-weight:800;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(25px,3vw,38px);margin:4px 0 3px;letter-spacing:-.05em;line-height:1.15}header p{color:var(--muted);margin:8px 0 0;max-width:780px}.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.btn{border:1px solid var(--line);background:#14213a;color:var(--text);border-radius:10px;padding:10px 13px;transition:.15s}.btn:hover{border-color:var(--accent);background:#1c2d48}.btn.primary{background:#3655a1;border-color:#6788d8}.btn.primary:hover{background:#4263b4}.btn.small{font-size:12px;padding:7px 11px}.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.85fr);gap:17px;align-items:start}.main,.side{min-width:0}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px}.tab{background:#101a2b;color:#b7c7e3;border:1px solid #2a3953;padding:10px 14px;border-radius:10px;font-weight:700}.tab.active{background:#233a63;color:white;border-color:#7396d5}.panel{border:1px solid #293750;background:linear-gradient(140deg,#111c2e,#0d1625);box-shadow:var(--shadow);border-radius:18px;padding:clamp(15px,2vw,24px);margin-bottom:16px}.panel[hidden],.conditional[hidden]{display:none!important}.sectiontitle{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:0 0 7px}.desc{font-size:13px;color:var(--muted);margin:0 0 19px}.subhead{font-size:14px;font-weight:800;color:#cddfff;margin:23px 0 10px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.fields.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{min-width:0;display:flex;flex-direction:column;gap:6px}.fieldlabel{font-size:13px;color:#c4d1e6;font-weight:650;display:flex;justify-content:space-between;gap:8px}.note{font-size:11px;color:var(--muted);line-height:1.45}.field input[type=number],.field select,.field input[type=text]{width:100%;border:1px solid #344561;background:#0b1424;color:var(--text);border-radius:10px;padding:10px 11px;min-width:0}.field input[type=range]{accent-color:var(--accent);width:100%;margin:3px 0 0}.field.combo{background:#121f32;border:1px solid #2a3a53;border-radius:11px;padding:10px 12px}.combohead{display:flex;align-items:center;justify-content:space-between;gap:10px}.combohead input{width:86px!important;text-align:right;padding:6px 8px!important;font-weight:850;font-size:17px}.combo .note{margin-top:-1px}.checkrow{display:flex;align-items:flex-start;gap:10px;background:#142136;border:1px solid #2b3951;padding:12px;border-radius:11px}.checkrow input{width:17px;height:17px;accent-color:var(--accent);margin-top:3px;flex:none}.checkrow label{cursor:pointer;line-height:1.4}.checkrow strong{display:block;font-size:14px}.checkrow small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}.gridstat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.statbox{background:#111c2c;border:1px solid #293951;border-radius:13px;padding:13px}.statbox .label{color:#a8bbd6;font-size:12px}.statbox .value{font-size:26px;font-weight:850;letter-spacing:-.05em;white-space:nowrap;margin:3px 0}.statbox .minor{font-size:11px;color:#9eb4d1}.statbox .value.green{color:var(--green)}.statbox .value.orange{color:var(--orange)}.side{position:sticky;top:15px}.pill{display:inline-flex;padding:4px 9px;border-radius:999px;border:1px solid #38576b;background:#173342;color:#a9ebd6;font-size:11px;font-weight:800}.resultbig{font-size:clamp(42px,5vw,66px);font-weight:900;letter-spacing:-.075em;line-height:1.05;color:var(--green);margin:8px 0 2px;font-variant-numeric:tabular-nums}.metricrow{display:flex;justify-content:space-between;gap:10px;margin:9px 0;color:#bdcce3;font-size:13px}.metricrow strong{color:#f0f5ff;text-align:right;font-variant-numeric:tabular-nums}.breakdown{border-top:1px solid #2d3d55;margin-top:16px;padding-top:10px}.step{display:flex;gap:10px;align-items:baseline;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #27354b;color:#b9c9e1;font-size:12px}.step span:last-child{text-align:right;max-width:54%;font-weight:750;color:#eff5ff;overflow-wrap:anywhere}.chartbar{background:#202e44;border-radius:100px;height:9px;overflow:hidden;margin:6px 0 0}.chartbar>div{background:linear-gradient(90deg,#3a77ca,#78f1cf);height:100%;transition:width .18s}.flexbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.tag{font-size:11px;color:#d3e0ef;background:#223450;padding:4px 8px;border-radius:5px}.callout{padding:12px 14px;background:#12273a;border:1px solid #2e5673;border-radius:11px;color:#c6dcf2;font-size:13px;margin:15px 0}.warning{background:#39271c;border-color:#7e5135;color:#ffdbbd}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;overflow-wrap:anywhere}.resgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.resgrid .field{background:#121d30;border:1px solid #2a3950;border-radius:10px;padding:8px}.resgrid label{text-align:center;color:#cbd8eb;font-size:12px}.resgrid input{text-align:center;padding:8px 3px!important;font-weight:800}.tablewrap{overflow-x:auto}.minitable{border-collapse:collapse;width:100%;font-size:12px}.minitable td,.minitable th{padding:9px 7px;text-align:left;border-bottom:1px solid #25344b;white-space:nowrap}.minitable th{color:#b8cbe7}.minitable td:last-child{color:#95e6c8;font-weight:800}.subtle{color:var(--muted)}.footer{color:#8398b5;font-size:12px;margin:19px 0}.toast{position:fixed;bottom:22px;right:22px;border:1px solid #52738d;background:#173247;border-radius:12px;padding:10px 15px;color:white;box-shadow:var(--shadow);display:none;z-index:50}.toast.show{display:block}.tiny{font-size:11px;color:var(--muted)}.large-no{font-size:18px;font-weight:850}.rollbox{padding:14px;background:#111e31;border:1px solid #354b68;border-radius:12px;margin-top:12px;min-height:64px;color:#d5e7ff}.statusmeter{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px}.statusmeter strong{font-variant-numeric:tabular-nums}.readonly{background:#182941!important;color:#bad6fb!important}.rule{background:#15223a;border-radius:10px;padding:12px 14px;margin:11px 0}.rule p{margin:5px 0;color:#aebfdb;font-size:13px}.rule code{color:#c9ffe9;white-space:normal}.halfline{border-top:1px solid var(--line);margin:19px 0}.helpmark{color:var(--orange);font-size:11px}.inlinestat{font-weight:800;color:#bfe2ff}.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}.enemy-manager{background:#131f32;border:1px solid #365171;border-radius:14px;padding:15px;margin:15px 0 22px}.enemy-manager .fields{margin-top:12px}.enemy-actions{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0 8px}.enemy-actions .btn:disabled{cursor:not-allowed;opacity:.45}.enemy-badge{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:800;background:#213b56;color:#bbe1ff;padding:5px 10px;border-radius:100px}.enemy-name{color:var(--green);font-weight:850}@media(max-width:980px){.layout{grid-template-columns:1fr}.side{position:static}.resgrid{grid-template-columns:repeat(5,1fr)}}@media(max-width:590px){.shell{padding:14px 10px 35px}.fields,.fields.three,.duo{grid-template-columns:1fr}.checks,.gridstat{grid-template-columns:repeat(2,minmax(0,1fr))}.resgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.tab{padding:9px 10px;font-size:12px}.resultbig{font-size:48px}.panel{padding:15px}.actions .btn{font-size:12px;padding:8px}}@media print{body{background:white;color:#111}.side{position:static}.panel{box-shadow:none;border:1px solid #ccc;break-inside:avoid}.tabs,.actions,.btn,.footer{display:none!important}.layout{display:block}.panel[hidden]{display:block!important;break-inside:avoid}.checkrow,.field.combo{border:1px solid #999}}
+[hidden]{display:none!important}
+.battle-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}.battle-buttons>.btn{white-space:normal;min-height:45px}.enemy-roll{background:#75415b!important;border-color:#ac6a83!important}.combat-history{max-height:575px;min-height:86px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px 10px;border-radius:14px;background:#081423;border:1px solid #2c3e58}.combat-entry{max-width:94%;min-width:180px;border:1px solid #36516e;border-radius:14px;padding:11px 13px;background:#182a43;align-self:flex-end;overflow-wrap:anywhere}.combat-entry.is-enemy{align-self:flex-start;background:#302130;border-color:#795066}.combat-entry.is-initiative{background:#243341;border-color:#526d85}.combat-entry .who{font-size:12px;color:#c6d9f5;font-weight:750}.combat-entry .outcome{font-size:14px;font-weight:820;margin:4px 0}.combat-entry .outcome.ok{color:#80ebc7}.combat-entry .outcome.fail{color:#ff9daf}.combat-entry .detail{font-size:12px;color:#c1cde1}.combat-entry time{font-size:10px;color:#9ab1cb}.combat-entry details{font-size:11px;color:#adbfda;margin-top:8px;border-top:1px solid #ffffff22;padding-top:6px}.combat-entry details summary{cursor:pointer}.combat-entry details .detail{margin-top:6px}.combat-history-empty{color:#91a8c7;text-align:center;padding:14px}
+@media(max-width:590px){.battle-buttons{grid-template-columns:1fr}.combat-entry{max-width:100%}}</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div><div class="overline">ТЕТ · ТАКТИЧЕСКАЯ СИСТЕМА</div><h1>Боевой калькулятор <span style="font-size:.43em;vertical-align:middle;color:var(--green);font-weight:700">v9</span></h1><p>Характеристики, HP, выносливость и мана, уклонение, доспехи, резисты, скорость, оружие, кулаки, магия и расчёт урона по цели.</p></div>
+  <div class="actions"><button class="btn small" id="copyBtn">Копировать расчёт</button><button class="btn small" id="exportBtn">Экспорт персонажей и противников</button><button class="btn small" id="importBtn">Импорт</button><input id="importInput" type="file" accept="application/json,.json" hidden><button class="btn small" id="resetBtn">Сбросить</button></div>
+</header>
+<div class="layout"><main class="main">
+<nav class="tabs" aria-label="Разделы калькулятора"><button class="tab active" data-tab="character">Персонаж</button><button class="tab" data-tab="defense">Защита</button><button class="tab" data-tab="attack">Атака</button><button class="tab" data-tab="target">Противник</button><button class="tab" data-tab="battle">Бой и броски</button><button class="tab" data-tab="rules">Формулы</button></nav>
+
+<section class="panel tabpanel" id="panel-character">
+  <h2 class="sectiontitle">Характеристики персонажа</h2><p class="desc">Сохраняй до шести персонажей, переключайся между ними и сравнивай их атаки по любому из 20 противников. Для сверхчеловеческих персонажей доступно до 1000 очков.</p>
+  <div class="enemy-manager character-manager">
+    <div class="flexbar"><strong>Твои персонажи</strong><span class="enemy-badge" id="characterCountBadge">1 / 6</span></div>
+    <div class="field" style="margin-top:12px"><label class="fieldlabel" for="characterSelector">Выбранный персонаж</label><select id="characterSelector" aria-label="Выбрать своего персонажа"></select></div>
+    <div class="enemy-actions"><button type="button" class="btn primary small" id="characterAddBtn">+ Новый персонаж</button><button type="button" class="btn small" id="characterCloneBtn">Дублировать</button><button type="button" class="btn small" id="characterDeleteBtn">Удалить выбранного</button></div>
+    <p class="note">У каждого персонажа свои имя, характеристики, броня, резисты, заклинания и настройки оружия. Можно создавать до шести независимых героев. Враги остаются общими, чтобы сравнивать атаки.</p>
+  </div>
+  <div class="field" style="margin:0 0 17px"><label class="fieldlabel" for="characterName">Имя персонажа</label><input id="characterName" type="text" maxlength="64" autocomplete="off" placeholder="Например, Хайден Кусланд" data-bind="characterName"><span class="note">Имя используется в списке из шести персонажей, результатах, бросках и экспорте. Сохраняется автоматически.</span></div>
+  <div class="fields three">
+    <div class="field"><label class="fieldlabel" for="level">Уровень</label><input id="level" data-bind="level" type="number" min="1" max="1000" step="1"></div>
+    <div class="field"><label class="fieldlabel" for="race">Раса (для выносливости)</label><select id="race" data-bind="race"><option value="human">Человек · 100</option><option value="elf">Эльф · 150</option><option value="dwarf">Гном · 200</option><option value="custom">Другая · свой показатель</option></select></div>
+    <div class="field"><label class="fieldlabel" for="classType">Специализация</label><select id="classType" data-bind="classType"><option value="warrior">Воин (выносливость)</option><option value="mage">Маг (мана)</option><option value="hybrid">Гибрид (оба ресурса)</option></select></div>
+  </div>
+  <div class="field conditional" data-condition="customRace" style="margin-top:12px"><label class="fieldlabel">Базовая выносливость другой расы</label><input type="number" min="0" max="100000" data-bind="customRaceStamina"></div>
+  <h3 class="subhead">Семь основных характеристик</h3>
+  <div class="fields" id="playerStats"></div>
+  <h3 class="subhead">Дополнительные очки</h3>
+  <div class="fields three">
+    <div class="field"><label class="fieldlabel">Бонус HP</label><input type="number" data-bind="extraHP" step="1"></div>
+    <div class="field"><label class="fieldlabel">Бонус выносливости</label><input type="number" data-bind="extraStamina" step="1"></div>
+    <div class="field"><label class="fieldlabel">Бонус маны</label><input type="number" data-bind="extraMana" step="1"></div>
+  </div>
+  <h3 class="subhead">Производные параметры</h3>
+  <div class="gridstat" id="characterDerived"></div>
+  <div class="callout">Уклонение и точность зависят от Ловкости и Восприятия. Скорость <strong>не увеличивает уклонение</strong>. Для инициативы действует <strong>d20 + Восприятие</strong>. Для показателей, которые ещё не согласованы, в разделе «Формулы» есть настройки.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-defense" hidden>
+  <h2 class="sectiontitle">Защита своего персонажа</h2><p class="desc">Физическая и магическая броня измеряются в очках поглощения; резисты — в процентах.</p>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Обычная броня (очки)</label><input type="number" min="0" data-bind="armor"></div>
+    <div class="field"><label class="fieldlabel">Магическая броня (очки)</label><input type="number" min="0" data-bind="magicArmor"></div>
+  </div>
+  <div class="checks"><div class="checkrow"><input type="checkbox" id="immobile" data-bind="immobile"><label for="immobile"><strong>Персонаж обездвижен</strong><small>Резист от Ловкости не действует; резист от Силы остаётся.</small></label></div></div>
+  <div class="gridstat" id="defenseDerived"></div>
+  <h3 class="subhead">Сопротивление стихийному урону (%)</h3><div class="resgrid" id="ownElements"></div>
+  <h3 class="subhead">Сопротивление негативным эффектам (%)</h3><p class="note">Отдельные шансы избежать горения, шока, намокания, опутывания и воздействия ветра. Это не уменьшает урон второй раз.</p><div class="resgrid" id="ownStatuses"></div>
+  <h3 class="subhead">Проверка входящего удара по своему персонажу</h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Входящий урон до защиты</label><input type="number" min="0" data-bind="incomingDamage"></div>
+    <div class="field"><label class="fieldlabel">Тип входящей атаки</label><select data-bind="incomingType"><option value="fist">Кулаки</option><option value="weapon">Оружие (ближнее / дальнее / посох)</option><option value="magic">Магия</option></select></div>
+    <div class="field"><label class="fieldlabel">Пробитие обычной брони</label><input type="number" min="0" data-bind="incomingPen"></div>
+    <div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="incomingMagicPen"></div>
+    <div class="field"><label class="fieldlabel">Стихия входящей магии</label><select data-bind="incomingElement" id="incomingElement"></select></div>
+  </div>
+  <div class="callout" id="incomingReport" aria-live="polite"></div>
+</section>
+
+<section class="panel tabpanel" id="panel-attack" hidden>
+  <h2 class="sectiontitle">Настройки атаки</h2><p class="desc">Выбери способ атаки. Урон считается по твоим характеристикам, затем применяется защита выбранного противника — его можно переключить справа или во вкладке «Противник».</p>
+  <div class="field"><label class="fieldlabel">Тип атаки</label><select data-bind="attackType"><option value="fist">Кулаки</option><option value="weapon">Оружие (ближнее / дальнее / посох)</option><option value="magic">Магия</option></select></div>
+  <div class="conditional" data-condition="fistAttack"><h3 class="subhead">Рукопашный стиль</h3><div class="field"><label class="fieldlabel">Мастерство</label><select data-bind="fistMastery"><option value="0">Без подготовки · обычный урон, −2 попадание</option><option value="1">Обученный · +20% урона, −2 попадание</option><option value="2">Опытный · +35% урона, −1 попадание</option><option value="3">Мастер · +50% урона, без штрафа</option></select><span class="note helpmark">Пока предлагаемые бонусы, а не утверждённый канон.</span></div><div class="callout">Кулаки <strong>полностью игнорируют обычную броню</strong>, но не магическую броню и не физическое сопротивление цели.</div></div>
+  <div class="conditional" data-condition="weaponAttack" hidden>
+    <h3 class="subhead">Вооружение</h3>
+    <div class="fields">
+      <div class="field"><label class="fieldlabel">Вид оружия</label><select data-bind="weaponType" id="weaponType"></select></div>
+      <div class="field"><label class="fieldlabel">Базовый урон выбранного оружия / посоха</label><input type="number" min="0" data-bind="weaponBase"><span class="note">Запоминается отдельно для каждого вида оружия и каждого персонажа.</span></div>
+      <div class="field"><label class="fieldlabel">Процентный урон оружия (%)</label><input type="number" min="-100" max="10000" step="0.1" data-bind="weaponDamagePct" aria-label="Процентный урон выбранного оружия"><span class="note">0% — без изменений, +50% — урон ×1,5, −20% — ×0,8. Усиливает базовый урон вместе со скейлингом характеристик; сохраняется отдельно для каждого оружия.</span></div>
+      <div class="field" id="weaponPhysicalPenField"><label class="fieldlabel">Дополнительное пробитие физической брони</label><input type="number" min="0" data-bind="weaponPen"><span class="note">Пробитие кинжалов от Силы добавляется автоматически.</span></div>
+      <div class="field"><label class="fieldlabel">Доп. бонус к попаданию</label><input type="number" data-bind="extraHit"></div>
+    </div>
+    <div id="staffMagicFields" hidden>
+      <h3 class="subhead">Магия посоха</h3>
+      <div class="fields">
+        <div class="field"><label class="fieldlabel">Стихия удара посохом</label><select data-bind="element" id="staffElement"></select></div>
+        <div class="field"><label class="fieldlabel">Пробитие магической брони посохом</label><input type="number" min="0" data-bind="staffMagicPen"></div>
+      </div>
+      <div class="callout">Магический посох наносит <strong>магический урон</strong> и не учитывает обычную физическую броню. Его сдерживают <strong>магическая броня</strong>, <strong>защита от магии</strong> и <strong>резист стихии</strong>. Бонусы от разбега и Скорости к урону посоха не применяются.</div>
+    </div>
+    <p class="note" id="weaponScalingNote"></p>
+    <div class="callout" id="weaponDefenseExplanation">Физическое оружие учитывает броню цели, если у него нет достаточного пробития. Дальнобойные атаки не получают бонус разбега.</div>
+    <div class="callout" data-weapon-memory="1">Для каждого вида оружия отдельно сохраняются базовый урон, процентный урон, пробитие брони и бонус к попаданию. Переключение на другой вид оружия не стирает эти значения. У каждого персонажа — свой набор.</div>
+  </div>
+  <div class="conditional" data-condition="magicAttack" hidden><h3 class="subhead">Заклинание</h3><div class="fields"><div class="field"><label class="fieldlabel">Базовый урон заклинания</label><input type="number" min="0" data-bind="spellBase"></div><div class="field"><label class="fieldlabel">Основная характеристика магии</label><select data-bind="spellStat"><option value="int">Интеллект</option><option value="wis">Мудрость</option><option value="cha">Харизма</option></select></div><div class="field"><label class="fieldlabel">Стихия</label><select data-bind="element" id="attackElement"></select></div><div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="spellPen"></div><div class="field"><label class="fieldlabel">Стоимость маны</label><input type="number" min="0" data-bind="spellManaCost"></div><div class="field"><label class="fieldlabel">Базовый шанс эффекта (%)</label><input type="number" min="0" max="100" data-bind="statusChance"></div></div><div class="callout">Магия обходит обычную физическую броню, но учитывает магическую броню, защиту от магии и сопротивление выбранной стихии. Стихийное сопротивление эффекту считается отдельно.</div></div>
+  <h3 class="subhead">Общие боевые условия</h3>
+  <div class="checks"><div class="checkrow"><input type="checkbox" data-bind="charge" id="charge"><label for="charge"><strong>Удар с разбега</strong><small id="chargeText">Кулаки: +50% · Ближнее оружие: +25% · Дальнее и магия: без бонуса</small></label></div><div class="checkrow"><input type="checkbox" data-bind="speedDamageOn" id="speedDamageOn"><label for="speedDamageOn"><strong>Урон от скорости</strong><small>Только кулаки и оружие ближнего боя</small></label></div><div class="checkrow"><input type="checkbox" data-bind="speedHitOn" id="speedHitOn"><label for="speedHitOn"><strong>Бонус скорости к попаданию</strong><small>Для рукопашных атак; не влияет на уклонение</small></label></div></div>
+  <div class="field"><label class="fieldlabel">Другое изменение попадания (d20)</label><input type="number" data-bind="otherHitBonus"></div>
+  <h3 class="subhead">Промежуточные расчёты</h3><div class="gridstat" id="attackDerived"></div>
+  <button class="btn primary" style="margin-top:16px" id="rollBtn">🎲 Бросить d20 и провести атаку</button><div class="rollbox" id="rollReport" aria-live="polite">Нажми кнопку, чтобы проверить одно попадание. Вероятность и средний урон рассчитываются автоматически.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-target" hidden>
+  <h2 class="sectiontitle">Параметры противников</h2><p class="desc">Создавай и сохраняй до 20 отдельных врагов. Выбор противника сразу обновляет шанс попадания, броню и итоговый урон.</p>
+  <div class="enemy-manager">
+    <div class="flexbar"><strong>Список противников</strong><span class="enemy-badge" id="enemyCountBadge">1 / 20</span></div>
+    <div class="fields">
+      <div class="field"><label class="fieldlabel" for="enemySelector">Выбранный противник</label><select id="enemySelector" aria-label="Выбрать противника"></select></div>
+      <div class="field"><label class="fieldlabel" for="enemyNameInput">Имя противника</label><input type="text" id="enemyNameInput" maxlength="48" placeholder="Например, Хайден Кусланд" autocomplete="off"></div>
+    </div>
+    <div class="enemy-actions"><button type="button" class="btn primary small" id="enemyAddBtn">+ Новый противник</button><button type="button" class="btn small" id="enemyCloneBtn">Дублировать</button><button type="button" class="btn small" id="enemyDeleteBtn">Удалить выбранного</button></div>
+    <p class="note" style="margin:7px 0 0">У каждого врага свои характеристики, броня, резисты, ручные настройки уклонения и магической защиты. Изменения сохраняются автоматически. «Дублировать» создаёт копию текущего врага.</p>
+  </div>
+  <div class="fields" id="targetStats"></div>
+  <h3 class="subhead">Броня и положение цели</h3>
+  <div class="fields"><div class="field"><label class="fieldlabel">Обычная броня (очки)</label><input type="number" min="0" data-bind="targetArmor"></div><div class="field"><label class="fieldlabel">Магическая броня (очки)</label><input type="number" min="0" data-bind="targetMagicArmor"></div></div>
+  <div class="checks"><div class="checkrow"><input type="checkbox" data-bind="targetImmobile" id="targetImmobile"><label for="targetImmobile"><strong>Цель обездвижена</strong><small>Ловкость не даёт резист; уклонение всё ещё можно задать вручную.</small></label></div></div>
+  <h3 class="subhead">Ручная настройка вычисляемой защиты</h3><p class="note">По умолчанию резисты и уклонение считаются из характеристик врага. Галочки позволяют ввести собственные значения.</p>
+  <div class="fields"><div class="checkrow"><input type="checkbox" id="targetDodgeOverride" data-bind="targetDodgeOverride"><label for="targetDodgeOverride"><strong>Своё уклонение</strong></label></div><div class="field"><label class="fieldlabel">Уклонение</label><input type="number" data-bind="targetDodgeValue" id="targetDodgeValue"></div><div class="checkrow"><input type="checkbox" id="targetResOverride" data-bind="targetResOverride"><label for="targetResOverride"><strong>Свой физ. резист</strong></label></div><div class="field"><label class="fieldlabel">Физический резист, % (не более 50)</label><input type="number" min="0" max="50" data-bind="targetResValue" id="targetResValue"></div><div class="checkrow"><input type="checkbox" id="targetMagicOverride" data-bind="targetMagicOverride"><label for="targetMagicOverride"><strong>Своя защита от магии</strong></label></div><div class="field"><label class="fieldlabel">Защита от магии, %</label><input type="number" min="0" max="100" data-bind="targetMagicValue" id="targetMagicValue"></div></div>
+  <h3 class="subhead">Стихийные сопротивления цели (%)</h3><div class="resgrid" id="targetElements"></div>
+  <h3 class="subhead">Защита от негативных эффектов цели (%)</h3><div class="resgrid" id="targetStatuses"></div>
+  <div class="gridstat" id="targetDerived" style="margin-top:18px"></div>
+  <div class="callout">Теперь этот противник может атаковать твоих героев. Выбери его оружие, кулачный стиль или магию во вкладке <button type="button" class="btn small" data-goto="battle">Бой и броски</button>.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-battle" hidden>
+  <h2 class="sectiontitle">Бой · броски героев и противников</h2>
+  <p class="desc">Выбери участника боя и противника, настрой атаку врага и бросай d20 за любую сторону. Все результаты остаются в истории боя, включая расчёт попадания и урона.</p>
+  <div class="duo">
+    <div class="field"><label class="fieldlabel" for="battleCharacterSelector">Герой (цель для врага)</label><select id="battleCharacterSelector"></select></div>
+    <div class="field"><label class="fieldlabel" for="battleEnemySelector">Противник (цель для героя)</label><select id="battleEnemySelector"></select></div>
+  </div>
+  <h3 class="subhead">Как атакует выбранный противник</h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Боевой стиль врага</label><select data-bind="targetAttackType" id="targetAttackType"><option value="fist">Кулаки</option><option value="weapon">Оружие (включая луки и посохи)</option><option value="magic">Заклинание</option></select></div>
+    <div class="field"><label class="fieldlabel">Прочий бонус врага к d20</label><input type="number" data-bind="targetOtherHitBonus" step="1"></div>
+  </div>
+  <div id="enemyFistSettings" class="conditional">
+    <div class="field" style="margin-top:12px"><label class="fieldlabel">Кулачное мастерство противника</label><select data-bind="targetFistMastery"><option value="0">Без подготовки · −2 к броску</option><option value="1">Обученный · +20% урона, −2 к броску</option><option value="2">Опытный · +35% урона, −1 к броску</option><option value="3">Мастер · +50% урона, без штрафа</option></select></div>
+  </div>
+  <div id="enemyWeaponSettings" class="conditional" hidden>
+    <div class="fields" style="margin-top:12px">
+      <div class="field"><label class="fieldlabel">Оружие врага</label><select id="targetWeaponType" data-bind="targetWeaponType"></select></div>
+      <div class="field"><label class="fieldlabel">Базовый урон оружия</label><input type="number" min="0" data-bind="targetWeaponBase"><span class="note">Запоминается для каждого оружия каждого противника.</span></div>
+      <div class="field"><label class="fieldlabel">Процентный урон оружия (%)</label><input type="number" min="-100" max="10000" step="0.1" data-bind="targetWeaponDamagePct" aria-label="Процентный урон оружия противника"><span class="note">Например, +50% умножает базу и скейлинг на 1,5; запоминается отдельно у каждого врага и каждого оружия.</span></div>
+      <div class="field"><label class="fieldlabel">Пробитие обычной брони</label><input type="number" min="0" data-bind="targetWeaponPen"></div>
+      <div class="field"><label class="fieldlabel">Доп. попадание оружием</label><input type="number" data-bind="targetExtraHit"></div>
+    </div>
+    <div id="enemyStaffSettings" hidden>
+      <div class="fields" style="margin-top:12px">
+        <div class="field"><label class="fieldlabel">Стихия посоха</label><select id="enemyStaffElement" data-bind="targetElement"></select></div>
+        <div class="field"><label class="fieldlabel">Пробитие магической брони посохом</label><input type="number" min="0" data-bind="targetStaffMagicPen"></div>
+      </div>
+    </div>
+    <p class="note" id="enemyScalingNote" style="margin-top:12px"></p>
+  </div>
+  <div id="enemySpellSettings" class="conditional" hidden>
+    <div class="fields" style="margin-top:12px">
+      <div class="field"><label class="fieldlabel">Базовый урон заклинания</label><input type="number" min="0" data-bind="targetSpellBase"></div>
+      <div class="field"><label class="fieldlabel">Характеристика заклинания</label><select data-bind="targetSpellStat"><option value="int">Интеллект</option><option value="wis">Мудрость</option><option value="cha">Харизма</option></select></div>
+      <div class="field"><label class="fieldlabel">Стихия</label><select id="enemySpellElement" data-bind="targetElement"></select></div>
+      <div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="targetSpellPen"></div>
+    </div>
+  </div>
+  <div class="checks">
+    <div class="checkrow"><input type="checkbox" id="targetCharge" data-bind="targetCharge"><label for="targetCharge"><strong>Враг атакует с разбега</strong><small>Кулаками +50%, ближним оружием +25%, без бонуса для дальних атак и магии.</small></label></div>
+    <div class="checkrow"><input type="checkbox" id="targetSpeedDamageOn" data-bind="targetSpeedDamageOn"><label for="targetSpeedDamageOn"><strong>Бонус урона от Скорости врага</strong><small>Для кулаков и оружия ближнего боя</small></label></div>
+    <div class="checkrow"><input type="checkbox" id="targetSpeedHitOn" data-bind="targetSpeedHitOn"><label for="targetSpeedHitOn"><strong>Бонус попадания от Скорости врага</strong><small>Не изменяет уклонение героя</small></label></div>
+  </div>
+  <p class="note">Скорость и Харизму противника можно изменить во вкладке «Противник». Все настройки атак сохраняются отдельно у каждого из 20 противников.</p>
+  <div class="gridstat" id="enemyAttackDerived" style="margin-top:15px"></div>
+  <h3 class="subhead">Провести бросок</h3>
+  <div class="battle-buttons">
+    <button class="btn primary" id="battlePlayerRollBtn">🎲 Герой атакует врага</button>
+    <button class="btn primary enemy-roll" id="battleEnemyRollBtn">⚔️ Враг атакует героя</button>
+    <button class="btn small" id="battleHeroInitBtn">Инициатива героя (d20)</button>
+    <button class="btn small" id="battleEnemyInitBtn">Инициатива врага (d20)</button>
+  </div>
+  <div class="rollbox" id="battleRollReport" aria-live="polite">Здесь появится результат следующего броска. Все броски сохраняются ниже.</div>
+  <div class="halfline"></div>
+  <div class="flexbar"><div><h3 class="sectiontitle" style="margin-bottom:0">История бросков</h3><span class="tiny" id="combatLogCount">0 бросков</span></div><div class="actions"><button class="btn small" id="copyHistoryBtn">Копировать историю</button><button class="btn small" id="clearHistoryBtn">Очистить</button></div></div>
+  <div class="field" style="margin:12px 0"><label class="fieldlabel" for="historyFilter">Показывать броски</label><select id="historyFilter"><option value="all">Все участники</option><option value="hero">Только герои</option><option value="enemy">Только противники</option></select></div>
+  <div class="combat-history" id="combatHistory" aria-label="Журнал боевых бросков" aria-live="polite"><p class="subtle">Бросков пока нет.</p></div>
+  <p class="tiny">Журнал сохраняет до 300 бросков на этом устройстве и включается в экспорт JSON. Урон отображается как расчёт — HP автоматически не списываются. История сохраняет имена и числа на момент броска, даже если потом изменить характеристики.</p>
+</section>
+
+<section class="panel tabpanel" id="panel-rules" hidden>
+  <h2 class="sectiontitle">Формулы и изменяемые правила</h2><p class="desc">Фиксированные правила мира выделены отдельно. Остальные коэффициенты — рабочие предложения, их можно менять в этом файле.</p>
+  <h3 class="subhead">Утверждённые формулы</h3>
+  <div class="rule"><strong>Скорость</strong><p><code>V = 4 × Скорость</code> км/ч; единый физический предел для движения и ударов.</p></div>
+  <div class="rule"><strong>Уклонение и точность</strong><p><code>Уклонение = Ловкость + floor(Восприятие / 3)</code><br><code>Точность = Восприятие + floor(Ловкость / 3)</code></p></div>
+  <div class="rule"><strong>Урон кулаком</strong><p><code>Сила ≤ 10: 5 + 2 × Сила</code><br><code>Сила &gt; 10: round(25 × 2^((Сила − 10)/10))</code></p></div>
+  <div class="rule"><strong>Физическое сопротивление</strong><p><code>min(50, min(35,max(0,Сила−5)) + min(25,max(0,Ловкость−5)))%</code>. При обездвиживании не учитывается Ловкость. Максимум <strong>50% абсолютно для всех</strong>, в том числе для Пробуждённых.</p></div>
+  <div class="rule"><strong>Броски врагов</strong><p>Для атаки противника используется то же правило: <code>d20 + (Восприятие врага + floor(Ловкость врага / 3)) + бонусы атаки ≥ 11 + уклонение выбранного героя</code>. При попадании броня, магическая броня и резисты героя рассчитываются по тому же порядку. История сохраняет оба направления боя.</p></div>
+  <div class="rule"><strong>Процентный урон оружия</strong><p><code>(Базовый урон оружия + скейлинг характеристик) × (1 + процент / 100)</code>. Например, база 20 + скейлинг 30 = 50. При +40% получится 70 до Скорости, разбега, брони и резистов. 0% ничего не меняет. Поле отдельно для каждого оружия героя и противника, в том числе для луков и магических посохов; кулаки и обычные заклинания не затрагиваются.</p></div>
+  <div class="rule"><strong>Удар с разбега</strong><p>При выбранных «Кулаках» +50% к урону рукопашной атаки, с «Оружием» +25%. Магия не получает бонуса от разбега. Эти проценты можно изменить ниже.</p></div>
+  <div class="rule"><strong>Броня</strong><p>Кулаки игнорируют обычную броню. Оружие учитывает её, если у него нет пробития. Магическая броня действует и против кулаков, и против оружия. Защита от магии — отдельное процентное сопротивление магическому урону.</p></div>
+  <h3 class="subhead">Настраиваемые коэффициенты <span class="helpmark">(предложения)</span></h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Урон скорости: +% за ступень</label><input type="number" min="0" max="1000" data-bind="speedDamagePct"></div>
+    <div class="field"><label class="fieldlabel">Размер ступени Скорости</label><input type="number" min="1" max="1000" data-bind="speedDamageStep"></div>
+    <div class="field"><label class="fieldlabel">Скорость до начала бонуса</label><input type="number" min="0" data-bind="speedDamageThreshold"></div>
+    <div class="field"><label class="fieldlabel">Разбег: оружие, %</label><input type="number" min="0" max="1000" data-bind="chargePct"></div>
+    <div class="field"><label class="fieldlabel">Разбег: рукопашный бой, %</label><input type="number" min="0" max="1000" data-bind="fistChargePct"></div>
+    <div class="field"><label class="fieldlabel">Доп. действие за каждые N Скорости</label><input type="number" min="1" data-bind="actionStep"></div>
+    <div class="field"><label class="fieldlabel">Бонус попадания +1 за N Скорости</label><input type="number" min="1" data-bind="speedHitStep"></div>
+    <div class="field"><label class="fieldlabel">Максимум бонуса попадания от Скорости</label><input type="number" min="0" data-bind="speedHitMax"></div>
+    <div class="field"><label class="fieldlabel">Магический урон: + за 1 основного стата</label><input type="number" min="0" data-bind="spellStatScale"></div>
+    <div class="field"><label class="fieldlabel">Защита от магии: % за 1 Мудрости</label><input type="number" min="0" max="10" step="0.1" data-bind="wisMagicRate"></div>
+    <div class="field"><label class="fieldlabel">Защита от магии: % за 1 Интеллекта</label><input type="number" min="0" max="10" step="0.1" data-bind="intMagicRate"></div>
+    <div class="field"><label class="fieldlabel">Предел защиты от магии, %</label><input type="number" min="0" max="100" data-bind="magicDefenseCap"></div>
+    <div class="field"><label class="fieldlabel">HP за уровень</label><input type="number" min="0" data-bind="hpPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за уровень</label><input type="number" min="0" data-bind="stamPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за 1 Силы</label><input type="number" min="0" data-bind="stamPerStr"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за 1 Ловкости</label><input type="number" min="0" data-bind="stamPerDex"></div>
+    <div class="field"><label class="fieldlabel">Базовая мана</label><input type="number" min="0" data-bind="baseMana"></div>
+    <div class="field"><label class="fieldlabel">Мана за уровень</label><input type="number" min="0" data-bind="manaPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Мана за 1 Интеллекта</label><input type="number" min="0" data-bind="manaPerInt"></div>
+  </div>
+  <h3 class="subhead">Скейлинг оружия из новой таблицы</h3>
+  <div class="tablewrap"><table class="minitable"><thead><tr><th>Оружие</th><th>Бонус урона от характеристик</th><th>Дополнительно</th></tr></thead><tbody>
+    <tr><td>Полуторные мечи</td><td>⌊Сила/2⌋ + Ловкость</td><td>Физический урон</td></tr>
+    <tr><td>Двуручное оружие</td><td>Сила + ⌊Ловкость/4⌋</td><td>Физический урон</td></tr>
+    <tr><td>Одноручное оружие</td><td>⌊Сила/2⌋ + ⌊Ловкость/2⌋</td><td>Физический урон</td></tr>
+    <tr><td>Кинжалы</td><td>Ловкость + ⌊Сила/3⌋</td><td>+⌊Сила/3⌋ пробития брони</td></tr>
+    <tr><td>Магический посох</td><td>⌊Интеллект/2⌋ + ⌊Восприятие/2⌋</td><td>Магический урон</td></tr>
+    <tr><td>Лук и арбалет</td><td>Ловкость + ⌊Сила/2⌋</td><td>Физический урон</td></tr>
+    <tr><td>Пороховое оружие</td><td>Восприятие</td><td>Физический урон</td></tr>
+  </tbody></table></div>
+  <p class="note">⌊ ⌋ означает округление вниз. Базовый урон оружия прибавляется к указанному бонусу, затем к сумме применяется поле «Процентный урон оружия». Копья, топоры и булавы пока используют рабочие коэффициенты из предыдущей версии.</p>
+  <div class="rule"><strong>Дистанционные атаки и посохи</strong><p>Луки, арбалеты и пороховое оружие используют обычную физическую броню цели и её физический резист; посохи — магическую броню, защиту от магии и сопротивление стихии. Разбег и прирост урона от Скорости применяются только к кулакам и оружию ближнего боя.</p></div>
+  <h3 class="subhead">Принятый порядок расчёта</h3>
+  <div class="rule"><strong>Попадание (d20)</strong><p><code>d20 + Точность + Бонус атаки ≥ 11 + Уклонение цели</code>. Натуральная 1 — промах, 20 — попадание. Одинаковые точность и уклонение без бонусов дают 50%.</p></div>
+  <div class="rule"><strong>Кулаки</strong><p><code>ceil(max(0, исходный урон − магическая броня) × (1 − физрезист / 100))</code></p></div>
+  <div class="rule"><strong>Оружие</strong><p><code>ceil(max(0, исходный урон − max(0, обычная броня − пробитие) − магическая броня) × (1 − физрезист / 100))</code></p></div>
+  <div class="rule"><strong>Магия</strong><p><code>ceil(max(0, магический урон − max(0, магброня − магпробитие)) × (1 − защита от магии / 100) × (1 − резист стихии / 100))</code></p></div>
+  <div class="callout warning"><strong>Что ещё не является каноном:</strong> бонус скорости к попаданию, действия за раунд, скорость как множитель урона, бонусы попадания оружия, кулачное мастерство, магический скейлинг, сопротивления стихиям, формула выносливости и защита от магии. Значения по умолчанию взяты из нашего обсуждения как редактируемые рабочие настройки. Скейлинг семи групп оружия перенесён из обновлённой таблицы. Базовый урон предметов и бонусы попадания остаются примерными.</div>
+</section>
+</main>
+<aside class="side" aria-label="Результаты расчёта">
+<section class="panel"><div class="flexbar"><div class="pill" id="resultType">КУЛАЧНАЯ АТАКА</div><span class="tag" id="resultTarget">противник</span></div>
+  <div class="tiny" style="margin-top:10px">Атакует: <strong id="resultAttacker" style="color:var(--green);overflow-wrap:anywhere">Без имени</strong></div>
+  <div class="subtle" style="margin-top:15px;font-size:13px">Урон при успешном попадании</div><div class="resultbig" id="resultDamage">—</div><div class="tiny" id="resultDescription">после брони и резистов</div>
+  <div class="halfline"></div>
+  <div class="metricrow"><span>Шанс попадания (d20)</span><strong id="hitChance">—</strong></div><div class="chartbar"><div id="hitBar" style="width:0"></div></div>
+  <div class="metricrow"><span>Средний урон за попытку</span><strong id="avgDamage">—</strong></div>
+  <div class="metricrow"><span>Исходный урон до защиты</span><strong id="rawDamage">—</strong></div>
+  <div class="metricrow"><span>Процентный урон оружия</span><strong id="weaponPercentBonus">—</strong></div>
+  <div class="metricrow"><span>Урон от Скорости</span><strong id="speedBonus">—</strong></div>
+  <div class="metricrow"><span>Бонус разбега</span><strong id="chargeBonus">—</strong></div>
+  <div class="metricrow"><span>Действий за раунд</span><strong id="actionsResult">—</strong></div>
+  <div class="metricrow"><span>Потенциальный урон за раунд*</span><strong id="roundDamage">—</strong></div>
+  <div class="metricrow conditional" data-condition="magicAttack"><span>Шанс наложить эффект при попадании</span><strong id="statusChanceOut">—</strong></div>
+  <div class="breakdown"><div class="flexbar"><strong>Разбор урона</strong><span class="tag" id="elementTag">ФИЗИЧЕСКИЙ</span></div><div id="damageBreakdown"></div></div>
+  <p class="tiny">* Оценка при условии, что все действия используются для одинаковых атак; нет учёта ресурсов, критов и ограничений действия.</p>
+</section>
+<section class="panel"><div class="flexbar"><strong>Персонаж: <span id="sideCharacterName" style="color:var(--green);overflow-wrap:anywhere">Без имени</span></strong><span class="tag" id="classLabel">Воин</span></div>
+  <div class="field" style="margin-top:12px"><label class="fieldlabel" for="sideCharacterSelector">Быстрый выбор персонажа <span id="sideCharacterCount" class="tiny">1 / 6</span></label><select id="sideCharacterSelector" aria-label="Быстрый выбор своего персонажа"></select></div>
+  <div class="gridstat" style="margin-top:13px" id="sideStats"></div><div class="breakdown"><div class="metricrow"><span>Уклонение / точность</span><strong id="sideDodgeAccuracy">—</strong></div><div class="metricrow"><span>Инициатива</span><strong id="sideInitiative">—</strong></div><div class="metricrow"><span>Сопротивление физ. урону</span><strong id="sidePhysicalRes">—</strong></div><div class="metricrow"><span>Защита от магии</span><strong id="sideMagicRes">—</strong></div></div></section>
+<section class="panel"><div class="flexbar"><strong>Сводка цели</strong><span class="enemy-badge" id="sideEnemyCount">1 / 20</span></div><div class="field" style="margin-top:12px"><label class="fieldlabel" for="sideEnemySelector">Выбрать противника для атаки</label><select id="sideEnemySelector" aria-label="Быстрый выбор противника"></select></div><div class="metricrow"><span>Уклонение цели</span><strong id="summaryTargetDodge">—</strong></div><div class="metricrow"><span>Физ. резист цели</span><strong id="summaryTargetRes">—</strong></div><div class="metricrow"><span>Броня / маг. броня</span><strong id="summaryTargetArmor">—</strong></div><div class="metricrow"><span>Защита от магии</span><strong id="summaryTargetMagic">—</strong></div><button class="btn small" data-goto="target">Редактировать противника</button><button class="btn primary small" data-goto="battle" style="margin:9px 0 0 6px">⚔️ Броски врага</button></section>
+</aside></div>
+<p class="footer">ТЕТ · Боевой калькулятор v9. Работает локально, без интернета. Параметры автоматически сохраняются в этом браузере; можно экспортировать их в JSON. До 6 персонажей и 20 противников с независимыми характеристиками и защитой; у каждого персонажа собственные настройки каждого оружия. Враги также умеют атаковать, а история бросков сохраняется. Все показатели HP, маны, защиты и урона показаны отдельно — магическая броня не равна защите от магии.</p>
+</div><div class="toast" id="toast" role="status"></div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const EL = [
+ {id:'fire',name:'🔥 Огонь',short:'Огонь'},
+ {id:'lightning',name:'⚡ Молния',short:'Молния'},
+ {id:'water',name:'💧 Вода',short:'Вода'},
+ {id:'earth',name:'🪨 Земля',short:'Земля'},
+ {id:'wind',name:'🌪️ Ветер',short:'Ветер'},
+];
+const WEAPONS={
+ dagger:{name:'Кинжалы',group:'Ближний бой',kind:'melee',base:6,hit:2,scale:s=>s.dex+Math.floor(s.str/3),pen:s=>Math.floor(s.str/3),desc:'Ловкость + ⌊Сила / 3⌋; пробитие брони +⌊Сила / 3⌋'},
+ onehand:{name:'Одноручное оружие',group:'Ближний бой',kind:'melee',base:12,hit:2,scale:s=>Math.floor(s.str/2)+Math.floor(s.dex/2),desc:'⌊Сила / 2⌋ + ⌊Ловкость / 2⌋'},
+ bastard:{name:'Полуторные мечи',group:'Ближний бой',kind:'melee',base:17,hit:2,scale:s=>Math.floor(s.str/2)+s.dex,desc:'⌊Сила / 2⌋ + Ловкость'},
+ twohand:{name:'Двуручное оружие',group:'Ближний бой',kind:'melee',base:21,hit:1,scale:s=>s.str+Math.floor(s.dex/4),desc:'Сила + ⌊Ловкость / 4⌋'},
+ spear:{name:'Копья',group:'Ближний бой',kind:'melee',base:13,hit:3,scale:s=>Math.floor(s.str/2)+Math.floor(s.dex/2),desc:'⌊Сила / 2⌋ + ⌊Ловкость / 2⌋ (рабочее предложение)'},
+ mace:{name:'Булавы / молоты',group:'Ближний бой',kind:'melee',base:16,hit:1,scale:s=>s.str+Math.floor(s.dex/4),desc:'Сила + ⌊Ловкость / 4⌋ (рабочее предложение)'},
+ axe:{name:'Топоры',group:'Ближний бой',kind:'melee',base:15,hit:1,scale:s=>s.str+Math.floor(s.dex/4),desc:'Сила + ⌊Ловкость / 4⌋ (рабочее предложение)'},
+ bow:{name:'Лук',group:'Дальнобойное',kind:'ranged',base:12,hit:2,scale:s=>s.dex+Math.floor(s.str/2),desc:'Ловкость + ⌊Сила / 2⌋'},
+ crossbow:{name:'Арбалет',group:'Дальнобойное',kind:'ranged',base:16,hit:2,scale:s=>s.dex+Math.floor(s.str/2),desc:'Ловкость + ⌊Сила / 2⌋'},
+ firearm:{name:'Пороховое оружие',group:'Дальнобойное',kind:'ranged',base:20,hit:1,scale:s=>s.per,desc:'Восприятие'},
+ staff:{name:'Магический посох',group:'Магические посохи',kind:'magic',base:8,hit:2,scale:s=>Math.floor(s.int/2)+Math.floor(s.per/2),desc:'⌊Интеллект / 2⌋ + ⌊Восприятие / 2⌋ (магический урон)'}
+};
+const defaults={characterName:'',level:1,race:'human',classType:'warrior',customRaceStamina:100,str:10,dex:10,per:10,spd:10,int:10,wis:10,cha:10,extraHP:0,extraStamina:0,extraMana:0,
+ armor:0,magicArmor:0,immobile:false,incomingDamage:100,incomingType:'weapon',incomingPen:0,incomingMagicPen:0,incomingElement:'fire',
+ attackType:'fist',fistMastery:'0',weaponType:'onehand',weaponBase:12,weaponDamagePct:0,weaponPen:0,staffMagicPen:0,extraHit:0,otherHitBonus:0,spellBase:40,spellStat:'int',element:'fire',spellPen:0,spellManaCost:15,statusChance:60,charge:false,speedDamageOn:true,speedHitOn:true,
+ targetStr:10,targetDex:10,targetPer:10,targetInt:10,targetWis:10,targetSpd:10,targetCha:10,targetArmor:30,targetMagicArmor:5,targetImmobile:false,targetDodgeOverride:false,targetDodgeValue:13,targetResOverride:false,targetResValue:30,targetMagicOverride:false,targetMagicValue:10,
+ targetAttackType:'fist',targetFistMastery:'0',targetWeaponType:'onehand',targetWeaponBase:12,targetWeaponDamagePct:0,targetWeaponPen:0,targetStaffMagicPen:0,targetExtraHit:0,targetSpellBase:40,targetSpellStat:'int',targetSpellPen:0,targetElement:'fire',targetCharge:false,targetSpeedDamageOn:true,targetSpeedHitOn:true,targetOtherHitBonus:0,
+ speedDamagePct:10,speedDamageStep:15,speedDamageThreshold:10,chargePct:25,fistChargePct:50,actionStep:15,speedHitStep:30,speedHitMax:5,spellStatScale:2,wisMagicRate:0.5,intMagicRate:0.33,magicDefenseCap:50,hpPerLevel:5,stamPerLevel:5,stamPerStr:5,stamPerDex:2,baseMana:60,manaPerLevel:10,manaPerInt:10};
+for(const e of EL){defaults['ownElem_'+e.id]=0;defaults['ownStatus_'+e.id]=0;defaults['targetElem_'+e.id]=0;defaults['targetStatus_'+e.id]=0}
+const TARGET_KEYS=Object.keys(defaults).filter(key=>key.startsWith('target'));
+const MAX_ENEMIES=20;
+const MAX_CHARACTERS=6;
+const MAX_HISTORY=300;
+// Настройки правил общие для всей группы. Атакующие характеристики и настройки защиты — личные.
+const RULE_KEYS=['speedDamagePct','speedDamageStep','speedDamageThreshold','chargePct','fistChargePct','actionStep','speedHitStep','speedHitMax','spellStatScale','wisMagicRate','intMagicRate','magicDefenseCap','hpPerLevel','stamPerLevel','stamPerStr','stamPerDex','baseMana','manaPerLevel','manaPerInt'];
+const CHARACTER_KEYS=Object.keys(defaults).filter(key=>!TARGET_KEYS.includes(key)&&!RULE_KEYS.includes(key));
+const WEAPON_SETTING_KEYS=['weaponBase','weaponDamagePct','weaponPen','extraHit','staffMagicPen'];
+const ENEMY_WEAPON_KEYS=['targetWeaponBase','targetWeaponDamagePct','targetWeaponPen','targetExtraHit','targetStaffMagicPen'];
+let combatHistory=[];
+let s={...defaults};
+let enemyProfiles=[];
+let activeEnemyIndex=0;
+let characterProfiles=[];
+let activeCharacterIndex=0;
+const filterSettings=stored=>Object.fromEntries(Object.entries(stored||{}).filter(([key,val])=>Object.hasOwn(defaults,key)&&['string','number','boolean'].includes(typeof val)).map(([key,val])=>[key,key==='characterName'?String(val).slice(0,64):val]));
+function cleanEnemyStats(data){const stats={};for(const key of TARGET_KEYS){const val=data?.[key];const fallback=defaults[key];stats[key]=typeof fallback==='boolean'?(typeof val==='boolean'?val:fallback):(typeof val==='number'&&Number.isFinite(val)?val:fallback)}return stats}
+function clampPct(value){return Math.max(-100,Math.min(10000,num(value)))}
+function defaultEnemyWeapon(type){return {targetWeaponBase:WEAPONS[type]?.base??12,targetWeaponDamagePct:0,targetWeaponPen:0,targetExtraHit:0,targetStaffMagicPen:0}}
+function cleanEnemyWeapon(raw,type){const out=defaultEnemyWeapon(type);for(const key of ENEMY_WEAPON_KEYS)if(typeof raw?.[key]==='number'&&Number.isFinite(raw[key]))out[key]=raw[key];out.targetWeaponDamagePct=clampPct(out.targetWeaponDamagePct);return out}
+function normalizeEnemyWeapons(data,stats={}){const weapons={};for(const type of Object.keys(WEAPONS))weapons[type]=cleanEnemyWeapon(data?.[type],type);
+ if(!data && WEAPONS[stats.targetWeaponType] && Object.hasOwn(stats,'targetWeaponBase'))weapons[stats.targetWeaponType]=cleanEnemyWeapon(stats,stats.targetWeaponType);
+ return weapons}
+function createEnemy(stats={},name='Противник 1',weapons=null){const cleaned=cleanEnemyStats(stats);if(!WEAPONS[cleaned.targetWeaponType])cleaned.targetWeaponType='onehand';return{name,stats:cleaned,weapons:normalizeEnemyWeapons(weapons,stats)}}
+function normalizeEnemies(data){if(!Array.isArray(data))return [];return data.slice(0,MAX_ENEMIES).filter(item=>item&&typeof item==='object'&&!Array.isArray(item)).map((item,i)=>createEnemy(item.stats,typeof item.name==='string'&&item.name.trim()?item.name.trim().slice(0,48):`Противник ${i+1}`,item.weapons))}
+function snapshotActiveEnemyWeapon(){const p=enemyProfiles[activeEnemyIndex];if(!p)return;const type=WEAPONS[s.targetWeaponType]?s.targetWeaponType:'onehand';p.weapons[type]=cleanEnemyWeapon(s,type)}
+function applyActiveEnemyWeapon(){const p=enemyProfiles[activeEnemyIndex];if(!p)return;const type=WEAPONS[s.targetWeaponType]?s.targetWeaponType:'onehand';Object.assign(s,p.weapons[type]||defaultEnemyWeapon(type))}
+function cleanCharacterStats(data){const stats={};for(const key of CHARACTER_KEYS){const fallback=defaults[key],val=data?.[key];stats[key]=typeof fallback==='boolean'?(typeof val==='boolean'?val:fallback):typeof fallback==='number'?(typeof val==='number'&&Number.isFinite(val)?val:fallback):(typeof val==='string'?val:fallback);if(key==='characterName')stats[key]=String(stats[key]||'').slice(0,64)}
+ if(!WEAPONS[stats.weaponType])stats.weaponType='onehand';return stats}
+function defaultWeaponSettings(type){return {weaponBase:WEAPONS[type]?.base??12,weaponDamagePct:0,weaponPen:0,extraHit:0,staffMagicPen:0}}
+function cleanWeaponSettings(data,type){const d=defaultWeaponSettings(type);for(const key of WEAPON_SETTING_KEYS){const value=data?.[key];if(typeof value==='number'&&Number.isFinite(value))d[key]=value}d.weaponDamagePct=clampPct(d.weaponDamagePct);return d}
+function normalizeWeapons(data,stats){const result={};for(const type of Object.keys(WEAPONS)){result[type]=cleanWeaponSettings(data?.[type],type)}
+ // Миграция из v6: текущий тип оружия уже мог иметь свой изменённый урон.
+ if(!data){const type=stats.weaponType;result[type]=cleanWeaponSettings(stats,type)}return result}
+function createCharacter(data={},weapons=null){const stats=cleanCharacterStats(data);return {stats,weapons:normalizeWeapons(weapons,stats)}}
+function normalizeCharacters(data){if(!Array.isArray(data))return [];return data.slice(0,MAX_CHARACTERS).filter(item=>item&&typeof item==='object'&&!Array.isArray(item)).map(item=>createCharacter(item.stats,item.weapons))}
+function applyActiveWeaponSettings(){const profile=characterProfiles[activeCharacterIndex];if(!profile)return;const type=WEAPONS[s.weaponType]?s.weaponType:'onehand';Object.assign(s,profile.weapons[type]||defaultWeaponSettings(type))}
+function snapshotActiveWeapon(){const profile=characterProfiles[activeCharacterIndex];if(!profile)return;const type=WEAPONS[s.weaponType]?s.weaponType:'onehand';profile.weapons[type]=cleanWeaponSettings(s,type)}
+function snapshotActiveCharacter(){const profile=characterProfiles[activeCharacterIndex];if(!profile)return;snapshotActiveWeapon();for(const key of CHARACTER_KEYS)profile.stats[key]=s[key]}
+function activeCharacterLabel(index){const p=characterProfiles[index],name=String(p?.stats?.characterName||'').trim();return name||`Персонаж ${index+1}`}
+function syncCharacterUI(){if(characterProfiles[activeCharacterIndex])characterProfiles[activeCharacterIndex].stats.characterName=String(s.characterName||'').slice(0,64);const names=characterProfiles.map((p,i)=>`${i+1}. ${activeCharacterLabel(i)}`);for(const id of ['characterSelector','sideCharacterSelector','battleCharacterSelector']){const select=$(id);select.replaceChildren();names.forEach((name,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=name;select.append(opt)});select.value=String(activeCharacterIndex)}
+ $('characterCountBadge').textContent=`${characterProfiles.length} / ${MAX_CHARACTERS}`;$('sideCharacterCount').textContent=`${characterProfiles.length} / ${MAX_CHARACTERS}`;
+ $('characterAddBtn').disabled=characterProfiles.length>=MAX_CHARACTERS;$('characterCloneBtn').disabled=characterProfiles.length>=MAX_CHARACTERS;$('characterDeleteBtn').disabled=characterProfiles.length<=1}
+function selectCharacter(index){index=Math.floor(Number(index));if(!Number.isInteger(index)||index<0||index>=characterProfiles.length)return;snapshotActiveCharacter();activeCharacterIndex=index;Object.assign(s,characterProfiles[index].stats);applyActiveWeaponSettings();syncControls();render();save();$('rollReport').textContent=`Выбран персонаж «${activeCharacterName()}». Нажми «Бросить d20», чтобы провести атаку.`}
+function newCharacterName(){let i=1;while(characterProfiles.some((p,index)=>activeCharacterLabel(index)===`Персонаж ${i}`))i++;return `Персонаж ${i}`}
+function addCharacter(copy=false){if(characterProfiles.length>=MAX_CHARACTERS){toast('Достигнут предел: 6 персонажей');return}snapshotActiveCharacter();const current=characterProfiles[activeCharacterIndex];let p;if(copy){p=createCharacter({...current.stats,characterName:(activeCharacterLabel(activeCharacterIndex)+' (копия)').slice(0,64)},current.weapons)}else{p=createCharacter({...defaults,characterName:newCharacterName()})}characterProfiles.push(p);selectCharacter(characterProfiles.length-1);toast(copy?'Персонаж продублирован':'Персонаж добавлен')}
+function removeCharacter(){if(characterProfiles.length<=1)return;if(!confirm(`Удалить персонажа «${activeCharacterName()}»?`))return;characterProfiles.splice(activeCharacterIndex,1);activeCharacterIndex=Math.min(activeCharacterIndex,characterProfiles.length-1);Object.assign(s,characterProfiles[activeCharacterIndex].stats);applyActiveWeaponSettings();syncControls();render();save();$('rollReport').textContent='Выбран другой персонаж. Проведи новую атаку.';toast('Персонаж удалён')}
+function normalizeHistory(data){if(!Array.isArray(data))return [];return data.slice(-MAX_HISTORY).filter(e=>e&&typeof e==='object'&&!Array.isArray(e)&&['hero','enemy'].includes(e.side)&&['attack','initiative'].includes(e.kind)).map(e=>({kind:e.kind,side:e.side,actor:String(e.actor||'Участник').slice(0,64),target:String(e.target||'').slice(0,64),die:clamp(Math.floor(Number(e.die)||1),1,20),bonus:num(e.bonus),dc:num(e.dc),hit:!!e.hit,damage:Math.max(0,num(e.damage)),style:String(e.style||'').slice(0,100),stage:Array.isArray(e.stage)?e.stage.slice(0,15).map(a=>[String(a?.[0]||'').slice(0,90),String(a?.[1]||'').slice(0,100)]):[],time:String(e.time||new Date().toISOString()).slice(0,40)}))}
+try{
+ const stored8=JSON.parse((localStorage.getItem('tet_combat_v9')??localStorage.getItem('tet_combat_v8'))||'null');
+ const stored7=stored8??JSON.parse(localStorage.getItem('tet_combat_v7')||'null');
+ const stored6=stored7??JSON.parse(localStorage.getItem('tet_combat_v6')||'null');
+ const stored5=stored6??JSON.parse(localStorage.getItem('tet_combat_v5')||'null');
+ const stored4=stored5??JSON.parse(localStorage.getItem('tet_combat_v4')||'null');
+ if(stored4&&typeof stored4==='object'&&!Array.isArray(stored4)){
+   s={...s,...filterSettings(stored4.settings||{})};
+   enemyProfiles=normalizeEnemies(stored4.enemies);
+   activeEnemyIndex=Math.floor(Number(stored4.activeEnemyIndex)||0);
+   characterProfiles=normalizeCharacters(stored4.characters);
+   activeCharacterIndex=Math.floor(Number(stored4.activeCharacterIndex)||0);
+   combatHistory=normalizeHistory(stored4.combatHistory);
+ }else{
+   const old=JSON.parse(localStorage.getItem('tet_combat_v3')||'null');
+   if(old&&typeof old==='object'&&!Array.isArray(old))s={...s,...filterSettings(old)};
+ }
+}catch{}
+if(!enemyProfiles.length)enemyProfiles=[createEnemy(s,'Противник 1')];
+activeEnemyIndex=Math.max(0,Math.min(enemyProfiles.length-1,activeEnemyIndex));
+Object.assign(s,enemyProfiles[activeEnemyIndex].stats);
+applyActiveEnemyWeapon();
+if(!characterProfiles.length)characterProfiles=[createCharacter(s)];
+activeCharacterIndex=Math.max(0,Math.min(characterProfiles.length-1,activeCharacterIndex));
+Object.assign(s,characterProfiles[activeCharacterIndex].stats);
+applyActiveWeaponSettings();
+let lastData=null;
+function activeEnemyName(){return enemyProfiles[activeEnemyIndex]?.name||`Противник ${activeEnemyIndex+1}`}
+function activeCharacterName(){return String(s.characterName||'').trim().slice(0,64)||activeCharacterLabel(activeCharacterIndex)}
+function snapshotActiveEnemy(){if(!enemyProfiles[activeEnemyIndex])return;snapshotActiveEnemyWeapon();for(const key of TARGET_KEYS)enemyProfiles[activeEnemyIndex].stats[key]=s[key]}
+function syncEnemyUI(){
+ const names=enemyProfiles.map((p,i)=>`${i+1}. ${p.name}`);
+ for(const id of ['enemySelector','sideEnemySelector','battleEnemySelector']){
+   const select=$(id);select.replaceChildren();names.forEach((name,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=name;select.append(opt)});select.value=String(activeEnemyIndex)
+ }
+ $('enemyNameInput').value=enemyProfiles[activeEnemyIndex].name;
+ $('enemyCountBadge').textContent=`${enemyProfiles.length} / ${MAX_ENEMIES}`;
+ $('sideEnemyCount').textContent=`${enemyProfiles.length} / ${MAX_ENEMIES}`;
+ $('enemyAddBtn').disabled=enemyProfiles.length>=MAX_ENEMIES;
+ $('enemyCloneBtn').disabled=enemyProfiles.length>=MAX_ENEMIES;
+ $('enemyDeleteBtn').disabled=enemyProfiles.length<=1;
+ $('resultTarget').textContent=activeEnemyName();
+}
+function selectEnemy(index){
+ index=Math.floor(Number(index));if(!Number.isInteger(index)||index<0||index>=enemyProfiles.length)return;
+ snapshotActiveEnemy();activeEnemyIndex=index;Object.assign(s,enemyProfiles[index].stats);applyActiveEnemyWeapon();syncControls();render();save();
+ $('rollReport').textContent=`Выбран противник «${activeEnemyName()}». Нажми «Бросить d20», чтобы провести атаку.`;
+}
+function newEnemyName(){let i=1;while(enemyProfiles.some(p=>p.name===`Противник ${i}`))i++;return `Противник ${i}`}
+function addEnemy(copy=false){
+ if(enemyProfiles.length>=MAX_ENEMIES){toast('Достигнут предел: 20 противников');return}
+ snapshotActiveEnemy();const current=enemyProfiles[activeEnemyIndex];
+ const stats=copy?{...current.stats}:cleanEnemyStats({});
+ const name=copy?`${current.name.slice(0,38)} (копия)`:newEnemyName();
+ enemyProfiles.push(createEnemy(stats,name,copy?current.weapons:null));selectEnemy(enemyProfiles.length-1);toast(copy?'Противник скопирован':'Новый противник добавлен')
+}
+function removeEnemy(){
+ if(enemyProfiles.length<=1)return;
+ if(!confirm(`Удалить противника «${activeEnemyName()}»?`))return;
+ enemyProfiles.splice(activeEnemyIndex,1);activeEnemyIndex=Math.min(activeEnemyIndex,enemyProfiles.length-1);
+ Object.assign(s,enemyProfiles[activeEnemyIndex].stats);applyActiveEnemyWeapon();syncControls();render();save();
+ $('rollReport').textContent='Выбран другой противник. Проведи новую атаку.';toast('Противник удалён')
+}
+function resetAll(){s={...defaults};enemyProfiles=[createEnemy(s,'Противник 1')];activeEnemyIndex=0;characterProfiles=[createCharacter(s)];activeCharacterIndex=0;combatHistory=[];syncControls();render();renderHistory();save()}
+
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function num(x, fallback=0){const n=Number(x);return Number.isFinite(n)?n:fallback}
+function n(k){return num(s[k],defaults[k]??0)}
+function fmt(v,maximum=1){if(typeof v==='string')return v;return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:maximum}).format(v)}
+function cInt(k,min=0,max=1000){return Math.floor(clamp(n(k),min,max))}
+function statMini(name,v,minor='',color=''){return `<div class="statbox"><div class="label">${name}</div><div class="value ${color}">${fmt(v)}</div>${minor?`<div class="minor">${minor}</div>`:''}</div>`}
+function card(name,val,minor=''){return statMini(name,val,minor)}
+function statInput(label,key,description){return `<div class="field combo"><div class="combohead"><label class="fieldlabel" for="${key}_n">${label}</label><input aria-label="${label}" type="number" id="${key}_n" min="0" max="1000" step="1" data-bind="${key}"></div><input type="range" min="0" max="200" step="1" aria-label="Ползунок: ${label}" data-bind="${key}"><div class="note">${description}</div></div>`}
+function resistanceInputs(prefix){return EL.map(e=>`<div class="field"><label for="${prefix}_${e.id}">${e.name}</label><input id="${prefix}_${e.id}" aria-label="${e.short}" data-bind="${prefix}_${e.id}" type="number" min="0" max="100" step="1"><span class="tiny" style="text-align:center">%</span></div>`).join('')}
+function init(){
+ $('playerStats').innerHTML=[['Сила','str','Урон, HP, прочность тела'],['Ловкость','dex','Уклонение, точность, смягчение ударов'],['Восприятие','per','Точность, уклонение, инициатива'],['Скорость','spd','Движение, удары, действия'],['Интеллект','int','Мана, магия, маг. защита'],['Мудрость','wis','Магическая защита и возможная магия'],['Харизма','cha','Магия Харизмы и социальные навыки']].map(x=>statInput(...x)).join('');
+ $('targetStats').innerHTML=[['Сила','targetStr','Физическое сопротивление'],['Ловкость','targetDex','Уклонение и сопротивление'],['Восприятие','targetPer','Уклонение'],['Интеллект','targetInt','Защита от магии'],['Мудрость','targetWis','Защита от магии'],['Скорость','targetSpd','Бонусы атак и скорость движения'],['Харизма','targetCha','Магия Харизмы']].map(x=>statInput(...x)).join('');
+ for(const id of ['ownElements','ownStatuses','targetElements','targetStatuses'])$(id).innerHTML=resistanceInputs(({ownElements:'ownElem',ownStatuses:'ownStatus',targetElements:'targetElem',targetStatuses:'targetStatus'})[id]);
+ for(const id of ['attackElement','staffElement','incomingElement','enemyStaffElement','enemySpellElement'])$(id).innerHTML=EL.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
+ $('targetWeaponType').innerHTML=['Ближний бой','Дальнобойное','Магические посохи'].map(group=>`<optgroup label="${group}">`+Object.entries(WEAPONS).filter(([k,v])=>v.group===group).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('')+'</optgroup>').join('');
+ $('weaponType').innerHTML=['Ближний бой','Дальнобойное','Магические посохи'].map(group=>`<optgroup label="${group}">`+Object.entries(WEAPONS).filter(([k,v])=>v.group===group).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('')+'</optgroup>').join('');
+ document.querySelectorAll('[data-bind]').forEach(el=>{const key=el.dataset.bind;setControl(el,s[key]);el.addEventListener(el.type==='range'?'input':(el.tagName==='SELECT'||el.type==='checkbox'?'change':'input'),()=>{
+   if(key==='weaponType')snapshotActiveWeapon();
+   if(key==='targetWeaponType')snapshotActiveEnemyWeapon();
+   if(el.type==='checkbox')s[key]=el.checked;
+   else if(el.type==='number'||el.type==='range'){const raw=el.value;if(raw==='')return;const min=el.min!==''?Number(el.min):-1000000000,max=el.max!==''?Number(el.max):1000000000;s[key]=clamp(num(raw),min,max)}
+   else s[key]=el.value;
+   if(key==='weaponType')applyActiveWeaponSettings();
+   if(key==='targetWeaponType')applyActiveEnemyWeapon();
+   if(TARGET_KEYS.includes(key))snapshotActiveEnemy();
+   syncControls(el);render();save();
+ })});
+ document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));
+ document.querySelectorAll('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.goto)));
+ $('rollBtn').addEventListener('click',rollAttack);
+ $('battlePlayerRollBtn').addEventListener('click',rollAttack);
+ $('battleEnemyRollBtn').addEventListener('click',rollEnemyAttack);
+ $('battleHeroInitBtn').addEventListener('click',()=>rollInitiative('hero'));
+ $('battleEnemyInitBtn').addEventListener('click',()=>rollInitiative('enemy'));
+ $('copyHistoryBtn').addEventListener('click',copyHistory);
+ $('clearHistoryBtn').addEventListener('click',()=>{if(!combatHistory.length)return;if(confirm('Удалить всю историю боевых бросков?')){combatHistory=[];renderHistory();save();toast('История бросков очищена')}});
+ $('historyFilter').addEventListener('change',renderHistory);
+ $('copyBtn').addEventListener('click',copyResult);
+ $('exportBtn').addEventListener('click',exportSettings);
+ $('importBtn').addEventListener('click',()=>$('importInput').click());
+ $('importInput').addEventListener('change',importSettings);
+ $('resetBtn').addEventListener('click',()=>{if(confirm('Сбросить персонажей, настройки оружия, противников и всю историю бросков?')){resetAll();$('rollReport').textContent='Бросок ещё не выполнен.';toast('Настройки сброшены')}});
+ for(const id of ['enemySelector','sideEnemySelector','battleEnemySelector'])$(id).addEventListener('change',event=>selectEnemy(event.target.value));
+ $('characterName').addEventListener('blur',()=>{s.characterName=String(s.characterName||'').trim().slice(0,64);syncControls();render();save()});
+ for(const id of ['characterSelector','sideCharacterSelector','battleCharacterSelector'])$(id).addEventListener('change',event=>selectCharacter(event.target.value));
+ $('characterAddBtn').addEventListener('click',()=>addCharacter(false));
+ $('characterCloneBtn').addEventListener('click',()=>addCharacter(true));
+ $('characterDeleteBtn').addEventListener('click',removeCharacter);
+ $('enemyNameInput').addEventListener('input',event=>{enemyProfiles[activeEnemyIndex].name=event.target.value.slice(0,48);syncEnemyUI();render();save()});
+ $('enemyNameInput').addEventListener('blur',()=>{if(!enemyProfiles[activeEnemyIndex].name.trim())enemyProfiles[activeEnemyIndex].name=`Противник ${activeEnemyIndex+1}`;else enemyProfiles[activeEnemyIndex].name=enemyProfiles[activeEnemyIndex].name.trim();syncEnemyUI();render();save()});
+ $('enemyAddBtn').addEventListener('click',()=>addEnemy(false));
+ $('enemyCloneBtn').addEventListener('click',()=>addEnemy(true));
+ $('enemyDeleteBtn').addEventListener('click',removeEnemy);
+ syncControls();render();renderHistory();
+}
+function setControl(el,value){if(el.type==='checkbox'){el.checked=Boolean(value)}else{if(el.type==='range')el.max=String(Math.max(200,Math.ceil(num(value)/50)*50));el.value=value??''}}
+function syncControls(except=null){document.querySelectorAll('[data-bind]').forEach(el=>{if(el===except)return;setControl(el,s[el.dataset.bind])})}
+function showTab(tab){document.querySelectorAll('.tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.tab===tab));document.querySelectorAll('.tabpanel').forEach(p=>p.hidden=p.id!=='panel-'+tab);document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function physRes(str,dex,immobile=false){const sr=Math.min(35,Math.max(0,str-5)),dr=immobile?0:Math.min(25,Math.max(0,dex-5));return{fromStr:sr,fromDex:dr,total:Math.min(50,sr+dr)}}
+function magicDefense(int,wis){return clamp(Math.floor(wis*n('wisMagicRate')+int*n('intMagicRate')),0,n('magicDefenseCap'))}
+function strengthDamage(str){if(str<=10)return 5+2*str;const raw=25*Math.pow(2,(str-10)/10);return Number.isFinite(raw)?Math.round(raw):Number.MAX_SAFE_INTEGER}
+function own(){const lev=cInt('level',1,1000),str=cInt('str'),dex=cInt('dex'),per=cInt('per'),spd=cInt('spd'),int=cInt('int'),wis=cInt('wis'),cha=cInt('cha');const baseStam=s.race==='human'?100:s.race==='elf'?150:s.race==='dwarf'?200:n('customRaceStamina');return {lev,str,dex,per,spd,int,wis,cha,
+ hp:Math.max(0,30+lev*n('hpPerLevel')+10*str+n('extraHP')),
+ stamina:Math.max(0,baseStam+lev*n('stamPerLevel')+str*n('stamPerStr')+dex*n('stamPerDex')+n('extraStamina')),
+ mana:Math.max(0,n('baseMana')+lev*n('manaPerLevel')+int*n('manaPerInt')+n('extraMana')),
+ dodge:dex+Math.floor(per/3),accuracy:per+Math.floor(dex/3),speedKmh:4*spd,actions:1+Math.floor(spd/Math.max(1,n('actionStep'))),initiative:per,
+ physical:physRes(str,dex,s.immobile),magicDefense:magicDefense(int,wis),fistDamage:strengthDamage(str),armor:Math.max(0,n('armor')),magicArmor:Math.max(0,n('magicArmor'))}}
+function target(){const str=cInt('targetStr'),dex=cInt('targetDex'),per=cInt('targetPer'),int=cInt('targetInt'),wis=cInt('targetWis'),spd=cInt('targetSpd'),cha=cInt('targetCha');const autoDodge=dex+Math.floor(per/3);const physical=physRes(str,dex,s.targetImmobile);return{str,dex,per,int,wis,spd,cha,accuracy:per+Math.floor(dex/3),fistDamage:strengthDamage(str),autoDodge,dodge:s.targetDodgeOverride?n('targetDodgeValue'):autoDodge,physical,res:Math.min(50,Math.max(0,s.targetResOverride?n('targetResValue'):physical.total)),magicDefense:s.targetMagicOverride?clamp(n('targetMagicValue'),0,100):magicDefense(int,wis),armor:Math.max(0,n('targetArmor')),magicArmor:Math.max(0,n('targetMagicArmor'))}}
+function speedDmgBonus(spd){return s.speedDamageOn?Math.max(0,Math.floor((spd-n('speedDamageThreshold'))/Math.max(1,n('speedDamageStep'))))*n('speedDamagePct'):0}
+function speedHitBonus(spd){return s.speedHitOn?Math.min(n('speedHitMax'),Math.floor(spd/Math.max(1,n('speedHitStep')))):0}
+function chanceToHit(attack,defense){let hits=0;for(let d=1;d<=20;d++)if(d===20||(d!==1&&d+attack>=defense))hits++;return hits*5}
+function magicElemRes(prefix,element){return clamp(n(prefix+'_'+element),0,100)}
+function damageAfterDefense(raw,type,def,pen=0,spellPen=0,element='fire',elemPrefix='targetElem'){
+ const stage=[];let v=Math.max(0,raw);stage.push(['Исходный урон',fmt(v)]);
+ if(type==='fist')stage.push(['Обычная броня', 'Игнорируется полностью']);
+ else if(type==='weapon'){const block=Math.max(0,def.armor-Math.max(0,pen));v=Math.max(0,v-block);stage.push(['Обычная броня после пробития',`−${fmt(block)} → ${fmt(v)}`])}
+ else stage.push(['Обычная броня','Обходится магией']);
+ const mb=Math.max(0,def.magicArmor-(type==='magic'?Math.max(0,spellPen):0));v=Math.max(0,v-mb);stage.push(['Магическая броня',`−${fmt(mb)} → ${fmt(v)}`]);
+ if(type==='magic'){const mres=clamp(def.magicDefense,0,100);v*=1-mres/100;stage.push(['Защита от магии',`−${fmt(mres)}% → ${fmt(v)}`]);const elRes=magicElemRes(elemPrefix,element);v*=1-elRes/100;stage.push(['Сопротивление стихии',`−${fmt(elRes)}% → ${fmt(v)}`])}
+ else{const r=clamp(def.res,0,50);v*=1-r/100;stage.push(['Физическое сопротивление',`−${fmt(r)}% → ${fmt(v)}`])}
+ const final=Math.max(0,Math.ceil(v-1e-9));stage.push(['Итоговый урон',fmt(final)]);return {final,stage}}
+function getAttack(me,t){
+ const mode=s.attackType;let base=0,scale=0,masterBonus=0,masterHit=0,hitWeapon=0;
+ const w=WEAPONS[s.weaponType]||WEAPONS.onehand;
+ const effectiveType=mode==='weapon'?(w.kind==='magic'?'magic':'weapon'):mode;
+ const melee=mode==='fist'||(mode==='weapon'&&w.kind==='melee');
+ const ranged=mode==='weapon'&&w.kind==='ranged';
+ const magicStaff=mode==='weapon'&&w.kind==='magic';
+ if(mode==='fist'){
+  base=me.fistDamage;const mastery=Number(s.fistMastery)||0;
+  masterBonus=([0,20,35,50][mastery]??0);masterHit=([-2,-2,-1,0][mastery]??-2);hitWeapon=masterHit;
+ }else if(mode==='weapon'){
+  base=Math.max(0,n('weaponBase'));scale=w.scale(me);hitWeapon=w.hit+n('extraHit');
+ }else{
+  base=Math.max(0,n('spellBase'));scale=me[s.spellStat]*n('spellStatScale');
+ }
+ const first=base+scale;
+ const weaponPct=mode==='weapon'?clampPct(n('weaponDamagePct')):0;
+ const afterWeaponPct=first*(1+weaponPct/100);
+ const speedPct=melee?speedDmgBonus(me.spd):0;
+ const chargePct=melee&&s.charge?(mode==='fist'?n('fistChargePct'):n('chargePct')):0;
+ const afterMaster=afterWeaponPct*(1+masterBonus/100);
+ const afterSpeed=afterMaster*(1+speedPct/100);
+ const afterCharge=afterSpeed*(1+chargePct/100);
+ const raw=Math.max(0,Math.ceil(afterCharge-1e-9));
+ const speedHit=melee?speedHitBonus(me.spd):0;
+ const hitBonus=hitWeapon+speedHit+n('otherHitBonus');
+ const targetDC=11+t.dodge,attackTotal=me.accuracy+hitBonus;
+ const hit=chanceToHit(attackTotal,targetDC);
+ const autoPen=mode==='weapon'&&w.pen?w.pen(me):0;
+ const physicalPen=mode==='weapon'&&w.kind!=='magic'?Math.max(0,n('weaponPen'))+autoPen:0;
+ const magicPen=magicStaff?Math.max(0,n('staffMagicPen')):mode==='magic'?Math.max(0,n('spellPen')):0;
+ const damage=damageAfterDefense(raw,effectiveType,t,physicalPen,magicPen,s.element,'targetElem');
+ if(mode==='weapon')damage.stage.splice(1,0,['Процентный урон оружия',`${weaponPct>=0?'+':''}${fmt(weaponPct)}% · ${fmt(first)} → ${fmt(afterWeaponPct)}`]);
+ const statusChance=mode==='magic'?clamp(n('statusChance'),0,100)*(1-magicElemRes('targetStatus',s.element)/100):0;
+ return {mode,effectiveType,melee,ranged,magicStaff,base,scale,masterBonus,first,weaponPct,afterWeaponPct,speedPct,chargePct,raw,hit,hitBonus,weaponHit:hitWeapon,speedHit,attackTotal,targetDC,damage,statusChance,physicalPen,autoPen,magicPen,roundDmg:damage.final*hit/100*me.actions,expected:damage.final*hit/100,w}
+}
+function getEnemyAttack(enemy,hero){
+ const mode=s.targetAttackType;const w=WEAPONS[s.targetWeaponType]||WEAPONS.onehand;
+ const effectiveType=mode==='weapon'?(w.kind==='magic'?'magic':'weapon'):mode;
+ const melee=mode==='fist'||(mode==='weapon'&&w.kind==='melee');
+ const magicStaff=mode==='weapon'&&w.kind==='magic';let base=0,scale=0,master=0,weaponHit=0;
+ if(mode==='fist'){
+   base=enemy.fistDamage;const mastery=clamp(Math.floor(num(s.targetFistMastery)),0,3);
+   master=[0,20,35,50][mastery];weaponHit=[-2,-2,-1,0][mastery];
+ }else if(mode==='weapon'){
+   base=Math.max(0,n('targetWeaponBase'));scale=w.scale(enemy);weaponHit=w.hit+n('targetExtraHit');
+ }else{base=Math.max(0,n('targetSpellBase'));scale=enemy[['int','wis','cha'].includes(s.targetSpellStat)?s.targetSpellStat:'int']*n('spellStatScale')}
+ const weaponPct=mode==='weapon'?clampPct(n('targetWeaponDamagePct')):0;
+ const afterWeaponPct=(base+scale)*(1+weaponPct/100);
+ const speedPct=melee&&s.targetSpeedDamageOn?Math.max(0,Math.floor((enemy.spd-n('speedDamageThreshold'))/Math.max(1,n('speedDamageStep'))))*n('speedDamagePct'):0;
+ const chargePct=melee&&s.targetCharge?(mode==='fist'?n('fistChargePct'):n('chargePct')):0;
+ const raw=Math.max(0,Math.ceil(afterWeaponPct*(1+master/100)*(1+speedPct/100)*(1+chargePct/100)-1e-9));
+ const speedHit=melee&&s.targetSpeedHitOn?Math.min(n('speedHitMax'),Math.floor(enemy.spd/Math.max(1,n('speedHitStep')))):0;
+ const hitBonus=weaponHit+speedHit+n('targetOtherHitBonus');
+ const attackTotal=enemy.accuracy+hitBonus;
+ const targetDC=11+hero.dodge;
+ const hit=chanceToHit(attackTotal,targetDC);
+ const autoPen=mode==='weapon'&&w.pen?w.pen(enemy):0;
+ const physicalPen=mode==='weapon'&&w.kind!=='magic'?Math.max(0,n('targetWeaponPen'))+autoPen:0;
+ const magicPen=magicStaff?Math.max(0,n('targetStaffMagicPen')):mode==='magic'?Math.max(0,n('targetSpellPen')):0;
+ const def={armor:hero.armor,magicArmor:hero.magicArmor,res:hero.physical.total,magicDefense:hero.magicDefense};
+ const damage=damageAfterDefense(raw,effectiveType,def,physicalPen,magicPen,s.targetElement,'ownElem');
+ if(mode==='weapon')damage.stage.splice(1,0,['Процентный урон оружия',`${weaponPct>=0?'+':''}${fmt(weaponPct)}% · ${fmt(base+scale)} → ${fmt(afterWeaponPct)}`]);
+ const style=mode==='fist'?'Кулаки':mode==='magic'?`Магия · ${EL.find(x=>x.id===s.targetElement)?.short||'Стихия'}`:w.name+(magicStaff?' · '+(EL.find(x=>x.id===s.targetElement)?.short||'Стихия'):'');
+ return{mode,effectiveType,melee,magicStaff,base,scale,master,weaponPct,afterWeaponPct,raw,speedPct,chargePct,hitBonus,attackTotal,targetDC,hit,damage,physicalPen,magicPen,style};
+}
+function renderEnemyAttack(me,t){const e=getEnemyAttack(t,me);
+ $('enemyFistSettings').hidden=s.targetAttackType!=='fist';
+ $('enemyWeaponSettings').hidden=s.targetAttackType!=='weapon';
+ $('enemySpellSettings').hidden=s.targetAttackType!=='magic';
+ $('enemyStaffSettings').hidden=!(s.targetAttackType==='weapon'&&e.magicStaff);
+ $('enemyScalingNote').textContent=s.targetAttackType==='weapon'?`Скейлинг: ${WEAPONS[s.targetWeaponType]?.desc||''}. Базовый урон, процентный урон, пробитие и попадание запоминаются отдельно для каждого вида оружия этого врага.`:'';
+ $('enemyAttackDerived').innerHTML=card('Точность врага',t.accuracy,'Восприятие + ⌊Ловкость/3⌋')+card('Шанс попасть',e.hit+'%',`d20 + ${fmt(e.attackTotal)} против ${fmt(e.targetDC)}`)+card('Урон до защиты',e.raw,`Оружие ${e.weaponPct>=0?'+':''}${fmt(e.weaponPct)}%, Скорость +${fmt(e.speedPct)}%, разбег +${fmt(e.chargePct)}%`)+card('Урон по герою',e.damage.final,'После брони и резистов героя')+card('Скорость врага',t.spd*4,'км/ч · максимум')+card('Инициатива врага',`d20 + ${fmt(t.per)}`,'От Восприятия');
+}
+function render(){const me=own(),t=target(),a=getAttack(me,t);lastData={me,t,a};syncEnemyUI();syncCharacterUI();
+ renderEnemyAttack(me,t);
+ $('sideCharacterName').textContent=activeCharacterName();$('resultAttacker').textContent=activeCharacterName();
+ document.querySelectorAll('[data-condition="customRace"]').forEach(x=>x.hidden=s.race!=='custom');
+ document.querySelectorAll('[data-condition="fistAttack"]').forEach(x=>x.hidden=s.attackType!=='fist');document.querySelectorAll('[data-condition="weaponAttack"]').forEach(x=>x.hidden=s.attackType!=='weapon');document.querySelectorAll('[data-condition="magicAttack"]').forEach(x=>x.hidden=s.attackType!=='magic');
+ ['targetDodgeValue','targetResValue','targetMagicValue'].forEach((id,i)=>{const keys=['targetDodgeOverride','targetResOverride','targetMagicOverride'];$(id).disabled=!s[keys[i]];$(id).classList.toggle('readonly',!s[keys[i]])});
+ $('staffMagicFields').hidden=!a.magicStaff;
+ $('weaponPhysicalPenField').hidden=a.magicStaff;
+ $('weaponDefenseExplanation').hidden=a.magicStaff;
+ $('weaponScalingNote').innerHTML=`<strong>Скейлинг:</strong> ${a.w.desc}. <strong>Бонус к d20:</strong> ${a.w.hit>=0?'+':''}${a.w.hit}. ${a.mode==='weapon'&&!a.magicStaff?`<strong>Всего пробитие брони:</strong> ${fmt(a.physicalPen)} (из них от характеристик: ${fmt(a.autoPen)}).`:a.magicStaff?`<strong>Пробитие магической брони:</strong> ${fmt(a.magicPen)}.`:''} Базовый урон, процентный урон, пробитие и доп. попадание сохраняются отдельно для этого вида оружия у каждого персонажа. Предложенные значения по умолчанию не утверждены.`;
+ $('chargeText').textContent=s.attackType==='fist'?`Кулаки: +${fmt(n('fistChargePct'))}% урона`:a.melee?`Ближнее оружие: +${fmt(n('chargePct'))}% урона`:'Для дальнего оружия и магии бонус не применяется';
+ $('characterDerived').innerHTML=card('Максимум HP',me.hp,'30 + уровень × '+fmt(n('hpPerLevel'))+' + Сила × 10')+card('Выносливость',me.stamina,'База расы + уровень + Сила + Ловкость')+card('Мана',me.mana,'База + уровень + Интеллект')+card('Скорость, км/ч',me.speedKmh,'Скорость × 4')+card('Точность',me.accuracy,'Восприятие + ⌊Ловкость/3⌋')+card('Уклонение',me.dodge,'Ловкость + ⌊Восприятие/3⌋')+card('Инициатива','d20 + '+me.initiative,'Восприятие')+card('Действий за раунд',me.actions,'По настройке Скорости')+card('Урон кулаком',me.fistDamage,'До бонусов от Скорости и навыков')+card('Влияние Харизмы',me.cha,'Можно использовать для магии');
+ $('defenseDerived').innerHTML=card('Физический резист',me.physical.total+'%','Сила '+fmt(me.physical.fromStr)+'% + Ловкость '+fmt(me.physical.fromDex)+'%; предел 50%')+card('Защита от магии',me.magicDefense+'%','Процент после магической брони')+card('Физическая броня',me.armor,'Поглощаемые очки')+card('Магическая броня',me.magicArmor,'Работает и против кулаков');
+ const incomingDef={armor:me.armor,magicArmor:me.magicArmor,res:me.physical.total,magicDefense:me.magicDefense};const incoming=damageAfterDefense(Math.max(0,n('incomingDamage')),s.incomingType,incomingDef,n('incomingPen'),n('incomingMagicPen'),s.incomingElement,'ownElem');
+ $('incomingReport').innerHTML=`<strong>Получено ${fmt(incoming.final)} урона</strong> из ${fmt(n('incomingDamage'))} до защиты.<div class="tiny" style="margin-top:6px">${incoming.stage.slice(1,-1).map(x=>x[0]+': '+x[1]).join(' · ')}</div>`;
+ $('attackDerived').innerHTML=card('Основа атаки',a.first,'База '+fmt(a.base)+' + скейлинг '+fmt(a.scale))+card('Процентный урон оружия',(a.weaponPct>=0?'+':'')+fmt(a.weaponPct)+'%',a.mode==='weapon'?`Основа ${fmt(a.first)} → ${fmt(a.afterWeaponPct)} до прочих бонусов`:'Только для оружия')+card('Бонус скорости',a.speedPct+'%','Только для кулаков и ближнего оружия')+card('Разбег',a.chargePct+'%',a.mode==='fist'?'Кулаки (по умолчанию +50%)':a.melee?'Ближнее оружие (по умолчанию +25%)':'К этой атаке не применяется')+card('Попадание',a.hit+'%','d20 + '+fmt(a.attackTotal)+' против '+fmt(a.targetDC))+card('Урон до защиты',a.raw,'После всех множителей')+card('Точность',me.accuracy,'Базовое значение')+card('Бонус к d20',(a.hitBonus>=0?'+':'')+fmt(a.hitBonus),'Вид атаки + Скорость + прочее');
+ $('targetDerived').innerHTML=card('Уклонение врага',t.dodge, s.targetDodgeOverride?'Введено вручную':'Рассчитано: '+fmt(t.autoDodge))+card('Физ. резист',t.res+'%',s.targetResOverride?'Введён вручную':'По Силе и Ловкости')+card('Защита от магии',t.magicDefense+'%',s.targetMagicOverride?'Введена вручную':'По Интеллекту и Мудрости')+card('Магическая броня',t.magicArmor,'Поглощаемый урон');
+ $('resultType').textContent=a.magicStaff?'МАГИЧЕСКИЙ ПОСОХ':a.ranged?'ДАЛЬНОБОЙНАЯ АТАКА':{fist:'КУЛАЧНАЯ АТАКА',weapon:'АТАКА ОРУЖИЕМ',magic:'МАГИЧЕСКАЯ АТАКА'}[a.mode];$('elementTag').textContent=a.effectiveType==='magic'?(EL.find(x=>x.id===s.element)?.short.toUpperCase()||'МАГИЧЕСКИЙ'):'ФИЗИЧЕСКИЙ';
+ $('resultDamage').textContent=fmt(a.damage.final);$('hitChance').textContent=fmt(a.hit)+'%';$('hitBar').style.width=a.hit+'%';$('avgDamage').textContent=fmt(a.expected,2);$('rawDamage').textContent=fmt(a.raw);$('weaponPercentBonus').textContent=a.mode==='weapon'?(a.weaponPct>=0?'+':'')+fmt(a.weaponPct)+'%':'Не применяется';$('speedBonus').textContent=(a.speedPct>0?'+':'')+fmt(a.speedPct)+'%';$('chargeBonus').textContent=(a.chargePct>0?'+':'')+fmt(a.chargePct)+'%';$('actionsResult').textContent=fmt(me.actions);$('roundDamage').textContent=fmt(a.roundDmg,2);$('statusChanceOut').textContent=fmt(a.statusChance)+'%';
+ $('damageBreakdown').innerHTML=a.damage.stage.map(x=>`<div class="step"><span>${x[0]}</span><span>${x[1]}</span></div>`).join('');
+ $('sideStats').innerHTML=statMini('Здоровье',me.hp)+statMini(s.classType==='mage'?'Мана':'Выносливость',s.classType==='mage'?me.mana:me.stamina)+statMini('Скорость',me.speedKmh,'км/ч')+statMini('Действия',me.actions,'за раунд');
+ $('classLabel').textContent={warrior:'Воин',mage:'Маг',hybrid:'Гибрид'}[s.classType];$('sideDodgeAccuracy').textContent=fmt(me.dodge)+' / '+fmt(me.accuracy);$('sideInitiative').textContent='d20 + '+fmt(me.initiative);$('sidePhysicalRes').textContent=fmt(me.physical.total)+'%';$('sideMagicRes').textContent=fmt(me.magicDefense)+'%';$('summaryTargetDodge').textContent=fmt(t.dodge);$('summaryTargetRes').textContent=fmt(t.res)+'%';$('summaryTargetArmor').textContent=fmt(t.armor)+' / '+fmt(t.magicArmor);$('summaryTargetMagic').textContent=fmt(t.magicDefense)+'%';
+}
+function rollD20(){if(typeof crypto!=='undefined'&&crypto.getRandomValues){const u=new Uint32Array(1);const max=4294967296,lim=max-(max%20);do{crypto.getRandomValues(u)}while(u[0]>=lim);return 1+(u[0]%20)}return 1+Math.floor(Math.random()*20)}
+function rollResolved(die,bonus,dc){return die===20||(die!==1&&die+bonus>=dc)}
+function addHistory(entry){combatHistory.push(entry);if(combatHistory.length>MAX_HISTORY)combatHistory.splice(0,combatHistory.length-MAX_HISTORY);renderHistory();save()}
+function announceRoll(entry){let message;
+ if(entry.kind==='initiative')message=`${entry.actor}: инициатива ${fmt(entry.die+entry.bonus)} (d20=${entry.die} + ${fmt(entry.bonus)}).`;
+ else message=entry.hit?`${entry.actor} попадает по «${entry.target}» — ${fmt(entry.damage)} урона!`:`${entry.actor} промахивается по «${entry.target}». Урон 0.`;
+ const extra=entry.kind==='attack'?`d20: ${entry.die} + ${fmt(entry.bonus)} = ${fmt(entry.die+entry.bonus)} · против ${fmt(entry.dc)} · ${entry.style}${entry.die===1?' · Натуральная 1':entry.die===20?' · Натуральная 20':''}`:`d20: ${entry.die} + Восприятие ${fmt(entry.bonus)} = ${fmt(entry.die+entry.bonus)}`;
+ for(const id of ['battleRollReport',...(entry.side==='hero'&&entry.kind==='attack'?['rollReport']:[])]){
+ const node=$(id);node.replaceChildren();const main=document.createElement('strong');main.textContent=message;main.style.color=entry.kind==='initiative'?'var(--bright)':entry.hit?'var(--green)':'var(--red)';const sub=document.createElement('div');sub.className='tiny';sub.style.marginTop='6px';sub.textContent=extra;node.append(main,sub);
+ }
+}
+function rollAttack(){if(!lastData)return;const {a}=lastData;const die=rollD20(),hit=rollResolved(die,a.attackTotal,a.targetDC);const style=a.mode==='fist'?'Кулаки':a.mode==='magic'?`Магия · ${EL.find(x=>x.id===s.element)?.short||'Стихия'}`:a.w.name;
+ const entry={kind:'attack',side:'hero',actor:activeCharacterName(),target:activeEnemyName(),die,bonus:a.attackTotal,dc:a.targetDC,hit,damage:hit?a.damage.final:0,style,stage:hit?a.damage.stage:[],time:new Date().toISOString()};
+ announceRoll(entry);addHistory(entry)}
+function rollEnemyAttack(){const me=own(),t=target(),a=getEnemyAttack(t,me),die=rollD20(),hit=rollResolved(die,a.attackTotal,a.targetDC);
+ const entry={kind:'attack',side:'enemy',actor:activeEnemyName(),target:activeCharacterName(),die,bonus:a.attackTotal,dc:a.targetDC,hit,damage:hit?a.damage.final:0,style:a.style,stage:hit?a.damage.stage:[],time:new Date().toISOString()};
+ announceRoll(entry);addHistory(entry)}
+function rollInitiative(side){const die=rollD20(),val=side==='hero'?own().per:target().per;
+ const entry={kind:'initiative',side,actor:side==='hero'?activeCharacterName():activeEnemyName(),target:'',die,bonus:val,dc:0,hit:true,damage:0,style:'Инициатива',stage:[],time:new Date().toISOString()};
+ announceRoll(entry);addHistory(entry)}
+function renderHistory(){const root=$('combatHistory');if(!root)return;
+ const filter=$('historyFilter').value;root.replaceChildren();$('combatLogCount').textContent=`${combatHistory.length} / ${MAX_HISTORY} бросков`;
+ const list=combatHistory.filter(e=>filter==='all'||e.side===filter).slice().reverse();
+ if(!list.length){const p=document.createElement('p');p.className='combat-history-empty';p.textContent=combatHistory.length?'Для этого фильтра бросков пока нет.':'Бросков пока нет. Начни с атаки героя или противника.';root.append(p);return}
+ for(const e of list){const box=document.createElement('article');box.className='combat-entry '+(e.side==='enemy'?'is-enemy':'is-hero')+(e.kind==='initiative'?' is-initiative':'');
+ const who=document.createElement('div');who.className='who';who.textContent=`${e.side==='hero'?'🛡 Герой':'⚔️ Противник'} · ${e.actor}${e.kind==='attack'?' → '+e.target:''}`;
+ const body=document.createElement('div');body.className='outcome '+(e.hit?'ok':'fail');body.textContent=e.kind==='initiative'?`🎲 Инициатива: ${fmt(e.die+e.bonus)}`:e.hit?`✓ Попадание · ${fmt(e.damage)} урона`:'✕ Промах · 0 урона';
+ const details=document.createElement('div');details.className='detail';details.textContent=e.kind==='initiative'?`d20 (${e.die}) + Восприятие (${fmt(e.bonus)}) = ${fmt(e.die+e.bonus)}`:`d20 (${e.die}) + ${fmt(e.bonus)} = ${fmt(e.die+e.bonus)} · защита ${fmt(e.dc)} · ${e.style}${e.die===1?' · натуральная 1':e.die===20?' · натуральная 20':''}`;
+ const stamp=document.createElement('time');const d=new Date(e.time);stamp.textContent=Number.isNaN(d.getTime())?'':d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+ box.append(who,body,details,stamp);
+ if(e.kind==='attack'&&e.hit&&e.stage?.length){const exp=document.createElement('details');const summ=document.createElement('summary');summ.textContent='Разбор защиты и урона';exp.append(summ);for(const stage of e.stage){const div=document.createElement('div');div.className='detail';div.textContent=`${stage[0]}: ${stage[1]}`;exp.append(div)}box.append(exp)}root.append(box)
+ }
+}
+async function copyHistory(){if(!combatHistory.length){toast('История пуста');return}const body=combatHistory.map(e=>`[${e.time}] ${e.actor}${e.kind==='attack'?' → '+e.target:''}: ${e.kind==='initiative'?'ИНИЦИАТИВА':'АТАКА'}; d20=${e.die}, бонус=${e.bonus}, итог=${e.die+e.bonus}${e.kind==='attack'?`; защита=${e.dc}; ${e.hit?'попадание':'промах'}; урон=${e.damage}; ${e.style}`:''}`).join('\n');try{await navigator.clipboard.writeText(body)}catch{const el=document.createElement('textarea');el.value=body;document.body.appendChild(el);el.select();document.execCommand('copy');el.remove()}toast('История скопирована')}
+function save(){snapshotActiveEnemy();snapshotActiveCharacter();try{localStorage.setItem('tet_combat_v9',JSON.stringify({settings:s,characters:characterProfiles,activeCharacterIndex,enemies:enemyProfiles,activeEnemyIndex,combatHistory}))}catch{}}
+function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timeout);toast.timeout=setTimeout(()=>el.classList.remove('show'),2600)}
+function buildReport(){const{me,t,a}=lastData;return ['ТЕТ · Боевой калькулятор',`Имя персонажа: ${activeCharacterName()}`,`Уровень ${me.lev}; Сила ${me.str}; Ловкость ${me.dex}; Восприятие ${me.per}; Скорость ${me.spd}; Интеллект ${me.int}; Мудрость ${me.wis}; Харизма ${me.cha}`,`HP ${me.hp}; Выносливость ${me.stamina}; Мана ${me.mana}; скорость ${me.speedKmh} км/ч; действий ${me.actions}; точность ${me.accuracy}; уклонение ${me.dodge}; инициатива d20+${me.per}`,`Своя защита: броня ${me.armor}; маг. броня ${me.magicArmor}; физ. резист ${me.physical.total}%; защита от магии ${me.magicDefense}%`,`Атака: ${a.mode==='fist'?'кулаки':a.mode==='weapon'?(a.w.name+(a.magicStaff?' ('+EL.find(e=>e.id===s.element)?.short+')':'')):'магия ('+EL.find(e=>e.id===s.element)?.short+')'}`,`Противник «${activeEnemyName()}»: уклонение ${t.dodge}; броня ${t.armor}; маг. броня ${t.magicArmor}; физ. резист ${t.res}%; защита от магии ${t.magicDefense}%`,`Процентный урон оружия: ${a.mode==='weapon'?(a.weaponPct>=0?'+':'')+fmt(a.weaponPct)+'%':'не применяется'}` ,`Разбег ${s.charge?'включён':'выключен'}; бонус разбега +${a.chargePct}%; бронепробитие ${a.physicalPen}; пробитие магической брони ${a.magicPen}`, `Исходный урон ${a.raw}; шанс попасть ${a.hit}%; успешный удар ${a.damage.final}; мат. ожидание за атаку ${fmt(a.expected,2)}`, ...a.damage.stage.map(x=>x[0]+': '+x[1])].join('\n')}
+async function copyResult(){const value=buildReport();try{await navigator.clipboard.writeText(value);toast('Расчёт скопирован')}catch{const el=document.createElement('textarea');el.value=value;document.body.appendChild(el);el.select();document.execCommand('copy');el.remove();toast('Расчёт скопирован')}}
+function exportSettings(){snapshotActiveEnemy();snapshotActiveCharacter();const blob=new Blob([JSON.stringify({app:'ТЕТ · Боевой калькулятор',version:9,settings:s,characters:characterProfiles,activeCharacterIndex,enemies:enemyProfiles,activeEnemyIndex,combatHistory},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href='';a.href=url;a.download='Tet_characters_enemies_battle_history_v9.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Персонажи, противники и история бросков экспортированы')}
+async function importSettings(event){const f=event.target.files?.[0];if(!f)return;try{const data=JSON.parse(await f.text());const inp=data.settings??data;if(!inp||typeof inp!=='object'||Array.isArray(inp))throw new Error('Неверный формат');const settings={...defaults,...filterSettings(inp)};const importedEnemies=normalizeEnemies(data.enemies);const importedCharacters=normalizeCharacters(data.characters);s=settings;enemyProfiles=importedEnemies.length?importedEnemies:[createEnemy(settings,'Противник 1')];activeEnemyIndex=clamp(Math.floor(Number(data.activeEnemyIndex)||0),0,enemyProfiles.length-1);Object.assign(s,enemyProfiles[activeEnemyIndex].stats);applyActiveEnemyWeapon();characterProfiles=importedCharacters.length?importedCharacters:[createCharacter(settings)];activeCharacterIndex=clamp(Math.floor(Number(data.activeCharacterIndex)||0),0,characterProfiles.length-1);Object.assign(s,characterProfiles[activeCharacterIndex].stats);applyActiveWeaponSettings();combatHistory=normalizeHistory(data.combatHistory);syncControls();render();renderHistory();save();$('rollReport').textContent='Настройки загружены. Проведи новую атаку.';toast('Персонажи, противники и журнал загружены')}catch(e){console.error('Ошибка импорта:',e);toast('Не удалось импортировать JSON')}event.target.value=''}
+init();
+</script>
+</body>
+</html>
