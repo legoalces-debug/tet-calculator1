@@ -1,0 +1,1672 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070c15">
+<title>Тет — боевой калькулятор</title>
+<style>
+:root{color-scheme:dark;--bg:#070c15;--panel:#101a2b;--panel2:#152138;--line:#28374f;--text:#edf3ff;--muted:#9db0cd;--accent:#7ea7ff;--bright:#c4d7ff;--green:#69e0b8;--orange:#ffbd7e;--red:#ff8495;--shadow:0 14px 42px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 1100px 700px at 10% -10%,#20365c 0%,transparent 65%),radial-gradient(ellipse 800px 700px at 100% 5%,#122844 0%,transparent 55%),var(--bg);font:15px/1.48 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}a{color:var(--accent)}.shell{max-width:1490px;margin:auto;padding:24px clamp(12px,3vw,36px) 52px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:3px 0 22px}.overline{font-size:11px;letter-spacing:.22em;font-weight:800;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(25px,3vw,38px);margin:4px 0 3px;letter-spacing:-.05em;line-height:1.15}header p{color:var(--muted);margin:8px 0 0;max-width:780px}.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.btn{border:1px solid var(--line);background:#14213a;color:var(--text);border-radius:10px;padding:10px 13px;transition:.15s}.btn:hover{border-color:var(--accent);background:#1c2d48}.btn.primary{background:#3655a1;border-color:#6788d8}.btn.primary:hover{background:#4263b4}.btn.small{font-size:12px;padding:7px 11px}.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.85fr);gap:17px;align-items:start}.main,.side{min-width:0}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px}.tab{background:#101a2b;color:#b7c7e3;border:1px solid #2a3953;padding:10px 14px;border-radius:10px;font-weight:700}.tab.active{background:#233a63;color:white;border-color:#7396d5}.panel{border:1px solid #293750;background:linear-gradient(140deg,#111c2e,#0d1625);box-shadow:var(--shadow);border-radius:18px;padding:clamp(15px,2vw,24px);margin-bottom:16px}.panel[hidden],.conditional[hidden]{display:none!important}.sectiontitle{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:0 0 7px}.desc{font-size:13px;color:var(--muted);margin:0 0 19px}.subhead{font-size:14px;font-weight:800;color:#cddfff;margin:23px 0 10px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.fields.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{min-width:0;display:flex;flex-direction:column;gap:6px}.fieldlabel{font-size:13px;color:#c4d1e6;font-weight:650;display:flex;justify-content:space-between;gap:8px}.note{font-size:11px;color:var(--muted);line-height:1.45}.field input[type=number],.field select,.field input[type=text]{width:100%;border:1px solid #344561;background:#0b1424;color:var(--text);border-radius:10px;padding:10px 11px;min-width:0}.field input[type=range]{accent-color:var(--accent);width:100%;margin:3px 0 0}.field.combo{background:#121f32;border:1px solid #2a3a53;border-radius:11px;padding:10px 12px}.combohead{display:flex;align-items:center;justify-content:space-between;gap:10px}.combohead input{width:86px!important;text-align:right;padding:6px 8px!important;font-weight:850;font-size:17px}.combo .note{margin-top:-1px}.checkrow{display:flex;align-items:flex-start;gap:10px;background:#142136;border:1px solid #2b3951;padding:12px;border-radius:11px}.checkrow input{width:17px;height:17px;accent-color:var(--accent);margin-top:3px;flex:none}.checkrow label{cursor:pointer;line-height:1.4}.checkrow strong{display:block;font-size:14px}.checkrow small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}.gridstat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.statbox{background:#111c2c;border:1px solid #293951;border-radius:13px;padding:13px}.statbox .label{color:#a8bbd6;font-size:12px}.statbox .value{font-size:26px;font-weight:850;letter-spacing:-.05em;white-space:nowrap;margin:3px 0}.statbox .minor{font-size:11px;color:#9eb4d1}.statbox .value.green{color:var(--green)}.statbox .value.orange{color:var(--orange)}.side{position:sticky;top:15px}.pill{display:inline-flex;padding:4px 9px;border-radius:999px;border:1px solid #38576b;background:#173342;color:#a9ebd6;font-size:11px;font-weight:800}.resultbig{font-size:clamp(42px,5vw,66px);font-weight:900;letter-spacing:-.075em;line-height:1.05;color:var(--green);margin:8px 0 2px;font-variant-numeric:tabular-nums}.metricrow{display:flex;justify-content:space-between;gap:10px;margin:9px 0;color:#bdcce3;font-size:13px}.metricrow strong{color:#f0f5ff;text-align:right;font-variant-numeric:tabular-nums}.breakdown{border-top:1px solid #2d3d55;margin-top:16px;padding-top:10px}.step{display:flex;gap:10px;align-items:baseline;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #27354b;color:#b9c9e1;font-size:12px}.step span:last-child{text-align:right;max-width:54%;font-weight:750;color:#eff5ff;overflow-wrap:anywhere}.chartbar{background:#202e44;border-radius:100px;height:9px;overflow:hidden;margin:6px 0 0}.chartbar>div{background:linear-gradient(90deg,#3a77ca,#78f1cf);height:100%;transition:width .18s}.flexbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.tag{font-size:11px;color:#d3e0ef;background:#223450;padding:4px 8px;border-radius:5px}.callout{padding:12px 14px;background:#12273a;border:1px solid #2e5673;border-radius:11px;color:#c6dcf2;font-size:13px;margin:15px 0}.warning{background:#39271c;border-color:#7e5135;color:#ffdbbd}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;overflow-wrap:anywhere}.resgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.resgrid .field{background:#121d30;border:1px solid #2a3950;border-radius:10px;padding:8px}.resgrid label{text-align:center;color:#cbd8eb;font-size:12px}.resgrid input{text-align:center;padding:8px 3px!important;font-weight:800}.tablewrap{overflow-x:auto}.minitable{border-collapse:collapse;width:100%;font-size:12px}.minitable td,.minitable th{padding:9px 7px;text-align:left;border-bottom:1px solid #25344b;white-space:nowrap}.minitable th{color:#b8cbe7}.minitable td:last-child{color:#95e6c8;font-weight:800}.subtle{color:var(--muted)}.footer{color:#8398b5;font-size:12px;margin:19px 0}.toast{position:fixed;bottom:22px;right:22px;border:1px solid #52738d;background:#173247;border-radius:12px;padding:10px 15px;color:white;box-shadow:var(--shadow);display:none;z-index:50}.toast.show{display:block}.tiny{font-size:11px;color:var(--muted)}.large-no{font-size:18px;font-weight:850}.rollbox{padding:14px;background:#111e31;border:1px solid #354b68;border-radius:12px;margin-top:12px;min-height:64px;color:#d5e7ff}.statusmeter{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px}.statusmeter strong{font-variant-numeric:tabular-nums}.readonly{background:#182941!important;color:#bad6fb!important}.rule{background:#15223a;border-radius:10px;padding:12px 14px;margin:11px 0}.rule p{margin:5px 0;color:#aebfdb;font-size:13px}.rule code{color:#c9ffe9;white-space:normal}.halfline{border-top:1px solid var(--line);margin:19px 0}.helpmark{color:var(--orange);font-size:11px}.inlinestat{font-weight:800;color:#bfe2ff}.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}.enemy-manager{background:#131f32;border:1px solid #365171;border-radius:14px;padding:15px;margin:15px 0 22px}.enemy-manager .fields{margin-top:12px}.enemy-actions{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0 8px}.enemy-actions .btn:disabled{cursor:not-allowed;opacity:.45}.enemy-badge{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:800;background:#213b56;color:#bbe1ff;padding:5px 10px;border-radius:100px}.enemy-name{color:var(--green);font-weight:850}@media(max-width:980px){.layout{grid-template-columns:1fr}.side{position:static}.resgrid{grid-template-columns:repeat(5,1fr)}}@media(max-width:590px){.shell{padding:14px 10px 35px}.fields,.fields.three,.duo{grid-template-columns:1fr}.checks,.gridstat{grid-template-columns:repeat(2,minmax(0,1fr))}.resgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.tab{padding:9px 10px;font-size:12px}.resultbig{font-size:48px}.panel{padding:15px}.actions .btn{font-size:12px;padding:8px}}@media print{body{background:white;color:#111}.side{position:static}.panel{box-shadow:none;border:1px solid #ccc;break-inside:avoid}.tabs,.actions,.btn,.footer{display:none!important}.layout{display:block}.panel[hidden]{display:block!important;break-inside:avoid}.checkrow,.field.combo{border:1px solid #999}}
+[hidden]{display:none!important}
+.battle-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}.battle-buttons>.btn{white-space:normal;min-height:45px}.enemy-roll{background:#75415b!important;border-color:#ac6a83!important}.combat-history{max-height:575px;min-height:86px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px 10px;border-radius:14px;background:#081423;border:1px solid #2c3e58}.combat-entry{max-width:94%;min-width:180px;border:1px solid #36516e;border-radius:14px;padding:11px 13px;background:#182a43;align-self:flex-end;overflow-wrap:anywhere}.combat-entry.is-enemy{align-self:flex-start;background:#302130;border-color:#795066}.combat-entry.is-initiative{background:#243341;border-color:#526d85}.combat-entry .who{font-size:12px;color:#c6d9f5;font-weight:750}.combat-entry .outcome{font-size:14px;font-weight:820;margin:4px 0}.combat-entry .outcome.ok{color:#80ebc7}.combat-entry .outcome.fail{color:#ff9daf}.combat-entry .detail{font-size:12px;color:#c1cde1}.combat-entry time{font-size:10px;color:#9ab1cb}.combat-entry details{font-size:11px;color:#adbfda;margin-top:8px;border-top:1px solid #ffffff22;padding-top:6px}.combat-entry details summary{cursor:pointer}.combat-entry details .detail{margin-top:6px}.combat-history-empty{color:#91a8c7;text-align:center;padding:14px}
+@media(max-width:590px){.battle-buttons{grid-template-columns:1fr}.combat-entry{max-width:100%}}
+/* Версия 11: ясные характеристики и боевые показатели */
+.combat-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0 18px}
+.combat-quick .quickbox{padding:12px;background:#182a40;border:1px solid #365273;border-radius:11px;text-align:center;min-width:0}
+.combat-quick .quicklabel{font-size:12px;color:#c5d6ed;font-weight:700}
+.combat-quick .quickvalue{font-size:27px;font-weight:900;color:#ecf4ff;font-variant-numeric:tabular-nums}
+.combat-quick .quicknote{font-size:11px;color:#9db2cf}
+.combat-quick .quickvalue.accuracy{color:#9cd9ff}
+.combat-quick .quickvalue.dodge{color:#a6ecc9}
+.combat-quick .quickvalue.health{color:#ffb1b5}
+.enemy-vitals{border:1px solid #5d4b69;border-radius:14px;padding:15px;background:#201c2c;margin:16px 0}
+.hp-track{height:12px;border-radius:50px;background:#432837;overflow:hidden;border:1px solid #75465c;margin-top:10px}
+.hp-track>div{height:100%;width:100%;background:#e4778d;transition:width .2s}
+.hp-numbers{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.hp-numbers strong{font-size:20px;color:#ffb9c7;font-variant-numeric:tabular-nums}
+.battle-duel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:17px 0}
+.duel-card{background:#14243a;border:1px solid #39618a;border-radius:15px;padding:15px;min-width:0}
+.duel-card.enemy-card{background:#291f30;border-color:#744964}
+.duel-title{font-size:16px;font-weight:900;color:#cce4ff;overflow-wrap:anywhere}
+.duel-card.enemy-card .duel-title{color:#ffd3e0}
+.duel-sub{font-size:12px;color:#abc1da;margin:5px 0 10px}
+.duel-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.duel-stat{background:#0b1829;border:1px solid #36495f;border-radius:9px;padding:9px;min-width:0}
+.duel-stat span{display:block;font-size:12px;color:#b9cde4}
+.duel-stat strong{display:block;font-size:23px;line-height:1.35;color:white;font-variant-numeric:tabular-nums}
+.duel-stat strong.blue{color:#9cd9ff}.duel-stat strong.green{color:#9be8c4}
+.duel-formula{font-size:12px;line-height:1.55;margin-top:10px;color:#d8e7ff;background:#0b1a2d;border-radius:8px;padding:10px;overflow-wrap:anywhere}
+.duel-chance{font-size:22px;font-weight:900;color:#75e5bd}
+.roll-math{font-weight:800;font-size:13px;line-height:1.6;color:#dfeeff}
+.hp-mini{font-size:12px;color:#ffcfdb;margin-top:8px}
+@media(max-width:690px){.battle-duel{grid-template-columns:1fr}.combat-quick{grid-template-columns:repeat(3,minmax(0,1fr))}.combat-quick .quickvalue{font-size:21px}}
+html.tet-tablet .battle-duel{grid-template-columns:1fr}
+html.tet-tablet .duel-stat strong{font-size:27px}
+html.tet-tablet .combat-quick .quickvalue{font-size:24px}
+html.tet-tablet .roll-math{font-size:15px}
+/* Dynamic HP meters for both sides, kept lightweight for the TTS embedded browser */
+.hero-vitals{background:#14243a;border:1px solid #36587b;border-radius:14px;padding:15px;margin:13px 0 18px}
+.hero-vitals .hp-track>div{background:linear-gradient(90deg,#2b9f72,#5fe6a7)}
+.hp-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.duel-hp{font-weight:800;color:#ffd4de;display:flex;justify-content:space-between;gap:8px;font-size:13px;margin:8px 0 5px}
+.duel-card:not(.enemy-card) .duel-hp{color:#adf4d3}
+.duel-hp-track{width:100%;height:11px;background:#203149;border-radius:99px;overflow:hidden;margin:0 0 12px}
+.duel-hp-fill{height:100%;background:linear-gradient(90deg,#b44961,#ff8ea6);transition:width .2s}
+.duel-card:not(.enemy-card) .duel-hp-fill{background:linear-gradient(90deg,#2e9c74,#73ecc0)}
+.hp-note{margin-top:5px;color:#b3d3ed;font-size:12px}
+</style>
+<style>
+.tet-startup{background:#1b3152;border:1px solid #6a95be;color:#e6f3ff;padding:10px 14px;border-radius:10px;margin:0 auto 15px;max-width:1490px;font-size:13px}
+.tet-startup.good{display:none}.tet-startup.bad{background:#56202c;color:#ffe0e6;border-color:#da6379;display:block}
+html.tet-tablet .shell{max-width:1040px;padding:15px 17px 38px}
+html.tet-tablet .layout{display:block}
+html.tet-tablet .side{position:static}
+html.tet-tablet .tabs{position:sticky;top:0;background:#0b1626;padding:7px;z-index:10}
+html.tet-tablet .tab{font-size:17px;padding:12px 17px;min-height:46px}
+html.tet-tablet button,html.tet-tablet input,html.tet-tablet select{font-size:17px}
+html.tet-tablet .fieldlabel{font-size:16px}
+html.tet-tablet .note,html.tet-tablet .desc{font-size:14px}
+html.tet-tablet .actions .btn{font-size:14px}
+html.tet-tablet .fields{gap:14px}
+html.tet-tablet .sectiontitle{font-size:22px}
+html.tet-tablet .metricrow{font-size:16px}
+
+/* v13: mirrored battle stats and independent attack bonuses */
+.battle-bonus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+.battle-bonus-box{min-width:0;background:#12233a;border:1px solid #3c6090;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.battle-bonus-box.foe-bonus{background:#281f30;border-color:#84536c}
+.bonus-heading{font-size:16px;font-weight:850;color:#dceaff}
+.foe-bonus .bonus-heading{color:#ffd6e2}
+.battle-bonus-checks{display:flex;flex-direction:column;gap:9px}
+.battle-bonus-box .checkrow{margin:0}
+.bonus-current{border-top:1px solid #36506c;padding-top:10px;color:#a8e9d8;font-size:12px;font-weight:650;line-height:1.45}
+.foe-bonus .bonus-current{color:#ffcade}
+.duel-stat small{display:block;color:#93a9c8;font-size:10px;font-weight:500;margin-top:2px;line-height:1.3}
+.duel-stat strong.orange{color:#ffbc78}
+@media(max-width:850px){.battle-bonus-grid{grid-template-columns:1fr}}
+html.tet-tablet .battle-bonus-grid{grid-template-columns:1fr}
+html.tet-tablet .duel-stat small{font-size:12px}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div><div class="overline">ТЕТ · ТАКТИЧЕСКАЯ СИСТЕМА</div><h1>Боевой калькулятор <span style="font-size:.43em;vertical-align:middle;color:var(--green);font-weight:700">v13</span></h1><p>Характеристики, HP, выносливость и мана, уклонение, доспехи, резисты, скорость, оружие, кулаки, магия и расчёт урона по цели.</p></div>
+  <div class="actions"><button class="btn small" id="copyBtn">Копировать расчёт</button><button class="btn small" id="exportBtn">Экспорт персонажей и противников</button><button class="btn small" id="importBtn">Импорт</button><input id="importInput" type="file" accept="application/json,.json" hidden><button class="btn small" id="resetBtn">Сбросить</button></div>
+</header>
+<div id="tetStartupStatus" class="tet-startup" role="status">Планшет загружает расчёты… Если вкладки не реагируют, обнови страницу на планшете.</div>
+<div class="layout"><main class="main">
+<nav class="tabs" aria-label="Разделы калькулятора"><button class="tab active" data-tab="character">Персонаж</button><button class="tab" data-tab="defense">Защита</button><button class="tab" data-tab="attack">Атака</button><button class="tab" data-tab="target">Противник</button><button class="tab" data-tab="battle">Бой и броски</button><button class="tab" data-tab="rules">Формулы</button></nav>
+
+<section class="panel tabpanel" id="panel-character">
+  <h2 class="sectiontitle">Характеристики персонажа</h2><p class="desc">Сохраняй до шести персонажей, переключайся между ними и сравнивай их атаки по любому из 20 противников. Для сверхчеловеческих персонажей доступно до 1000 очков.</p>
+  <div class="enemy-manager character-manager">
+    <div class="flexbar"><strong>Твои персонажи</strong><span class="enemy-badge" id="characterCountBadge">1 / 6</span></div>
+    <div class="field" style="margin-top:12px"><label class="fieldlabel" for="characterSelector">Выбранный персонаж</label><select id="characterSelector" aria-label="Выбрать своего персонажа"></select></div>
+    <div class="enemy-actions"><button type="button" class="btn primary small" id="characterAddBtn">+ Новый персонаж</button><button type="button" class="btn small" id="characterCloneBtn">Дублировать</button><button type="button" class="btn small" id="characterDeleteBtn">Удалить выбранного</button></div>
+    <p class="note">У каждого персонажа свои имя, характеристики, броня, резисты, заклинания и настройки оружия. Можно создавать до шести независимых героев. Враги остаются общими, чтобы сравнивать атаки.</p>
+  </div>
+  <div class="field" style="margin:0 0 17px"><label class="fieldlabel" for="characterName">Имя персонажа</label><input id="characterName" type="text" maxlength="64" autocomplete="off" placeholder="Например, Хайден Кусланд" data-bind="characterName"><span class="note">Имя используется в списке из шести персонажей, результатах, бросках и экспорте. Сохраняется автоматически.</span></div>
+  <div class="fields three">
+    <div class="field"><label class="fieldlabel" for="level">Уровень</label><input id="level" data-bind="level" type="number" min="1" max="1000" step="1"></div>
+    <div class="field"><label class="fieldlabel" for="race">Раса (для выносливости)</label><select id="race" data-bind="race"><option value="human">Человек · 100</option><option value="elf">Эльф · 150</option><option value="dwarf">Гном · 200</option><option value="custom">Другая · свой показатель</option></select></div>
+    <div class="field"><label class="fieldlabel" for="classType">Специализация</label><select id="classType" data-bind="classType"><option value="warrior">Воин (выносливость)</option><option value="mage">Маг (мана)</option><option value="hybrid">Гибрид (оба ресурса)</option></select></div>
+  </div>
+  <div class="field conditional" data-condition="customRace" style="margin-top:12px"><label class="fieldlabel">Базовая выносливость другой расы</label><input type="number" min="0" max="100000" data-bind="customRaceStamina"></div>
+  <h3 class="subhead">Главные показатели героя</h3>
+  <div class="combat-quick" id="characterQuickStats" aria-live="polite"></div>
+  <div class="hero-vitals" aria-live="polite">
+  <div class="hp-numbers"><strong>❤️ Здоровье героя</strong><strong id="heroHPHeadline">— / — HP</strong></div>
+  <div class="fields" style="margin-top:11px">
+    <div class="field"><label class="fieldlabel" for="heroHPNowInput">Текущие HP</label><input type="number" min="0" max="1000000000" step="1" id="heroHPNowInput" data-bind="heroHPNow"></div>
+    <div class="field"><label class="fieldlabel">Максимальные HP (по характеристикам)</label><div class="hp-note" id="heroHPMaxText">—</div></div>
+  </div>
+  <div class="hp-track" aria-label="Полоска здоровья героя"><div id="heroHPBar"></div></div>
+  <div class="hp-actions"><button type="button" class="btn small" id="heroHealFullBtn">Восстановить HP героя</button><span class="note">Урон врага автоматически уменьшает текущие HP.</span></div>
+</div>
+<h3 class="subhead">Семь основных характеристик</h3>
+  <div class="fields" id="playerStats"></div>
+  <h3 class="subhead">Дополнительные очки</h3>
+  <div class="fields three">
+    <div class="field"><label class="fieldlabel">Бонус HP</label><input type="number" data-bind="extraHP" step="1"></div>
+    <div class="field"><label class="fieldlabel">Бонус выносливости</label><input type="number" data-bind="extraStamina" step="1"></div>
+    <div class="field"><label class="fieldlabel">Бонус маны</label><input type="number" data-bind="extraMana" step="1"></div>
+  </div>
+  <h3 class="subhead">Производные параметры</h3>
+  <div class="gridstat" id="characterDerived"></div>
+  <div class="callout">Уклонение и точность зависят от Ловкости и Восприятия. Скорость <strong>не увеличивает уклонение</strong>. Для инициативы действует <strong>d20 + Восприятие</strong>. Для показателей, которые ещё не согласованы, в разделе «Формулы» есть настройки.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-defense" hidden>
+  <h2 class="sectiontitle">Защита своего персонажа</h2><p class="desc">Физическая и магическая броня измеряются в очках поглощения; резисты — в процентах.</p>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Обычная броня (очки)</label><input type="number" min="0" data-bind="armor"></div>
+    <div class="field"><label class="fieldlabel">Магическая броня (очки)</label><input type="number" min="0" data-bind="magicArmor"></div>
+  </div>
+  <div class="checks"><div class="checkrow"><input type="checkbox" id="immobile" data-bind="immobile"><label for="immobile"><strong>Персонаж обездвижен</strong><small>Резист от Ловкости не действует; резист от Силы остаётся.</small></label></div></div>
+  <div class="gridstat" id="defenseDerived"></div>
+  <h3 class="subhead">Сопротивление стихийному урону (%)</h3><div class="resgrid" id="ownElements"></div>
+  <h3 class="subhead">Сопротивление негативным эффектам (%)</h3><p class="note">Отдельные шансы избежать горения, шока, намокания, опутывания и воздействия ветра. Это не уменьшает урон второй раз.</p><div class="resgrid" id="ownStatuses"></div>
+  <h3 class="subhead">Проверка входящего удара по своему персонажу</h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Входящий урон до защиты</label><input type="number" min="0" data-bind="incomingDamage"></div>
+    <div class="field"><label class="fieldlabel">Тип входящей атаки</label><select data-bind="incomingType"><option value="fist">Кулаки</option><option value="weapon">Оружие (ближнее / дальнее / посох)</option><option value="magic">Магия</option></select></div>
+    <div class="field"><label class="fieldlabel">Пробитие обычной брони</label><input type="number" min="0" data-bind="incomingPen"></div>
+    <div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="incomingMagicPen"></div>
+    <div class="field"><label class="fieldlabel">Стихия входящей магии</label><select data-bind="incomingElement" id="incomingElement"></select></div>
+  </div>
+  <div class="callout" id="incomingReport" aria-live="polite"></div>
+</section>
+
+<section class="panel tabpanel" id="panel-attack" hidden>
+  <h2 class="sectiontitle">Настройки атаки</h2><p class="desc">Выбери способ атаки. Урон считается по твоим характеристикам, затем применяется защита выбранного противника — его можно переключить справа или во вкладке «Противник».</p>
+  <div class="field"><label class="fieldlabel">Тип атаки</label><select data-bind="attackType"><option value="fist">Кулаки</option><option value="weapon">Оружие (ближнее / дальнее / посох)</option><option value="magic">Магия</option></select></div>
+  <div class="conditional" data-condition="fistAttack"><h3 class="subhead">Рукопашный стиль</h3><div class="field"><label class="fieldlabel">Мастерство</label><select data-bind="fistMastery"><option value="0">Без подготовки · обычный урон, −2 попадание</option><option value="1">Обученный · +20% урона, −2 попадание</option><option value="2">Опытный · +35% урона, −1 попадание</option><option value="3">Мастер · +50% урона, без штрафа</option></select><span class="note helpmark">Пока предлагаемые бонусы, а не утверждённый канон.</span></div><div class="callout">Кулаки <strong>полностью игнорируют обычную броню</strong>, но не магическую броню и не физическое сопротивление цели.</div></div>
+  <div class="conditional" data-condition="weaponAttack" hidden>
+    <h3 class="subhead">Вооружение</h3>
+    <div class="fields">
+      <div class="field"><label class="fieldlabel">Вид оружия</label><select data-bind="weaponType" id="weaponType"></select></div>
+      <div class="field"><label class="fieldlabel">Базовый урон выбранного оружия / посоха</label><input type="number" min="0" data-bind="weaponBase"><span class="note">Запоминается отдельно для каждого вида оружия и каждого персонажа.</span></div>
+      <div class="field"><label class="fieldlabel">Процентный урон оружия (%)</label><input type="number" min="-100" max="10000" step="0.1" data-bind="weaponDamagePct" aria-label="Процентный урон выбранного оружия"><span class="note">0% — без изменений, +50% — урон ×1,5, −20% — ×0,8. Усиливает базовый урон вместе со скейлингом характеристик; сохраняется отдельно для каждого оружия.</span></div>
+      <div class="field" id="weaponPhysicalPenField"><label class="fieldlabel">Дополнительное пробитие физической брони</label><input type="number" min="0" data-bind="weaponPen"><span class="note">Пробитие кинжалов от Силы добавляется автоматически.</span></div>
+      <div class="field"><label class="fieldlabel">Доп. бонус к попаданию</label><input type="number" data-bind="extraHit"></div>
+    </div>
+    <div id="staffMagicFields" hidden>
+      <h3 class="subhead">Магия посоха</h3>
+      <div class="fields">
+        <div class="field"><label class="fieldlabel">Стихия удара посохом</label><select data-bind="element" id="staffElement"></select></div>
+        <div class="field"><label class="fieldlabel">Пробитие магической брони посохом</label><input type="number" min="0" data-bind="staffMagicPen"></div>
+      </div>
+      <div class="callout">Магический посох наносит <strong>магический урон</strong> и не учитывает обычную физическую броню. Его сдерживают <strong>магическая броня</strong>, <strong>защита от магии</strong> и <strong>резист стихии</strong>. Бонусы от разбега и Скорости к урону посоха не применяются.</div>
+    </div>
+    <p class="note" id="weaponScalingNote"></p>
+    <div class="callout" id="weaponDefenseExplanation">Физическое оружие учитывает броню цели, если у него нет достаточного пробития. Дальнобойные атаки не получают бонус разбега.</div>
+    <div class="callout" data-weapon-memory="1">Для каждого вида оружия отдельно сохраняются базовый урон, процентный урон, пробитие брони и бонус к попаданию. Переключение на другой вид оружия не стирает эти значения. У каждого персонажа — свой набор.</div>
+  </div>
+  <div class="conditional" data-condition="magicAttack" hidden><h3 class="subhead">Заклинание</h3><div class="fields"><div class="field"><label class="fieldlabel">Базовый урон заклинания</label><input type="number" min="0" data-bind="spellBase"></div><div class="field"><label class="fieldlabel">Основная характеристика магии</label><select data-bind="spellStat"><option value="int">Интеллект</option><option value="wis">Мудрость</option><option value="cha">Харизма</option></select></div><div class="field"><label class="fieldlabel">Стихия</label><select data-bind="element" id="attackElement"></select></div><div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="spellPen"></div><div class="field"><label class="fieldlabel">Стоимость маны</label><input type="number" min="0" data-bind="spellManaCost"></div><div class="field"><label class="fieldlabel">Базовый шанс эффекта (%)</label><input type="number" min="0" max="100" data-bind="statusChance"></div></div><div class="callout">Магия обходит обычную физическую броню, но учитывает магическую броню, защиту от магии и сопротивление выбранной стихии. Стихийное сопротивление эффекту считается отдельно.</div></div>
+  <h3 class="subhead">Общие боевые условия</h3>
+  <div class="checks"><div class="checkrow"><input type="checkbox" data-bind="charge" id="charge"><label for="charge"><strong>Удар с разбега</strong><small id="chargeText">Кулаки: +50% · Ближнее оружие: +25% · Дальнее и магия: без бонуса</small></label></div><div class="checkrow"><input type="checkbox" data-bind="speedDamageOn" id="speedDamageOn"><label for="speedDamageOn"><strong>Урон от скорости</strong><small>Только кулаки и оружие ближнего боя</small></label></div><div class="checkrow"><input type="checkbox" data-bind="speedHitOn" id="speedHitOn"><label for="speedHitOn"><strong>Бонус скорости к попаданию</strong><small>Для рукопашных атак; не влияет на уклонение</small></label></div></div>
+  <div class="field"><label class="fieldlabel">Другое изменение попадания (d20)</label><input type="number" data-bind="otherHitBonus"></div>
+  <h3 class="subhead">Промежуточные расчёты</h3><div class="gridstat" id="attackDerived"></div>
+  <button class="btn primary" style="margin-top:16px" id="rollBtn">🎲 Бросить d20 и провести атаку</button><div class="rollbox" id="rollReport" aria-live="polite">Нажми кнопку, чтобы проверить одно попадание. Вероятность и средний урон рассчитываются автоматически.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-target" hidden>
+  <h2 class="sectiontitle">Параметры противников</h2><p class="desc">Создавай и сохраняй до 20 отдельных врагов. Выбор противника сразу обновляет шанс попадания, броню и итоговый урон.</p>
+  <div class="enemy-manager">
+    <div class="flexbar"><strong>Список противников</strong><span class="enemy-badge" id="enemyCountBadge">1 / 20</span></div>
+    <div class="fields">
+      <div class="field"><label class="fieldlabel" for="enemySelector">Выбранный противник</label><select id="enemySelector" aria-label="Выбрать противника"></select></div>
+      <div class="field"><label class="fieldlabel" for="enemyNameInput">Имя противника</label><input type="text" id="enemyNameInput" maxlength="48" placeholder="Например, Хайден Кусланд" autocomplete="off"></div>
+    </div>
+    <div class="enemy-actions"><button type="button" class="btn primary small" id="enemyAddBtn">+ Новый противник</button><button type="button" class="btn small" id="enemyCloneBtn">Дублировать</button><button type="button" class="btn small" id="enemyDeleteBtn">Удалить выбранного</button></div>
+    <p class="note" style="margin:7px 0 0">У каждого врага свои характеристики, броня, резисты, ручные настройки уклонения и магической защиты. Изменения сохраняются автоматически. «Дублировать» создаёт копию текущего врага.</p>
+  </div>
+  <div class="enemy-vitals">
+    <div class="hp-numbers"><strong>❤️ Здоровье противника</strong><strong id="enemyHPHeadline">150 / 150 HP</strong></div>
+    <p class="note">HP каждого врага сохраняются отдельно. После попадания героя HP и полоска автоматически уменьшаются; здоровье можно также изменить вручную.</p>
+    <div class="fields">
+      <div class="field"><label class="fieldlabel" for="targetHPNowInput">Текущие HP</label><input type="number" min="0" max="1000000000" step="1" id="targetHPNowInput" data-bind="targetHPNow"></div>
+      <div class="field"><label class="fieldlabel" for="targetHPMaxInput">Максимальные HP</label><input type="number" min="1" max="1000000000" step="1" id="targetHPMaxInput" data-bind="targetHPMax"></div>
+    </div>
+    <div class="hp-track"><div id="enemyHPBar"></div></div><div class="hp-actions"><button type="button" class="btn small" id="enemyHealFullBtn">Восстановить HP противника</button></div>
+  </div>
+  <div class="combat-quick" id="enemyQuickStats" aria-live="polite"></div>
+  <h3 class="subhead">Семь характеристик противника</h3>
+  <div class="fields" id="targetStats"></div>
+  <h3 class="subhead">Броня и положение цели</h3>
+  <div class="fields"><div class="field"><label class="fieldlabel">Обычная броня (очки)</label><input type="number" min="0" data-bind="targetArmor"></div><div class="field"><label class="fieldlabel">Магическая броня (очки)</label><input type="number" min="0" data-bind="targetMagicArmor"></div></div>
+  <div class="checks"><div class="checkrow"><input type="checkbox" data-bind="targetImmobile" id="targetImmobile"><label for="targetImmobile"><strong>Цель обездвижена</strong><small>Ловкость не даёт резист; уклонение всё ещё можно задать вручную.</small></label></div></div>
+  <h3 class="subhead">Ручная настройка вычисляемой защиты</h3><p class="note">По умолчанию резисты и уклонение считаются из характеристик врага. Галочки позволяют ввести собственные значения.</p>
+  <div class="fields"><div class="checkrow"><input type="checkbox" id="targetDodgeOverride" data-bind="targetDodgeOverride"><label for="targetDodgeOverride"><strong>Своё уклонение</strong></label></div><div class="field"><label class="fieldlabel">Уклонение</label><input type="number" data-bind="targetDodgeValue" id="targetDodgeValue"></div><div class="checkrow"><input type="checkbox" id="targetResOverride" data-bind="targetResOverride"><label for="targetResOverride"><strong>Свой физ. резист</strong></label></div><div class="field"><label class="fieldlabel">Физический резист, % (не более 50)</label><input type="number" min="0" max="50" data-bind="targetResValue" id="targetResValue"></div><div class="checkrow"><input type="checkbox" id="targetMagicOverride" data-bind="targetMagicOverride"><label for="targetMagicOverride"><strong>Своя защита от магии</strong></label></div><div class="field"><label class="fieldlabel">Защита от магии, %</label><input type="number" min="0" max="100" data-bind="targetMagicValue" id="targetMagicValue"></div></div>
+  <h3 class="subhead">Стихийные сопротивления цели (%)</h3><div class="resgrid" id="targetElements"></div>
+  <h3 class="subhead">Защита от негативных эффектов цели (%)</h3><div class="resgrid" id="targetStatuses"></div>
+  <div class="gridstat" id="targetDerived" style="margin-top:18px"></div>
+  <div class="halfline"></div>
+  <h3 class="subhead">⚔️ Оружие и тип атаки этого противника</h3>
+  <p class="desc">Здесь настраивается только выбранный враг. Вид оружия, базовый урон, процентный бонус и пробитие сохраняются отдельно. Бонусы разбега и Скорости включаются во вкладке «Бой и броски».</p>
+<h3 class="subhead">Как атакует выбранный противник</h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Боевой стиль врага</label><select data-bind="targetAttackType" id="targetAttackType"><option value="fist">Кулаки</option><option value="weapon">Оружие (включая луки и посохи)</option><option value="magic">Заклинание</option></select></div>
+    <div class="field"><label class="fieldlabel">Прочий бонус врага к d20</label><input type="number" data-bind="targetOtherHitBonus" step="1"></div>
+  </div>
+  <div id="enemyFistSettings" class="conditional">
+    <div class="field" style="margin-top:12px"><label class="fieldlabel">Кулачное мастерство противника</label><select data-bind="targetFistMastery"><option value="0">Без подготовки · −2 к броску</option><option value="1">Обученный · +20% урона, −2 к броску</option><option value="2">Опытный · +35% урона, −1 к броску</option><option value="3">Мастер · +50% урона, без штрафа</option></select></div>
+  </div>
+  <div id="enemyWeaponSettings" class="conditional" hidden>
+    <div class="fields" style="margin-top:12px">
+      <div class="field"><label class="fieldlabel">Оружие врага</label><select id="targetWeaponType" data-bind="targetWeaponType"></select></div>
+      <div class="field"><label class="fieldlabel">Базовый урон оружия</label><input type="number" min="0" data-bind="targetWeaponBase"><span class="note">Запоминается для каждого оружия каждого противника.</span></div>
+      <div class="field"><label class="fieldlabel">Процентный урон оружия (%)</label><input type="number" min="-100" max="10000" step="0.1" data-bind="targetWeaponDamagePct" aria-label="Процентный урон оружия противника"><span class="note">Например, +50% умножает базу и скейлинг на 1,5; запоминается отдельно у каждого врага и каждого оружия.</span></div>
+      <div class="field"><label class="fieldlabel">Пробитие обычной брони</label><input type="number" min="0" data-bind="targetWeaponPen"></div>
+      <div class="field"><label class="fieldlabel">Доп. попадание оружием</label><input type="number" data-bind="targetExtraHit"></div>
+    </div>
+    <div id="enemyStaffSettings" hidden>
+      <div class="fields" style="margin-top:12px">
+        <div class="field"><label class="fieldlabel">Стихия посоха</label><select id="enemyStaffElement" data-bind="targetElement"></select></div>
+        <div class="field"><label class="fieldlabel">Пробитие магической брони посохом</label><input type="number" min="0" data-bind="targetStaffMagicPen"></div>
+      </div>
+    </div>
+    <p class="note" id="enemyScalingNote" style="margin-top:12px"></p>
+  </div>
+  <div id="enemySpellSettings" class="conditional" hidden>
+    <div class="fields" style="margin-top:12px">
+      <div class="field"><label class="fieldlabel">Базовый урон заклинания</label><input type="number" min="0" data-bind="targetSpellBase"></div>
+      <div class="field"><label class="fieldlabel">Характеристика заклинания</label><select data-bind="targetSpellStat"><option value="int">Интеллект</option><option value="wis">Мудрость</option><option value="cha">Харизма</option></select></div>
+      <div class="field"><label class="fieldlabel">Стихия</label><select id="enemySpellElement" data-bind="targetElement"></select></div>
+      <div class="field"><label class="fieldlabel">Пробитие магической брони</label><input type="number" min="0" data-bind="targetSpellPen"></div>
+    </div>
+  </div>
+  <h3 class="subhead">Расчёт атаки врага по герою</h3>
+  <div class="gridstat" id="enemyAttackDerived" style="margin-top:15px"></div>
+  <div class="callout">Чтобы провести бросок за врага, перейди во вкладку <button type="button" class="btn small" data-goto="battle">⚔️ Бой и броски</button>. Там можно включать и отключать бонусы отдельно для обеих сторон.</div>
+</section>
+
+<section class="panel tabpanel" id="panel-battle" hidden>
+  <h2 class="sectiontitle">Бой · броски героев и противников</h2>
+  <p class="desc">Сравнивай точность, уклонение, шанс попадания, урон до и после защиты, скорость и инициативу. Для героя и врага есть отдельные бонусы. Все броски записываются в историю, а HP списываются автоматически.</p>
+  <div class="duo">
+    <div class="field"><label class="fieldlabel" for="battleCharacterSelector">Герой (цель для врага)</label><select id="battleCharacterSelector"></select></div>
+    <div class="field"><label class="fieldlabel" for="battleEnemySelector">Противник (цель для героя)</label><select id="battleEnemySelector"></select></div>
+  </div>
+  <h3 class="subhead">Кто сколько наносит — оба направления атаки</h3>
+  <p class="note">Каждая карточка показывает характеристики атакующего, шанс попасть по выбранной цели и <strong>урон при успешном попадании</strong> после брони и резистов. При промахе фактически нанесённый урон — 0. Сложность попадания: <strong>11 + уклонение цели</strong>.</p>
+  <div class="battle-duel">
+    <div class="duel-card" id="battleHeroCard"></div>
+    <div class="duel-card enemy-card" id="battleEnemyCard"></div>
+  </div>
+  <h3 class="subhead">Бонусы боя — отдельно для каждой стороны</h3>
+  <p class="note">Включай нужные эффекты перед броском. Изменения мгновенно отражаются в шансах попадания и уроне каждой стороны. Для дальнобойных атак и магии разбег и скорость не добавляют урон.</p>
+  <div class="battle-bonus-grid">
+    <div class="battle-bonus-box hero-bonus">
+      <div class="bonus-heading">🛡 Герой — бонусы его атаки</div>
+      <div class="battle-bonus-checks">
+        <div class="checkrow"><input type="checkbox" id="battleHeroCharge" data-bind="charge"><label for="battleHeroCharge"><strong>Удар с разбега героя</strong><small>Кулаками +50%, ближним оружием +25%</small></label></div>
+        <div class="checkrow"><input type="checkbox" id="battleHeroSpeedDamageOn" data-bind="speedDamageOn"><label for="battleHeroSpeedDamageOn"><strong>Урон от Скорости героя</strong><small>Кулаки и ближнее оружие</small></label></div>
+        <div class="checkrow"><input type="checkbox" id="battleHeroSpeedHitOn" data-bind="speedHitOn"><label for="battleHeroSpeedHitOn"><strong>Попадание от Скорости героя</strong><small>Не увеличивает уклонение врага</small></label></div>
+      </div>
+      <div class="field"><label class="fieldlabel" for="battleHeroOtherHit">Прочий бонус героя к попаданию (d20)</label><input id="battleHeroOtherHit" type="number" step="1" data-bind="otherHitBonus"></div>
+      <div class="bonus-current" id="battleHeroBonusHint"></div>
+    </div>
+    <div class="battle-bonus-box foe-bonus">
+      <div class="bonus-heading">⚔️ Враг — бонусы его атаки</div>
+      <div class="battle-bonus-checks">
+        <div class="checkrow"><input type="checkbox" id="targetCharge" data-bind="targetCharge"><label for="targetCharge"><strong>Враг атакует с разбега</strong><small>Кулаками +50%, ближним оружием +25%</small></label></div>
+        <div class="checkrow"><input type="checkbox" id="targetSpeedDamageOn" data-bind="targetSpeedDamageOn"><label for="targetSpeedDamageOn"><strong>Урон от Скорости врага</strong><small>Кулаки и ближнее оружие</small></label></div>
+        <div class="checkrow"><input type="checkbox" id="targetSpeedHitOn" data-bind="targetSpeedHitOn"><label for="targetSpeedHitOn"><strong>Попадание от Скорости врага</strong><small>Не увеличивает уклонение героя</small></label></div>
+      </div>
+      <div class="field"><label class="fieldlabel" for="battleEnemyOtherHit">Прочий бонус врага к попаданию (d20)</label><input id="battleEnemyOtherHit" type="number" step="1" data-bind="targetOtherHitBonus"></div>
+      <div class="bonus-current" id="battleEnemyBonusHint"></div>
+    </div>
+  </div>
+  <div class="callout">🗡️ <strong>Оружие и стиль врага</strong> меняются во вкладке <button type="button" class="btn small" data-goto="target">Противник</button>. <strong>Оружие героя</strong> — во вкладке <button type="button" class="btn small" data-goto="attack">Атака</button>.</div>
+  <h3 class="subhead">Провести бросок</h3>
+  <div class="battle-buttons">
+    <button class="btn primary" id="battlePlayerRollBtn">🎲 Герой атакует врага</button>
+    <button class="btn primary enemy-roll" id="battleEnemyRollBtn">⚔️ Враг атакует героя</button>
+    <button class="btn small" id="battleHeroInitBtn">Инициатива героя (d20)</button>
+    <button class="btn small" id="battleEnemyInitBtn">Инициатива врага (d20)</button>
+  </div>
+  <div class="rollbox" id="battleRollReport" aria-live="polite">Здесь появится результат следующего броска. Все броски сохраняются ниже.</div>
+  <div class="halfline"></div>
+  <div class="flexbar"><div><h3 class="sectiontitle" style="margin-bottom:0">История бросков</h3><span class="tiny" id="combatLogCount">0 бросков</span></div><div class="actions"><button class="btn small" id="copyHistoryBtn">Копировать историю</button><button class="btn small" id="clearHistoryBtn">Очистить</button></div></div>
+  <div class="field" style="margin:12px 0"><label class="fieldlabel" for="historyFilter">Показывать броски</label><select id="historyFilter"><option value="all">Все участники</option><option value="hero">Только герои</option><option value="enemy">Только противники</option></select></div>
+  <div class="combat-history" id="combatHistory" aria-label="Журнал боевых бросков" aria-live="polite"><p class="subtle">Бросков пока нет.</p></div>
+  <p class="tiny">Журнал сохраняет до 300 бросков на этом устройстве и включается в экспорт JSON. Для новых бросков показывает d20, точность, бонус атаки, уклонение цели, нанесённый урон и изменение HP. При успешном попадании HP автоматически списываются, при промахе — нет. История сохраняет имена и числа на момент броска, даже если потом изменить характеристики.</p>
+</section>
+
+<section class="panel tabpanel" id="panel-rules" hidden>
+  <h2 class="sectiontitle">Формулы и изменяемые правила</h2><p class="desc">Фиксированные правила мира выделены отдельно. Остальные коэффициенты — рабочие предложения, их можно менять в этом файле.</p>
+  <h3 class="subhead">Утверждённые формулы</h3>
+  <div class="rule"><strong>Скорость</strong><p><code>V = 4 × Скорость</code> км/ч; единый физический предел для движения и ударов.</p></div>
+  <div class="rule"><strong>Уклонение и точность</strong><p><code>Уклонение = Ловкость + floor(Восприятие / 3)</code><br><code>Точность = Восприятие + floor(Ловкость / 3)</code></p></div>
+  <div class="rule"><strong>Урон кулаком</strong><p><code>Сила ≤ 10: 5 + 2 × Сила</code><br><code>Сила &gt; 10: round(25 × 2^((Сила − 10)/10))</code></p></div>
+  <div class="rule"><strong>Физическое сопротивление</strong><p><code>min(50, min(35,max(0,Сила−5)) + min(25,max(0,Ловкость−5)))%</code>. При обездвиживании не учитывается Ловкость. Максимум <strong>50% абсолютно для всех</strong>, в том числе для Пробуждённых.</p></div>
+  <div class="rule"><strong>Броски врагов</strong><p>Для атаки противника используется то же правило: <code>d20 + (Восприятие врага + floor(Ловкость врага / 3)) + бонусы атаки ≥ базовая сложность попадания 11 + уклонение выбранного героя</code>. При попадании броня, магическая броня и резисты героя рассчитываются по тому же порядку. История сохраняет оба направления боя.</p></div>
+  <div class="rule"><strong>Процентный урон оружия</strong><p><code>(Базовый урон оружия + скейлинг характеристик) × (1 + процент / 100)</code>. Например, база 20 + скейлинг 30 = 50. При +40% получится 70 до Скорости, разбега, брони и резистов. 0% ничего не меняет. Поле отдельно для каждого оружия героя и противника, в том числе для луков и магических посохов; кулаки и обычные заклинания не затрагиваются.</p></div>
+  <div class="rule"><strong>Удар с разбега</strong><p>При выбранных «Кулаках» +50% к урону рукопашной атаки, с «Оружием» +25%. Магия не получает бонуса от разбега. Эти проценты можно изменить ниже.</p></div>
+  <div class="rule"><strong>Броня</strong><p>Кулаки игнорируют обычную броню. Оружие учитывает её, если у него нет пробития. Магическая броня действует и против кулаков, и против оружия. Защита от магии — отдельное процентное сопротивление магическому урону.</p></div>
+  <h3 class="subhead">Настраиваемые коэффициенты <span class="helpmark">(предложения)</span></h3>
+  <div class="fields">
+    <div class="field"><label class="fieldlabel">Урон скорости: +% за ступень</label><input type="number" min="0" max="1000" data-bind="speedDamagePct"></div>
+    <div class="field"><label class="fieldlabel">Размер ступени Скорости</label><input type="number" min="1" max="1000" data-bind="speedDamageStep"></div>
+    <div class="field"><label class="fieldlabel">Скорость до начала бонуса</label><input type="number" min="0" data-bind="speedDamageThreshold"></div>
+    <div class="field"><label class="fieldlabel">Разбег: оружие, %</label><input type="number" min="0" max="1000" data-bind="chargePct"></div>
+    <div class="field"><label class="fieldlabel">Разбег: рукопашный бой, %</label><input type="number" min="0" max="1000" data-bind="fistChargePct"></div>
+    <div class="field"><label class="fieldlabel">Доп. действие за каждые N Скорости</label><input type="number" min="1" data-bind="actionStep"></div>
+    <div class="field"><label class="fieldlabel">Бонус попадания +1 за N Скорости</label><input type="number" min="1" data-bind="speedHitStep"></div>
+    <div class="field"><label class="fieldlabel">Максимум бонуса попадания от Скорости</label><input type="number" min="0" data-bind="speedHitMax"></div>
+    <div class="field"><label class="fieldlabel">Магический урон: + за 1 основного стата</label><input type="number" min="0" data-bind="spellStatScale"></div>
+    <div class="field"><label class="fieldlabel">Защита от магии: % за 1 Мудрости</label><input type="number" min="0" max="10" step="0.1" data-bind="wisMagicRate"></div>
+    <div class="field"><label class="fieldlabel">Защита от магии: % за 1 Интеллекта</label><input type="number" min="0" max="10" step="0.1" data-bind="intMagicRate"></div>
+    <div class="field"><label class="fieldlabel">Предел защиты от магии, %</label><input type="number" min="0" max="100" data-bind="magicDefenseCap"></div>
+    <div class="field"><label class="fieldlabel">HP за уровень</label><input type="number" min="0" data-bind="hpPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за уровень</label><input type="number" min="0" data-bind="stamPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за 1 Силы</label><input type="number" min="0" data-bind="stamPerStr"></div>
+    <div class="field"><label class="fieldlabel">Выносливость за 1 Ловкости</label><input type="number" min="0" data-bind="stamPerDex"></div>
+    <div class="field"><label class="fieldlabel">Базовая мана</label><input type="number" min="0" data-bind="baseMana"></div>
+    <div class="field"><label class="fieldlabel">Мана за уровень</label><input type="number" min="0" data-bind="manaPerLevel"></div>
+    <div class="field"><label class="fieldlabel">Мана за 1 Интеллекта</label><input type="number" min="0" data-bind="manaPerInt"></div>
+  </div>
+  <h3 class="subhead">Скейлинг оружия из новой таблицы</h3>
+  <div class="tablewrap"><table class="minitable"><thead><tr><th>Оружие</th><th>Бонус урона от характеристик</th><th>Дополнительно</th></tr></thead><tbody>
+    <tr><td>Полуторные мечи</td><td>⌊Сила/2⌋ + Ловкость</td><td>Физический урон</td></tr>
+    <tr><td>Двуручное оружие</td><td>Сила + ⌊Ловкость/4⌋</td><td>Физический урон</td></tr>
+    <tr><td>Одноручное оружие</td><td>⌊Сила/2⌋ + ⌊Ловкость/2⌋</td><td>Физический урон</td></tr>
+    <tr><td>Кинжалы</td><td>Ловкость + ⌊Сила/3⌋</td><td>+⌊Сила/3⌋ пробития брони</td></tr>
+    <tr><td>Магический посох</td><td>⌊Интеллект/2⌋ + ⌊Восприятие/2⌋</td><td>Магический урон</td></tr>
+    <tr><td>Лук и арбалет</td><td>Ловкость + ⌊Сила/2⌋</td><td>Физический урон</td></tr>
+    <tr><td>Пороховое оружие</td><td>Восприятие</td><td>Физический урон</td></tr>
+  </tbody></table></div>
+  <p class="note">⌊ ⌋ означает округление вниз. Базовый урон оружия прибавляется к указанному бонусу, затем к сумме применяется поле «Процентный урон оружия». Копья, топоры и булавы пока используют рабочие коэффициенты из предыдущей версии.</p>
+  <div class="rule"><strong>Дистанционные атаки и посохи</strong><p>Луки, арбалеты и пороховое оружие используют обычную физическую броню цели и её физический резист; посохи — магическую броню, защиту от магии и сопротивление стихии. Разбег и прирост урона от Скорости применяются только к кулакам и оружию ближнего боя.</p></div>
+  <h3 class="subhead">Принятый порядок расчёта</h3>
+  <div class="rule"><strong>Попадание (d20)</strong><p><code>d20 + Точность + Бонус атаки ≥ 11 + Уклонение цели</code>. Натуральная 1 — промах, 20 — попадание. Одинаковые точность и уклонение без бонусов дают 50%.</p></div>
+  <div class="rule"><strong>Кулаки</strong><p><code>ceil(max(0, исходный урон − магическая броня) × (1 − физрезист / 100))</code></p></div>
+  <div class="rule"><strong>Оружие</strong><p><code>ceil(max(0, исходный урон − max(0, обычная броня − пробитие) − магическая броня) × (1 − физрезист / 100))</code></p></div>
+  <div class="rule"><strong>Магия</strong><p><code>ceil(max(0, магический урон − max(0, магброня − магпробитие)) × (1 − защита от магии / 100) × (1 − резист стихии / 100))</code></p></div>
+  <div class="callout warning"><strong>Что ещё не является каноном:</strong> бонус скорости к попаданию, действия за раунд, скорость как множитель урона, бонусы попадания оружия, кулачное мастерство, магический скейлинг, сопротивления стихиям, формула выносливости и защита от магии. Значения по умолчанию взяты из нашего обсуждения как редактируемые рабочие настройки. Скейлинг семи групп оружия перенесён из обновлённой таблицы. Базовый урон предметов и бонусы попадания остаются примерными.</div>
+</section>
+</main>
+<aside class="side" aria-label="Результаты расчёта">
+<section class="panel"><div class="flexbar"><div class="pill" id="resultType">КУЛАЧНАЯ АТАКА</div><span class="tag" id="resultTarget">противник</span></div>
+  <div class="tiny" style="margin-top:10px">Атакует: <strong id="resultAttacker" style="color:var(--green);overflow-wrap:anywhere">Без имени</strong></div>
+  <div class="subtle" style="margin-top:15px;font-size:13px">Урон при успешном попадании</div><div class="resultbig" id="resultDamage">—</div><div class="tiny" id="resultDescription">после брони и резистов</div>
+  <div class="halfline"></div>
+  <div class="metricrow"><span>🎯 Точность героя</span><strong id="heroResultAccuracy">—</strong></div><div class="metricrow"><span>🛡 Уклонение цели</span><strong id="heroResultEnemyDodge">—</strong></div><div class="metricrow"><span>Бонус к атаке</span><strong id="heroResultModifier">—</strong></div><div class="metricrow"><span>Бросок: d20 + бонус / защита</span><strong id="heroResultFormula">—</strong></div><div class="metricrow"><span>Шанс попадания (d20)</span><strong id="hitChance">—</strong></div><div class="chartbar"><div id="hitBar" style="width:0"></div></div>
+  <div class="metricrow"><span>Средний урон за попытку</span><strong id="avgDamage">—</strong></div>
+  <div class="metricrow"><span>Исходный урон до защиты</span><strong id="rawDamage">—</strong></div>
+  <div class="metricrow"><span>Процентный урон оружия</span><strong id="weaponPercentBonus">—</strong></div>
+  <div class="metricrow"><span>Урон от Скорости</span><strong id="speedBonus">—</strong></div>
+  <div class="metricrow"><span>Бонус разбега</span><strong id="chargeBonus">—</strong></div>
+  <div class="metricrow"><span>Действий за раунд</span><strong id="actionsResult">—</strong></div>
+  <div class="metricrow"><span>Потенциальный урон за раунд*</span><strong id="roundDamage">—</strong></div>
+  <div class="metricrow conditional" data-condition="magicAttack"><span>Шанс наложить эффект при попадании</span><strong id="statusChanceOut">—</strong></div>
+  <div class="breakdown"><div class="flexbar"><strong>Разбор урона</strong><span class="tag" id="elementTag">ФИЗИЧЕСКИЙ</span></div><div id="damageBreakdown"></div></div>
+  <p class="tiny">* Оценка при условии, что все действия используются для одинаковых атак; нет учёта ресурсов, критов и ограничений действия.</p>
+</section>
+<section class="panel"><div class="flexbar"><strong>Персонаж: <span id="sideCharacterName" style="color:var(--green);overflow-wrap:anywhere">Без имени</span></strong><span class="tag" id="classLabel">Воин</span></div>
+  <div class="field" style="margin-top:12px"><label class="fieldlabel" for="sideCharacterSelector">Быстрый выбор персонажа <span id="sideCharacterCount" class="tiny">1 / 6</span></label><select id="sideCharacterSelector" aria-label="Быстрый выбор своего персонажа"></select></div>
+  <div class="hp-numbers" style="margin-top:12px"><span>❤️ HP героя</span><strong id="summaryHeroHP">—</strong></div><div class="hp-track" style="margin-bottom:10px"><div id="summaryHeroHPBar" style="background:linear-gradient(90deg,#2e9c74,#73ecc0)"></div></div><div class="gridstat" style="margin-top:13px" id="sideStats"></div><div class="breakdown"><div class="metricrow"><span>🎯 Точность героя</span><strong id="sideHeroAccuracy">—</strong></div><div class="metricrow"><span>🛡 Уклонение героя</span><strong id="sideHeroDodge">—</strong></div><div class="metricrow"><span>Инициатива</span><strong id="sideInitiative">—</strong></div><div class="metricrow"><span>Сопротивление физ. урону</span><strong id="sidePhysicalRes">—</strong></div><div class="metricrow"><span>Защита от магии</span><strong id="sideMagicRes">—</strong></div></div></section>
+<section class="panel"><div class="flexbar"><strong>Сводка цели</strong><span class="enemy-badge" id="sideEnemyCount">1 / 20</span></div><div class="field" style="margin-top:12px"><label class="fieldlabel" for="sideEnemySelector">Выбрать противника для атаки</label><select id="sideEnemySelector" aria-label="Быстрый выбор противника"></select></div><div class="hp-numbers" style="margin-top:10px"><span>❤️ HP противника</span><strong id="summaryTargetHP">—</strong></div><div class="hp-track"><div id="summaryTargetHPBar"></div></div><div class="metricrow"><span>🎯 Точность врага</span><strong id="summaryTargetAccuracy">—</strong></div><div class="metricrow"><span>🛡 Уклонение врага</span><strong id="summaryTargetDodge">—</strong></div><div class="metricrow"><span>Физ. резист цели</span><strong id="summaryTargetRes">—</strong></div><div class="metricrow"><span>Броня / маг. броня</span><strong id="summaryTargetArmor">—</strong></div><div class="metricrow"><span>Защита от магии</span><strong id="summaryTargetMagic">—</strong></div><button class="btn small" data-goto="target">Редактировать противника</button><button class="btn primary small" data-goto="battle" style="margin:9px 0 0 6px">⚔️ Броски врага</button></section>
+</aside></div>
+<p class="footer">ТЕТ · Боевой калькулятор v13. Работает локально, без интернета. Параметры автоматически сохраняются в этом браузере; можно экспортировать их в JSON. До 6 персонажей и 20 противников с независимыми характеристиками и защитой; у каждого персонажа собственные настройки каждого оружия. Враги также умеют атаковать, а история бросков сохраняется. Все показатели HP, маны, защиты и урона показаны отдельно — магическая броня не равна защите от магии.</p>
+</div><div class="toast" id="toast" role="status"></div>
+<script>(function(){var prev=window.onerror;window.onerror=function(msg){var p=document.getElementById('tetStartupStatus');if(p){p.className='tet-startup bad';p.textContent='Ошибка сценария в планшете: '+String(msg)+' — сообщи мне этот текст.';}if(prev)try{prev.apply(this,arguments);}catch(e){};return false;};})();</script>
+<script>
+/* Tabletop Simulator Tablet: compatible with older embedded Chromium builds. */
+(function(){
+  if(!Object.hasOwn) Object.hasOwn=function(o,key){return Object.prototype.hasOwnProperty.call(o,key);};
+  if(!Object.fromEntries) Object.fromEntries=function(entries){var o={};for(var i=0;i<entries.length;i++){var entry=entries[i];if(entry[0]==='__proto__')continue;o[entry[0]]=entry[1];}return o;};
+  if(!String.prototype.startsWith) String.prototype.startsWith=function(s){return this.slice(0,s.length)===s;};
+  if(!String.prototype.includes) String.prototype.includes=function(s){return this.indexOf(s)!==-1;};
+  if(!Array.prototype.includes) Array.prototype.includes=function(v){return this.indexOf(v)!==-1;};
+  if(!Element.prototype.remove) Element.prototype.remove=function(){if(this.parentNode)this.parentNode.removeChild(this);};
+  if(!Element.prototype.append) Element.prototype.append=function(){for(var i=0;i<arguments.length;i++){var v=arguments[i];this.appendChild(typeof v==='string'?document.createTextNode(v):v);}};
+  if(!Element.prototype.replaceChildren) Element.prototype.replaceChildren=function(){while(this.firstChild)this.removeChild(this.firstChild);this.append.apply(this,arguments);};
+  if(!('text' in File.prototype)) File.prototype.text=function(){var file=this;return new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(r.result);};r.onerror=function(){reject(r.error);};r.readAsText(file);});};
+  if(typeof document.documentElement.classList!=='undefined' && /(?:^|[?&])tts=1(?:&|$)/.test(location.search))document.documentElement.classList.add('tet-tablet');
+})();
+function readFileCompat(file){if(file.text)return file.text();return new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(r.result);};r.onerror=function(){reject(r.error);};r.readAsText(file);});}
+
+'use strict';
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var e_1, _a;
+var _b;
+var $ = function (id) { return document.getElementById(id); };
+var EL = [
+    { id: 'fire', name: '🔥 Огонь', short: 'Огонь' },
+    { id: 'lightning', name: '⚡ Молния', short: 'Молния' },
+    { id: 'water', name: '💧 Вода', short: 'Вода' },
+    { id: 'earth', name: '🪨 Земля', short: 'Земля' },
+    { id: 'wind', name: '🌪️ Ветер', short: 'Ветер' },
+];
+var WEAPONS = {
+    dagger: { name: 'Кинжалы', group: 'Ближний бой', kind: 'melee', base: 6, hit: 2, scale: function (s) { return s.dex + Math.floor(s.str / 3); }, pen: function (s) { return Math.floor(s.str / 3); }, desc: 'Ловкость + ⌊Сила / 3⌋; пробитие брони +⌊Сила / 3⌋' },
+    onehand: { name: 'Одноручное оружие', group: 'Ближний бой', kind: 'melee', base: 12, hit: 2, scale: function (s) { return Math.floor(s.str / 2) + Math.floor(s.dex / 2); }, desc: '⌊Сила / 2⌋ + ⌊Ловкость / 2⌋' },
+    bastard: { name: 'Полуторные мечи', group: 'Ближний бой', kind: 'melee', base: 17, hit: 2, scale: function (s) { return Math.floor(s.str / 2) + s.dex; }, desc: '⌊Сила / 2⌋ + Ловкость' },
+    twohand: { name: 'Двуручное оружие', group: 'Ближний бой', kind: 'melee', base: 21, hit: 1, scale: function (s) { return s.str + Math.floor(s.dex / 4); }, desc: 'Сила + ⌊Ловкость / 4⌋' },
+    spear: { name: 'Копья', group: 'Ближний бой', kind: 'melee', base: 13, hit: 3, scale: function (s) { return Math.floor(s.str / 2) + Math.floor(s.dex / 2); }, desc: '⌊Сила / 2⌋ + ⌊Ловкость / 2⌋ (рабочее предложение)' },
+    mace: { name: 'Булавы / молоты', group: 'Ближний бой', kind: 'melee', base: 16, hit: 1, scale: function (s) { return s.str + Math.floor(s.dex / 4); }, desc: 'Сила + ⌊Ловкость / 4⌋ (рабочее предложение)' },
+    axe: { name: 'Топоры', group: 'Ближний бой', kind: 'melee', base: 15, hit: 1, scale: function (s) { return s.str + Math.floor(s.dex / 4); }, desc: 'Сила + ⌊Ловкость / 4⌋ (рабочее предложение)' },
+    bow: { name: 'Лук', group: 'Дальнобойное', kind: 'ranged', base: 12, hit: 2, scale: function (s) { return s.dex + Math.floor(s.str / 2); }, desc: 'Ловкость + ⌊Сила / 2⌋' },
+    crossbow: { name: 'Арбалет', group: 'Дальнобойное', kind: 'ranged', base: 16, hit: 2, scale: function (s) { return s.dex + Math.floor(s.str / 2); }, desc: 'Ловкость + ⌊Сила / 2⌋' },
+    firearm: { name: 'Пороховое оружие', group: 'Дальнобойное', kind: 'ranged', base: 20, hit: 1, scale: function (s) { return s.per; }, desc: 'Восприятие' },
+    staff: { name: 'Магический посох', group: 'Магические посохи', kind: 'magic', base: 8, hit: 2, scale: function (s) { return Math.floor(s.int / 2) + Math.floor(s.per / 2); }, desc: '⌊Интеллект / 2⌋ + ⌊Восприятие / 2⌋ (магический урон)' }
+};
+var defaults = { heroHPNow: -1, characterName: '', level: 1, race: 'human', classType: 'warrior', customRaceStamina: 100, str: 10, dex: 10, per: 10, spd: 10, int: 10, wis: 10, cha: 10, extraHP: 0, extraStamina: 0, extraMana: 0,
+    armor: 0, magicArmor: 0, immobile: false, incomingDamage: 100, incomingType: 'weapon', incomingPen: 0, incomingMagicPen: 0, incomingElement: 'fire',
+    attackType: 'fist', fistMastery: '0', weaponType: 'onehand', weaponBase: 12, weaponDamagePct: 0, weaponPen: 0, staffMagicPen: 0, extraHit: 0, otherHitBonus: 0, spellBase: 40, spellStat: 'int', element: 'fire', spellPen: 0, spellManaCost: 15, statusChance: 60, charge: false, speedDamageOn: true, speedHitOn: true,
+    targetHPMax: 150, targetHPNow: 150, targetStr: 10, targetDex: 10, targetPer: 10, targetInt: 10, targetWis: 10, targetSpd: 10, targetCha: 10, targetArmor: 30, targetMagicArmor: 5, targetImmobile: false, targetDodgeOverride: false, targetDodgeValue: 13, targetResOverride: false, targetResValue: 30, targetMagicOverride: false, targetMagicValue: 10,
+    targetAttackType: 'fist', targetFistMastery: '0', targetWeaponType: 'onehand', targetWeaponBase: 12, targetWeaponDamagePct: 0, targetWeaponPen: 0, targetStaffMagicPen: 0, targetExtraHit: 0, targetSpellBase: 40, targetSpellStat: 'int', targetSpellPen: 0, targetElement: 'fire', targetCharge: false, targetSpeedDamageOn: true, targetSpeedHitOn: true, targetOtherHitBonus: 0,
+    speedDamagePct: 10, speedDamageStep: 15, speedDamageThreshold: 10, chargePct: 25, fistChargePct: 50, actionStep: 15, speedHitStep: 30, speedHitMax: 5, spellStatScale: 2, wisMagicRate: 0.5, intMagicRate: 0.33, magicDefenseCap: 50, hpPerLevel: 5, stamPerLevel: 5, stamPerStr: 5, stamPerDex: 2, baseMana: 60, manaPerLevel: 10, manaPerInt: 10 };
+try {
+    for (var EL_1 = __values(EL), EL_1_1 = EL_1.next(); !EL_1_1.done; EL_1_1 = EL_1.next()) {
+        var e = EL_1_1.value;
+        defaults['ownElem_' + e.id] = 0;
+        defaults['ownStatus_' + e.id] = 0;
+        defaults['targetElem_' + e.id] = 0;
+        defaults['targetStatus_' + e.id] = 0;
+    }
+}
+catch (e_1_1) { e_1 = { error: e_1_1 }; }
+finally {
+    try {
+        if (EL_1_1 && !EL_1_1.done && (_a = EL_1.return)) _a.call(EL_1);
+    }
+    finally { if (e_1) throw e_1.error; }
+}
+var TARGET_KEYS = Object.keys(defaults).filter(function (key) { return key.startsWith('target'); });
+var MAX_ENEMIES = 20;
+var MAX_CHARACTERS = 6;
+var MAX_HISTORY = 300;
+// Настройки правил общие для всей группы. Атакующие характеристики и настройки защиты — личные.
+var RULE_KEYS = ['speedDamagePct', 'speedDamageStep', 'speedDamageThreshold', 'chargePct', 'fistChargePct', 'actionStep', 'speedHitStep', 'speedHitMax', 'spellStatScale', 'wisMagicRate', 'intMagicRate', 'magicDefenseCap', 'hpPerLevel', 'stamPerLevel', 'stamPerStr', 'stamPerDex', 'baseMana', 'manaPerLevel', 'manaPerInt'];
+var CHARACTER_KEYS = Object.keys(defaults).filter(function (key) { return !TARGET_KEYS.includes(key) && !RULE_KEYS.includes(key); });
+var WEAPON_SETTING_KEYS = ['weaponBase', 'weaponDamagePct', 'weaponPen', 'extraHit', 'staffMagicPen'];
+var ENEMY_WEAPON_KEYS = ['targetWeaponBase', 'targetWeaponDamagePct', 'targetWeaponPen', 'targetExtraHit', 'targetStaffMagicPen'];
+var combatHistory = [];
+var s = __assign({}, defaults);
+var enemyProfiles = [];
+var activeEnemyIndex = 0;
+var characterProfiles = [];
+var activeCharacterIndex = 0;
+var filterSettings = function (stored) { return Object.fromEntries(Object.entries(stored || {}).filter(function (_a) {
+    var _b = __read(_a, 2), key = _b[0], val = _b[1];
+    return Object.hasOwn(defaults, key) && ['string', 'number', 'boolean'].includes(typeof val);
+}).map(function (_a) {
+    var _b = __read(_a, 2), key = _b[0], val = _b[1];
+    return [key, key === 'characterName' ? String(val).slice(0, 64) : val];
+})); };
+function cleanEnemyStats(data) {
+    var e_2, _a;
+    var stats = {};
+    try {
+        for (var TARGET_KEYS_1 = __values(TARGET_KEYS), TARGET_KEYS_1_1 = TARGET_KEYS_1.next(); !TARGET_KEYS_1_1.done; TARGET_KEYS_1_1 = TARGET_KEYS_1.next()) {
+            var key = TARGET_KEYS_1_1.value;
+            var val = data === null || data === void 0 ? void 0 : data[key];
+            var fallback = defaults[key];
+            stats[key] = typeof fallback === 'boolean' ? (typeof val === 'boolean' ? val : fallback) : typeof fallback === 'number' ? (typeof val === 'number' && Number.isFinite(val) ? val : fallback) : (typeof val === 'string' ? val : fallback);
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (TARGET_KEYS_1_1 && !TARGET_KEYS_1_1.done && (_a = TARGET_KEYS_1.return)) _a.call(TARGET_KEYS_1);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+    stats.targetHPMax = Math.max(1, Math.floor(num(stats.targetHPMax, 150)));
+    stats.targetHPNow = clamp(Math.floor(num(stats.targetHPNow, stats.targetHPMax)), 0, stats.targetHPMax);
+    return stats;
+}
+function clampPct(value) { return Math.max(-100, Math.min(10000, num(value))); }
+function defaultEnemyWeapon(type) { var _a, _b; return { targetWeaponBase: (_b = (_a = WEAPONS[type]) === null || _a === void 0 ? void 0 : _a.base) !== null && _b !== void 0 ? _b : 12, targetWeaponDamagePct: 0, targetWeaponPen: 0, targetExtraHit: 0, targetStaffMagicPen: 0 }; }
+function cleanEnemyWeapon(raw, type) {
+    var e_3, _a;
+    var out = defaultEnemyWeapon(type);
+    try {
+        for (var ENEMY_WEAPON_KEYS_1 = __values(ENEMY_WEAPON_KEYS), ENEMY_WEAPON_KEYS_1_1 = ENEMY_WEAPON_KEYS_1.next(); !ENEMY_WEAPON_KEYS_1_1.done; ENEMY_WEAPON_KEYS_1_1 = ENEMY_WEAPON_KEYS_1.next()) {
+            var key = ENEMY_WEAPON_KEYS_1_1.value;
+            if (typeof (raw === null || raw === void 0 ? void 0 : raw[key]) === 'number' && Number.isFinite(raw[key]))
+                out[key] = raw[key];
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (ENEMY_WEAPON_KEYS_1_1 && !ENEMY_WEAPON_KEYS_1_1.done && (_a = ENEMY_WEAPON_KEYS_1.return)) _a.call(ENEMY_WEAPON_KEYS_1);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    out.targetWeaponDamagePct = clampPct(out.targetWeaponDamagePct);
+    return out;
+}
+function normalizeEnemyWeapons(data, stats) {
+    var e_4, _a;
+    if (stats === void 0) { stats = {}; }
+    var weapons = {};
+    try {
+        for (var _b = __values(Object.keys(WEAPONS)), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var type = _c.value;
+            weapons[type] = cleanEnemyWeapon(data === null || data === void 0 ? void 0 : data[type], type);
+        }
+    }
+    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_4) throw e_4.error; }
+    }
+    if (!data && WEAPONS[stats.targetWeaponType] && Object.hasOwn(stats, 'targetWeaponBase'))
+        weapons[stats.targetWeaponType] = cleanEnemyWeapon(stats, stats.targetWeaponType);
+    return weapons;
+}
+function createEnemy(stats, name, weapons) {
+    if (stats === void 0) { stats = {}; }
+    if (name === void 0) { name = 'Противник 1'; }
+    if (weapons === void 0) { weapons = null; }
+    var cleaned = cleanEnemyStats(stats);
+    if (!WEAPONS[cleaned.targetWeaponType])
+        cleaned.targetWeaponType = 'onehand';
+    return { name: name, stats: cleaned, weapons: normalizeEnemyWeapons(weapons, stats) };
+}
+function normalizeEnemies(data) { if (!Array.isArray(data))
+    return []; return data.slice(0, MAX_ENEMIES).filter(function (item) { return item && typeof item === 'object' && !Array.isArray(item); }).map(function (item, i) { return createEnemy(item.stats, typeof item.name === 'string' && item.name.trim() ? item.name.trim().slice(0, 48) : "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A ".concat(i + 1), item.weapons); }); }
+function snapshotActiveEnemyWeapon() { var p = enemyProfiles[activeEnemyIndex]; if (!p)
+    return; var type = WEAPONS[s.targetWeaponType] ? s.targetWeaponType : 'onehand'; p.weapons[type] = cleanEnemyWeapon(s, type); }
+function applyActiveEnemyWeapon() { var p = enemyProfiles[activeEnemyIndex]; if (!p)
+    return; var type = WEAPONS[s.targetWeaponType] ? s.targetWeaponType : 'onehand'; Object.assign(s, p.weapons[type] || defaultEnemyWeapon(type)); }
+function cleanCharacterStats(data) {
+    var e_5, _a;
+    var stats = {};
+    try {
+        for (var CHARACTER_KEYS_1 = __values(CHARACTER_KEYS), CHARACTER_KEYS_1_1 = CHARACTER_KEYS_1.next(); !CHARACTER_KEYS_1_1.done; CHARACTER_KEYS_1_1 = CHARACTER_KEYS_1.next()) {
+            var key = CHARACTER_KEYS_1_1.value;
+            var fallback = defaults[key], val = data === null || data === void 0 ? void 0 : data[key];
+            stats[key] = typeof fallback === 'boolean' ? (typeof val === 'boolean' ? val : fallback) : typeof fallback === 'number' ? (typeof val === 'number' && Number.isFinite(val) ? val : fallback) : (typeof val === 'string' ? val : fallback);
+            if (key === 'characterName')
+                stats[key] = String(stats[key] || '').slice(0, 64);
+        }
+    }
+    catch (e_5_1) { e_5 = { error: e_5_1 }; }
+    finally {
+        try {
+            if (CHARACTER_KEYS_1_1 && !CHARACTER_KEYS_1_1.done && (_a = CHARACTER_KEYS_1.return)) _a.call(CHARACTER_KEYS_1);
+        }
+        finally { if (e_5) throw e_5.error; }
+    }
+    if (!WEAPONS[stats.weaponType])
+        stats.weaponType = 'onehand';
+    return stats;
+}
+function defaultWeaponSettings(type) { var _a, _b; return { weaponBase: (_b = (_a = WEAPONS[type]) === null || _a === void 0 ? void 0 : _a.base) !== null && _b !== void 0 ? _b : 12, weaponDamagePct: 0, weaponPen: 0, extraHit: 0, staffMagicPen: 0 }; }
+function cleanWeaponSettings(data, type) {
+    var e_6, _a;
+    var d = defaultWeaponSettings(type);
+    try {
+        for (var WEAPON_SETTING_KEYS_1 = __values(WEAPON_SETTING_KEYS), WEAPON_SETTING_KEYS_1_1 = WEAPON_SETTING_KEYS_1.next(); !WEAPON_SETTING_KEYS_1_1.done; WEAPON_SETTING_KEYS_1_1 = WEAPON_SETTING_KEYS_1.next()) {
+            var key = WEAPON_SETTING_KEYS_1_1.value;
+            var value = data === null || data === void 0 ? void 0 : data[key];
+            if (typeof value === 'number' && Number.isFinite(value))
+                d[key] = value;
+        }
+    }
+    catch (e_6_1) { e_6 = { error: e_6_1 }; }
+    finally {
+        try {
+            if (WEAPON_SETTING_KEYS_1_1 && !WEAPON_SETTING_KEYS_1_1.done && (_a = WEAPON_SETTING_KEYS_1.return)) _a.call(WEAPON_SETTING_KEYS_1);
+        }
+        finally { if (e_6) throw e_6.error; }
+    }
+    d.weaponDamagePct = clampPct(d.weaponDamagePct);
+    return d;
+}
+function normalizeWeapons(data, stats) {
+    var e_7, _a;
+    var result = {};
+    try {
+        for (var _b = __values(Object.keys(WEAPONS)), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var type = _c.value;
+            result[type] = cleanWeaponSettings(data === null || data === void 0 ? void 0 : data[type], type);
+        }
+    }
+    catch (e_7_1) { e_7 = { error: e_7_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_7) throw e_7.error; }
+    }
+    // Миграция из v6: текущий тип оружия уже мог иметь свой изменённый урон.
+    if (!data) {
+        var type = stats.weaponType;
+        result[type] = cleanWeaponSettings(stats, type);
+    }
+    return result;
+}
+function createCharacter(data, weapons) {
+    if (data === void 0) { data = {}; }
+    if (weapons === void 0) { weapons = null; }
+    var stats = cleanCharacterStats(data);
+    return { stats: stats, weapons: normalizeWeapons(weapons, stats) };
+}
+function normalizeCharacters(data) { if (!Array.isArray(data))
+    return []; return data.slice(0, MAX_CHARACTERS).filter(function (item) { return item && typeof item === 'object' && !Array.isArray(item); }).map(function (item) { return createCharacter(item.stats, item.weapons); }); }
+function applyActiveWeaponSettings() { var profile = characterProfiles[activeCharacterIndex]; if (!profile)
+    return; var type = WEAPONS[s.weaponType] ? s.weaponType : 'onehand'; Object.assign(s, profile.weapons[type] || defaultWeaponSettings(type)); }
+function snapshotActiveWeapon() { var profile = characterProfiles[activeCharacterIndex]; if (!profile)
+    return; var type = WEAPONS[s.weaponType] ? s.weaponType : 'onehand'; profile.weapons[type] = cleanWeaponSettings(s, type); }
+function snapshotActiveCharacter() {
+    var e_8, _a;
+    var profile = characterProfiles[activeCharacterIndex];
+    if (!profile)
+        return;
+    snapshotActiveWeapon();
+    try {
+        for (var CHARACTER_KEYS_2 = __values(CHARACTER_KEYS), CHARACTER_KEYS_2_1 = CHARACTER_KEYS_2.next(); !CHARACTER_KEYS_2_1.done; CHARACTER_KEYS_2_1 = CHARACTER_KEYS_2.next()) {
+            var key = CHARACTER_KEYS_2_1.value;
+            profile.stats[key] = s[key];
+        }
+    }
+    catch (e_8_1) { e_8 = { error: e_8_1 }; }
+    finally {
+        try {
+            if (CHARACTER_KEYS_2_1 && !CHARACTER_KEYS_2_1.done && (_a = CHARACTER_KEYS_2.return)) _a.call(CHARACTER_KEYS_2);
+        }
+        finally { if (e_8) throw e_8.error; }
+    }
+}
+function activeCharacterLabel(index) { var _a; var p = characterProfiles[index], name = String(((_a = p === null || p === void 0 ? void 0 : p.stats) === null || _a === void 0 ? void 0 : _a.characterName) || '').trim(); return name || "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 ".concat(index + 1); }
+function syncCharacterUI() {
+    var e_9, _a;
+    if (characterProfiles[activeCharacterIndex])
+        characterProfiles[activeCharacterIndex].stats.characterName = String(s.characterName || '').slice(0, 64);
+    var names = characterProfiles.map(function (p, i) { return "".concat(i + 1, ". ").concat(activeCharacterLabel(i)); });
+    var _loop_1 = function (id) {
+        var select = $(id);
+        select.replaceChildren();
+        names.forEach(function (name, i) { var opt = document.createElement('option'); opt.value = String(i); opt.textContent = name; select.append(opt); });
+        select.value = String(activeCharacterIndex);
+    };
+    try {
+        for (var _b = __values(['characterSelector', 'sideCharacterSelector', 'battleCharacterSelector']), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var id = _c.value;
+            _loop_1(id);
+        }
+    }
+    catch (e_9_1) { e_9 = { error: e_9_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_9) throw e_9.error; }
+    }
+    $('characterCountBadge').textContent = "".concat(characterProfiles.length, " / ").concat(MAX_CHARACTERS);
+    $('sideCharacterCount').textContent = "".concat(characterProfiles.length, " / ").concat(MAX_CHARACTERS);
+    $('characterAddBtn').disabled = characterProfiles.length >= MAX_CHARACTERS;
+    $('characterCloneBtn').disabled = characterProfiles.length >= MAX_CHARACTERS;
+    $('characterDeleteBtn').disabled = characterProfiles.length <= 1;
+}
+function selectCharacter(index) { index = Math.floor(Number(index)); if (!Number.isInteger(index) || index < 0 || index >= characterProfiles.length)
+    return; snapshotActiveCharacter(); activeCharacterIndex = index; Object.assign(s, characterProfiles[index].stats); applyActiveWeaponSettings(); syncControls(); render(); save(); $('rollReport').textContent = "\u0412\u044B\u0431\u0440\u0430\u043D \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 \u00AB".concat(activeCharacterName(), "\u00BB. \u041D\u0430\u0436\u043C\u0438 \u00AB\u0411\u0440\u043E\u0441\u0438\u0442\u044C d20\u00BB, \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0432\u0435\u0441\u0442\u0438 \u0430\u0442\u0430\u043A\u0443."); }
+function newCharacterName() { var i = 1; while (characterProfiles.some(function (p, index) { return activeCharacterLabel(index) === "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 ".concat(i); }))
+    i++; return "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 ".concat(i); }
+function addCharacter(copy) {
+    if (copy === void 0) { copy = false; }
+    if (characterProfiles.length >= MAX_CHARACTERS) {
+        toast('Достигнут предел: 6 персонажей');
+        return;
+    }
+    snapshotActiveCharacter();
+    var current = characterProfiles[activeCharacterIndex];
+    var p;
+    if (copy) {
+        p = createCharacter(__assign(__assign({}, current.stats), { characterName: (activeCharacterLabel(activeCharacterIndex) + ' (копия)').slice(0, 64) }), current.weapons);
+    }
+    else {
+        p = createCharacter(__assign(__assign({}, defaults), { characterName: newCharacterName() }));
+    }
+    characterProfiles.push(p);
+    selectCharacter(characterProfiles.length - 1);
+    toast(copy ? 'Персонаж продублирован' : 'Персонаж добавлен');
+}
+function removeCharacter() { if (characterProfiles.length <= 1)
+    return; if (!confirm("\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430 \u00AB".concat(activeCharacterName(), "\u00BB?")))
+    return; characterProfiles.splice(activeCharacterIndex, 1); activeCharacterIndex = Math.min(activeCharacterIndex, characterProfiles.length - 1); Object.assign(s, characterProfiles[activeCharacterIndex].stats); applyActiveWeaponSettings(); syncControls(); render(); save(); $('rollReport').textContent = 'Выбран другой персонаж. Проведи новую атаку.'; toast('Персонаж удалён'); }
+function normalizeHistory(data) { if (!Array.isArray(data))
+    return []; return data.slice(-MAX_HISTORY).filter(function (e) { return e && typeof e === 'object' && !Array.isArray(e) && ['hero', 'enemy'].includes(e.side) && ['attack', 'initiative'].includes(e.kind); }).map(function (e) { return ({ kind: e.kind, side: e.side, actor: String(e.actor || 'Участник').slice(0, 64), target: String(e.target || '').slice(0, 64), die: clamp(Math.floor(Number(e.die) || 1), 1, 20), bonus: num(e.bonus), dc: num(e.dc), hit: !!e.hit, damage: Math.max(0, num(e.damage)), hpBefore: typeof e.hpBefore === 'number' ? Math.max(0, num(e.hpBefore)) : null, hpAfter: typeof e.hpAfter === 'number' ? Math.max(0, num(e.hpAfter)) : null, hpMax: typeof e.hpMax === 'number' ? Math.max(0, num(e.hpMax)) : null, raw: typeof e.raw === 'number' ? Math.max(0, num(e.raw)) : null, afterProtection: typeof e.afterProtection === 'number' ? Math.max(0, num(e.afterProtection)) : null, style: String(e.style || '').slice(0, 100), stage: Array.isArray(e.stage) ? e.stage.slice(0, 15).map(function (a) { return [String((a === null || a === void 0 ? void 0 : a[0]) || '').slice(0, 90), String((a === null || a === void 0 ? void 0 : a[1]) || '').slice(0, 100)]; }) : [], time: String(e.time || new Date().toISOString()).slice(0, 40) }); }); }
+try {
+    var stored8 = JSON.parse(((_b = localStorage.getItem('tet_combat_v13') || localStorage.getItem('tet_combat_v12') || localStorage.getItem('tet_combat_v9')) !== null && _b !== void 0 ? _b : localStorage.getItem('tet_combat_v8')) || 'null');
+    var stored7 = stored8 !== null && stored8 !== void 0 ? stored8 : JSON.parse(localStorage.getItem('tet_combat_v7') || 'null');
+    var stored6 = stored7 !== null && stored7 !== void 0 ? stored7 : JSON.parse(localStorage.getItem('tet_combat_v6') || 'null');
+    var stored5 = stored6 !== null && stored6 !== void 0 ? stored6 : JSON.parse(localStorage.getItem('tet_combat_v5') || 'null');
+    var stored4 = stored5 !== null && stored5 !== void 0 ? stored5 : JSON.parse(localStorage.getItem('tet_combat_v4') || 'null');
+    if (stored4 && typeof stored4 === 'object' && !Array.isArray(stored4)) {
+        s = __assign(__assign({}, s), filterSettings(stored4.settings || {}));
+        enemyProfiles = normalizeEnemies(stored4.enemies);
+        activeEnemyIndex = Math.floor(Number(stored4.activeEnemyIndex) || 0);
+        characterProfiles = normalizeCharacters(stored4.characters);
+        activeCharacterIndex = Math.floor(Number(stored4.activeCharacterIndex) || 0);
+        combatHistory = normalizeHistory(stored4.combatHistory);
+    }
+    else {
+        var old = JSON.parse(localStorage.getItem('tet_combat_v3') || 'null');
+        if (old && typeof old === 'object' && !Array.isArray(old))
+            s = __assign(__assign({}, s), filterSettings(old));
+    }
+}
+catch (_c) { }
+if (!enemyProfiles.length)
+    enemyProfiles = [createEnemy(s, 'Противник 1')];
+activeEnemyIndex = Math.max(0, Math.min(enemyProfiles.length - 1, activeEnemyIndex));
+Object.assign(s, enemyProfiles[activeEnemyIndex].stats);
+applyActiveEnemyWeapon();
+if (!characterProfiles.length)
+    characterProfiles = [createCharacter(s)];
+activeCharacterIndex = Math.max(0, Math.min(characterProfiles.length - 1, activeCharacterIndex));
+Object.assign(s, characterProfiles[activeCharacterIndex].stats);
+applyActiveWeaponSettings();
+var lastData = null;
+function activeEnemyName() { var _a; return ((_a = enemyProfiles[activeEnemyIndex]) === null || _a === void 0 ? void 0 : _a.name) || "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A ".concat(activeEnemyIndex + 1); }
+function activeCharacterName() { return String(s.characterName || '').trim().slice(0, 64) || activeCharacterLabel(activeCharacterIndex); }
+function snapshotActiveEnemy() {
+    var e_10, _a;
+    if (!enemyProfiles[activeEnemyIndex])
+        return;
+    snapshotActiveEnemyWeapon();
+    try {
+        for (var TARGET_KEYS_2 = __values(TARGET_KEYS), TARGET_KEYS_2_1 = TARGET_KEYS_2.next(); !TARGET_KEYS_2_1.done; TARGET_KEYS_2_1 = TARGET_KEYS_2.next()) {
+            var key = TARGET_KEYS_2_1.value;
+            enemyProfiles[activeEnemyIndex].stats[key] = s[key];
+        }
+    }
+    catch (e_10_1) { e_10 = { error: e_10_1 }; }
+    finally {
+        try {
+            if (TARGET_KEYS_2_1 && !TARGET_KEYS_2_1.done && (_a = TARGET_KEYS_2.return)) _a.call(TARGET_KEYS_2);
+        }
+        finally { if (e_10) throw e_10.error; }
+    }
+}
+function syncEnemyUI() {
+    var e_11, _a;
+    var names = enemyProfiles.map(function (p, i) { return "".concat(i + 1, ". ").concat(p.name); });
+    var _loop_2 = function (id) {
+        var select = $(id);
+        select.replaceChildren();
+        names.forEach(function (name, i) { var opt = document.createElement('option'); opt.value = String(i); opt.textContent = name; select.append(opt); });
+        select.value = String(activeEnemyIndex);
+    };
+    try {
+        for (var _b = __values(['enemySelector', 'sideEnemySelector', 'battleEnemySelector']), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var id = _c.value;
+            _loop_2(id);
+        }
+    }
+    catch (e_11_1) { e_11 = { error: e_11_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_11) throw e_11.error; }
+    }
+    $('enemyNameInput').value = enemyProfiles[activeEnemyIndex].name;
+    $('enemyCountBadge').textContent = "".concat(enemyProfiles.length, " / ").concat(MAX_ENEMIES);
+    $('sideEnemyCount').textContent = "".concat(enemyProfiles.length, " / ").concat(MAX_ENEMIES);
+    $('enemyAddBtn').disabled = enemyProfiles.length >= MAX_ENEMIES;
+    $('enemyCloneBtn').disabled = enemyProfiles.length >= MAX_ENEMIES;
+    $('enemyDeleteBtn').disabled = enemyProfiles.length <= 1;
+    $('resultTarget').textContent = activeEnemyName();
+}
+function selectEnemy(index) {
+    index = Math.floor(Number(index));
+    if (!Number.isInteger(index) || index < 0 || index >= enemyProfiles.length)
+        return;
+    snapshotActiveEnemy();
+    activeEnemyIndex = index;
+    Object.assign(s, enemyProfiles[index].stats);
+    applyActiveEnemyWeapon();
+    syncControls();
+    render();
+    save();
+    $('rollReport').textContent = "\u0412\u044B\u0431\u0440\u0430\u043D \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A \u00AB".concat(activeEnemyName(), "\u00BB. \u041D\u0430\u0436\u043C\u0438 \u00AB\u0411\u0440\u043E\u0441\u0438\u0442\u044C d20\u00BB, \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0432\u0435\u0441\u0442\u0438 \u0430\u0442\u0430\u043A\u0443.");
+}
+function newEnemyName() { var i = 1; while (enemyProfiles.some(function (p) { return p.name === "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A ".concat(i); }))
+    i++; return "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A ".concat(i); }
+function addEnemy(copy) {
+    if (copy === void 0) { copy = false; }
+    if (enemyProfiles.length >= MAX_ENEMIES) {
+        toast('Достигнут предел: 20 противников');
+        return;
+    }
+    snapshotActiveEnemy();
+    var current = enemyProfiles[activeEnemyIndex];
+    var stats = copy ? __assign({}, current.stats) : cleanEnemyStats({});
+    var name = copy ? "".concat(current.name.slice(0, 38), " (\u043A\u043E\u043F\u0438\u044F)") : newEnemyName();
+    enemyProfiles.push(createEnemy(stats, name, copy ? current.weapons : null));
+    selectEnemy(enemyProfiles.length - 1);
+    toast(copy ? 'Противник скопирован' : 'Новый противник добавлен');
+}
+function removeEnemy() {
+    if (enemyProfiles.length <= 1)
+        return;
+    if (!confirm("\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430 \u00AB".concat(activeEnemyName(), "\u00BB?")))
+        return;
+    enemyProfiles.splice(activeEnemyIndex, 1);
+    activeEnemyIndex = Math.min(activeEnemyIndex, enemyProfiles.length - 1);
+    Object.assign(s, enemyProfiles[activeEnemyIndex].stats);
+    applyActiveEnemyWeapon();
+    syncControls();
+    render();
+    save();
+    $('rollReport').textContent = 'Выбран другой противник. Проведи новую атаку.';
+    toast('Противник удалён');
+}
+function resetAll() { s = __assign({}, defaults); enemyProfiles = [createEnemy(s, 'Противник 1')]; activeEnemyIndex = 0; characterProfiles = [createCharacter(s)]; activeCharacterIndex = 0; combatHistory = []; syncControls(); render(); renderHistory(); save(); }
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+function num(x, fallback) {
+    if (fallback === void 0) { fallback = 0; }
+    var n = Number(x);
+    return Number.isFinite(n) ? n : fallback;
+}
+function n(k) { var _a; return num(s[k], (_a = defaults[k]) !== null && _a !== void 0 ? _a : 0); }
+function fmt(v, maximum) {
+    if (maximum === void 0) { maximum = 1; }
+    if (typeof v === 'string')
+        return v;
+    return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: maximum }).format(v);
+}
+function cInt(k, min, max) {
+    if (min === void 0) { min = 0; }
+    if (max === void 0) { max = 1000; }
+    return Math.floor(clamp(n(k), min, max));
+}
+function statMini(name, v, minor, color) {
+    if (minor === void 0) { minor = ''; }
+    if (color === void 0) { color = ''; }
+    return "<div class=\"statbox\"><div class=\"label\">".concat(name, "</div><div class=\"value ").concat(color, "\">").concat(fmt(v), "</div>").concat(minor ? "<div class=\"minor\">".concat(minor, "</div>") : '', "</div>");
+}
+function card(name, val, minor) {
+    if (minor === void 0) { minor = ''; }
+    return statMini(name, val, minor);
+}
+function statInput(label, key, description) { return "<div class=\"field combo\"><div class=\"combohead\"><label class=\"fieldlabel\" for=\"".concat(key, "_n\">").concat(label, "</label><input aria-label=\"").concat(label, "\" type=\"number\" id=\"").concat(key, "_n\" min=\"0\" max=\"1000\" step=\"1\" data-bind=\"").concat(key, "\"></div><input type=\"range\" min=\"0\" max=\"200\" step=\"1\" aria-label=\"\u041F\u043E\u043B\u0437\u0443\u043D\u043E\u043A: ").concat(label, "\" data-bind=\"").concat(key, "\"><div class=\"note\">").concat(description, "</div></div>"); }
+function resistanceInputs(prefix) { return EL.map(function (e) { return "<div class=\"field\"><label for=\"".concat(prefix, "_").concat(e.id, "\">").concat(e.name, "</label><input id=\"").concat(prefix, "_").concat(e.id, "\" aria-label=\"").concat(e.short, "\" data-bind=\"").concat(prefix, "_").concat(e.id, "\" type=\"number\" min=\"0\" max=\"100\" step=\"1\"><span class=\"tiny\" style=\"text-align:center\">%</span></div>"); }).join(''); }
+function init() {
+    var e_12, _a, e_13, _b, e_14, _c, e_15, _d;
+    var status = document.getElementById("tetStartupStatus");
+    if (status) {
+        status.textContent = "Калькулятор подключён. Кнопки и расчёты активны.";
+        status.className = "tet-startup good";
+    }
+    $('playerStats').innerHTML = [['Сила', 'str', 'Урон, HP, прочность тела'], ['Ловкость', 'dex', 'Уклонение, точность, смягчение ударов'], ['Восприятие', 'per', 'Точность, уклонение, инициатива'], ['Скорость', 'spd', 'Движение, удары, действия'], ['Интеллект', 'int', 'Мана, магия, маг. защита'], ['Мудрость', 'wis', 'Магическая защита и возможная магия'], ['Харизма', 'cha', 'Магия Харизмы и социальные навыки']].map(function (x) { return statInput.apply(void 0, __spreadArray([], __read(x), false)); }).join('');
+    $('targetStats').innerHTML = [['Сила', 'targetStr', 'Физическое сопротивление'], ['Ловкость', 'targetDex', 'Уклонение и сопротивление'], ['Восприятие', 'targetPer', 'Уклонение'], ['Интеллект', 'targetInt', 'Защита от магии'], ['Мудрость', 'targetWis', 'Защита от магии'], ['Скорость', 'targetSpd', 'Бонусы атак и скорость движения'], ['Харизма', 'targetCha', 'Магия Харизмы']].map(function (x) { return statInput.apply(void 0, __spreadArray([], __read(x), false)); }).join('');
+    try {
+        for (var _e = __values(['ownElements', 'ownStatuses', 'targetElements', 'targetStatuses']), _f = _e.next(); !_f.done; _f = _e.next()) {
+            var id = _f.value;
+            $(id).innerHTML = resistanceInputs(({ ownElements: 'ownElem', ownStatuses: 'ownStatus', targetElements: 'targetElem', targetStatuses: 'targetStatus' })[id]);
+        }
+    }
+    catch (e_12_1) { e_12 = { error: e_12_1 }; }
+    finally {
+        try {
+            if (_f && !_f.done && (_a = _e.return)) _a.call(_e);
+        }
+        finally { if (e_12) throw e_12.error; }
+    }
+    try {
+        for (var _g = __values(['attackElement', 'staffElement', 'incomingElement', 'enemyStaffElement', 'enemySpellElement']), _h = _g.next(); !_h.done; _h = _g.next()) {
+            var id = _h.value;
+            $(id).innerHTML = EL.map(function (e) { return "<option value=\"".concat(e.id, "\">").concat(e.name, "</option>"); }).join('');
+        }
+    }
+    catch (e_13_1) { e_13 = { error: e_13_1 }; }
+    finally {
+        try {
+            if (_h && !_h.done && (_b = _g.return)) _b.call(_g);
+        }
+        finally { if (e_13) throw e_13.error; }
+    }
+    $('targetWeaponType').innerHTML = ['Ближний бой', 'Дальнобойное', 'Магические посохи'].map(function (group) { return "<optgroup label=\"".concat(group, "\">") + Object.entries(WEAPONS).filter(function (_a) {
+        var _b = __read(_a, 2), k = _b[0], v = _b[1];
+        return v.group === group;
+    }).map(function (_a) {
+        var _b = __read(_a, 2), k = _b[0], v = _b[1];
+        return "<option value=\"".concat(k, "\">").concat(v.name, "</option>");
+    }).join('') + '</optgroup>'; }).join('');
+    $('weaponType').innerHTML = ['Ближний бой', 'Дальнобойное', 'Магические посохи'].map(function (group) { return "<optgroup label=\"".concat(group, "\">") + Object.entries(WEAPONS).filter(function (_a) {
+        var _b = __read(_a, 2), k = _b[0], v = _b[1];
+        return v.group === group;
+    }).map(function (_a) {
+        var _b = __read(_a, 2), k = _b[0], v = _b[1];
+        return "<option value=\"".concat(k, "\">").concat(v.name, "</option>");
+    }).join('') + '</optgroup>'; }).join('');
+    document.querySelectorAll('[data-bind]').forEach(function (el) {
+        var key = el.dataset.bind;
+        setControl(el, s[key]);
+        el.addEventListener(el.type === 'range' ? 'input' : (el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'input'), function () {
+            if (key === 'weaponType')
+                snapshotActiveWeapon();
+            if (key === 'targetWeaponType')
+                snapshotActiveEnemyWeapon();
+            var priorHPMax = s.targetHPMax, priorHPNow = s.targetHPNow;
+            if (el.type === 'checkbox')
+                s[key] = el.checked;
+            else if (el.type === 'number' || el.type === 'range') {
+                var raw = el.value;
+                if (raw === '')
+                    return;
+                var min = el.min !== '' ? Number(el.min) : -1000000000, max = el.max !== '' ? Number(el.max) : 1000000000;
+                s[key] = clamp(num(raw), min, max);
+            }
+            else
+                s[key] = el.value;
+            if (key === 'weaponType')
+                applyActiveWeaponSettings();
+            if (key === 'targetWeaponType')
+                applyActiveEnemyWeapon();
+            if (key === 'targetHPMax') { s.targetHPMax = Math.max(1, Math.floor(num(s.targetHPMax,150))); s.targetHPNow = priorHPNow === priorHPMax ? s.targetHPMax : Math.min(s.targetHPMax, Math.max(0, Math.floor(num(s.targetHPNow, s.targetHPMax)))); }
+            if (key === 'targetHPNow') { s.targetHPNow = clamp(Math.floor(num(s.targetHPNow, 0)), 0, Math.max(1, n('targetHPMax'))); }
+            if (key === 'heroHPNow') { s.heroHPNow = clamp(Math.floor(num(s.heroHPNow,0)), 0, own().hp); }
+            if (TARGET_KEYS.includes(key))
+                snapshotActiveEnemy();
+            syncControls(el);
+            render();
+            save();
+        });
+    });
+    document.querySelectorAll('[data-tab]').forEach(function (btn) { return btn.addEventListener('click', function () { return showTab(btn.dataset.tab); }); });
+    document.querySelectorAll('[data-goto]').forEach(function (btn) { return btn.addEventListener('click', function () { return showTab(btn.dataset.goto); }); });
+    $('rollBtn').addEventListener('click', rollAttack);
+    $('battlePlayerRollBtn').addEventListener('click', rollAttack);
+    $('battleEnemyRollBtn').addEventListener('click', rollEnemyAttack);
+    $('heroHealFullBtn').addEventListener('click', function () { s.heroHPNow = -1; syncControls(); render(); save(); toast('HP героя восстановлены'); });
+    $('enemyHealFullBtn').addEventListener('click', function () { s.targetHPNow = s.targetHPMax; snapshotActiveEnemy(); syncControls(); render(); save(); toast('HP противника восстановлены'); });
+    $('battleHeroInitBtn').addEventListener('click', function () { return rollInitiative('hero'); });
+    $('battleEnemyInitBtn').addEventListener('click', function () { return rollInitiative('enemy'); });
+    $('copyHistoryBtn').addEventListener('click', copyHistory);
+    $('clearHistoryBtn').addEventListener('click', function () { if (!combatHistory.length)
+        return; if (confirm('Удалить всю историю боевых бросков?')) {
+        combatHistory = [];
+        renderHistory();
+        save();
+        toast('История бросков очищена');
+    } });
+    $('historyFilter').addEventListener('change', renderHistory);
+    $('copyBtn').addEventListener('click', copyResult);
+    $('exportBtn').addEventListener('click', exportSettings);
+    $('importBtn').addEventListener('click', function () { return $('importInput').click(); });
+    $('importInput').addEventListener('change', importSettings);
+    $('resetBtn').addEventListener('click', function () { if (confirm('Сбросить персонажей, настройки оружия, противников и всю историю бросков?')) {
+        resetAll();
+        $('rollReport').textContent = 'Бросок ещё не выполнен.';
+        toast('Настройки сброшены');
+    } });
+    try {
+        for (var _j = __values(['enemySelector', 'sideEnemySelector', 'battleEnemySelector']), _k = _j.next(); !_k.done; _k = _j.next()) {
+            var id = _k.value;
+            $(id).addEventListener('change', function (event) { return selectEnemy(event.target.value); });
+        }
+    }
+    catch (e_14_1) { e_14 = { error: e_14_1 }; }
+    finally {
+        try {
+            if (_k && !_k.done && (_c = _j.return)) _c.call(_j);
+        }
+        finally { if (e_14) throw e_14.error; }
+    }
+    $('characterName').addEventListener('blur', function () { s.characterName = String(s.characterName || '').trim().slice(0, 64); syncControls(); render(); save(); });
+    try {
+        for (var _l = __values(['characterSelector', 'sideCharacterSelector', 'battleCharacterSelector']), _m = _l.next(); !_m.done; _m = _l.next()) {
+            var id = _m.value;
+            $(id).addEventListener('change', function (event) { return selectCharacter(event.target.value); });
+        }
+    }
+    catch (e_15_1) { e_15 = { error: e_15_1 }; }
+    finally {
+        try {
+            if (_m && !_m.done && (_d = _l.return)) _d.call(_l);
+        }
+        finally { if (e_15) throw e_15.error; }
+    }
+    $('characterAddBtn').addEventListener('click', function () { return addCharacter(false); });
+    $('characterCloneBtn').addEventListener('click', function () { return addCharacter(true); });
+    $('characterDeleteBtn').addEventListener('click', removeCharacter);
+    $('enemyNameInput').addEventListener('input', function (event) { enemyProfiles[activeEnemyIndex].name = event.target.value.slice(0, 48); syncEnemyUI(); render(); save(); });
+    $('enemyNameInput').addEventListener('blur', function () { if (!enemyProfiles[activeEnemyIndex].name.trim())
+        enemyProfiles[activeEnemyIndex].name = "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A ".concat(activeEnemyIndex + 1);
+    else
+        enemyProfiles[activeEnemyIndex].name = enemyProfiles[activeEnemyIndex].name.trim(); syncEnemyUI(); render(); save(); });
+    $('enemyAddBtn').addEventListener('click', function () { return addEnemy(false); });
+    $('enemyCloneBtn').addEventListener('click', function () { return addEnemy(true); });
+    $('enemyDeleteBtn').addEventListener('click', removeEnemy);
+    syncControls();
+    render();
+    renderHistory();
+}
+function setControl(el, value) { if (el.dataset && el.dataset.bind === 'heroHPNow') value = heroHPValue(own().hp); if (el.type === 'checkbox') {
+    el.checked = Boolean(value);
+}
+else {
+    if (el.type === 'range')
+        el.max = String(Math.max(200, Math.ceil(num(value) / 50) * 50));
+    el.value = value !== null && value !== void 0 ? value : '';
+} }
+function syncControls(except) {
+    if (except === void 0) { except = null; }
+    document.querySelectorAll('[data-bind]').forEach(function (el) { if (el === except)
+        return; setControl(el, s[el.dataset.bind]); });
+}
+function showTab(tab) { document.querySelectorAll('.tab').forEach(function (btn) { return btn.classList.toggle('active', btn.dataset.tab === tab); }); document.querySelectorAll('.tabpanel').forEach(function (p) { return p.hidden = p.id !== 'panel-' + tab; }); document.querySelector('.tabs').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+function physRes(str, dex, immobile) {
+    if (immobile === void 0) { immobile = false; }
+    var sr = Math.min(35, Math.max(0, str - 5)), dr = immobile ? 0 : Math.min(25, Math.max(0, dex - 5));
+    return { fromStr: sr, fromDex: dr, total: Math.min(50, sr + dr) };
+}
+function magicDefense(int, wis) { return clamp(Math.floor(wis * n('wisMagicRate') + int * n('intMagicRate')), 0, n('magicDefenseCap')); }
+function strengthDamage(str) { if (str <= 10)
+    return 5 + 2 * str; var raw = 25 * Math.pow(2, (str - 10) / 10); return Number.isFinite(raw) ? Math.round(raw) : Number.MAX_SAFE_INTEGER; }
+function heroHPValue(hpMax) {
+    var stored = Number(s.heroHPNow);
+    if (!Number.isFinite(stored) || stored < 0) return hpMax; // old v11 saves start at full HP
+    return Math.floor(clamp(stored, 0, hpMax));
+}
+function own() {
+    var lev = cInt('level', 1, 1000), str = cInt('str'), dex = cInt('dex'), per = cInt('per'), spd = cInt('spd'), int = cInt('int'), wis = cInt('wis'), cha = cInt('cha');
+    var hpMax = Math.max(0, 30 + lev * n('hpPerLevel') + 10 * str + n('extraHP'));
+    var baseStam = s.race === 'human' ? 100 : s.race === 'elf' ? 150 : s.race === 'dwarf' ? 200 : n('customRaceStamina');
+    return { lev: lev, str: str, dex: dex, per: per, spd: spd, int: int, wis: wis, cha: cha, hp: hpMax, hpNow: heroHPValue(hpMax),
+        stamina: Math.max(0, baseStam + lev * n('stamPerLevel') + str * n('stamPerStr') + dex * n('stamPerDex') + n('extraStamina')),
+        mana: Math.max(0, n('baseMana') + lev * n('manaPerLevel') + int * n('manaPerInt') + n('extraMana')),
+        dodge: dex + Math.floor(per / 3), accuracy: per + Math.floor(dex / 3), speedKmh: 4 * spd, actions: 1 + Math.floor(spd / Math.max(1, n('actionStep'))), initiative: per,
+        physical: physRes(str, dex, s.immobile), magicDefense: magicDefense(int, wis), fistDamage: strengthDamage(str), armor: Math.max(0, n('armor')), magicArmor: Math.max(0, n('magicArmor')) };
+}
+function target() { var str = cInt('targetStr'), dex = cInt('targetDex'), per = cInt('targetPer'), int = cInt('targetInt'), wis = cInt('targetWis'), spd = cInt('targetSpd'), cha = cInt('targetCha'); var autoDodge = dex + Math.floor(per / 3); var physical = physRes(str, dex, s.targetImmobile); return { str: str, dex: dex, per: per, int: int, wis: wis, spd: spd, cha: cha, hpMax: Math.max(1, Math.floor(n('targetHPMax'))), hpNow: clamp(Math.floor(n('targetHPNow')), 0, Math.max(1, Math.floor(n('targetHPMax')))), accuracy: per + Math.floor(dex / 3), fistDamage: strengthDamage(str), autoDodge: autoDodge, dodge: s.targetDodgeOverride ? n('targetDodgeValue') : autoDodge, physical: physical, res: Math.min(50, Math.max(0, s.targetResOverride ? n('targetResValue') : physical.total)), magicDefense: s.targetMagicOverride ? clamp(n('targetMagicValue'), 0, 100) : magicDefense(int, wis), armor: Math.max(0, n('targetArmor')), magicArmor: Math.max(0, n('targetMagicArmor')) }; }
+function speedDmgBonus(spd) { return s.speedDamageOn ? Math.max(0, Math.floor((spd - n('speedDamageThreshold')) / Math.max(1, n('speedDamageStep')))) * n('speedDamagePct') : 0; }
+function speedHitBonus(spd) { return s.speedHitOn ? Math.min(n('speedHitMax'), Math.floor(spd / Math.max(1, n('speedHitStep')))) : 0; }
+function chanceToHit(attack, defense) { var hits = 0; for (var d = 1; d <= 20; d++)
+    if (d === 20 || (d !== 1 && d + attack >= defense))
+        hits++; return hits * 5; }
+function magicElemRes(prefix, element) { return clamp(n(prefix + '_' + element), 0, 100); }
+function damageAfterDefense(raw, type, def, pen, spellPen, element, elemPrefix) {
+    if (pen === void 0) { pen = 0; }
+    if (spellPen === void 0) { spellPen = 0; }
+    if (element === void 0) { element = 'fire'; }
+    if (elemPrefix === void 0) { elemPrefix = 'targetElem'; }
+    var stage = [];
+    var v = Math.max(0, raw);
+    stage.push(['Исходный урон', fmt(v)]);
+    if (type === 'fist')
+        stage.push(['Обычная броня', 'Игнорируется полностью']);
+    else if (type === 'weapon') {
+        var block = Math.max(0, def.armor - Math.max(0, pen));
+        v = Math.max(0, v - block);
+        stage.push(['Обычная броня после пробития', "\u2212".concat(fmt(block), " \u2192 ").concat(fmt(v))]);
+    }
+    else
+        stage.push(['Обычная броня', 'Обходится магией']);
+    var mb = Math.max(0, def.magicArmor - (type === 'magic' ? Math.max(0, spellPen) : 0));
+    v = Math.max(0, v - mb);
+    stage.push(['Магическая броня', "\u2212".concat(fmt(mb), " \u2192 ").concat(fmt(v))]);
+    if (type === 'magic') {
+        var mres = clamp(def.magicDefense, 0, 100);
+        v *= 1 - mres / 100;
+        stage.push(['Защита от магии', "\u2212".concat(fmt(mres), "% \u2192 ").concat(fmt(v))]);
+        var elRes = magicElemRes(elemPrefix, element);
+        v *= 1 - elRes / 100;
+        stage.push(['Сопротивление стихии', "\u2212".concat(fmt(elRes), "% \u2192 ").concat(fmt(v))]);
+    }
+    else {
+        var r = clamp(def.res, 0, 50);
+        v *= 1 - r / 100;
+        stage.push(['Физическое сопротивление', "\u2212".concat(fmt(r), "% \u2192 ").concat(fmt(v))]);
+    }
+    var final = Math.max(0, Math.ceil(v - 1e-9));
+    stage.push(['Итоговый урон', fmt(final)]);
+    return { final: final, stage: stage };
+}
+function getAttack(me, t) {
+    var _a, _b;
+    var mode = s.attackType;
+    var base = 0, scale = 0, masterBonus = 0, masterHit = 0, hitWeapon = 0;
+    var w = WEAPONS[s.weaponType] || WEAPONS.onehand;
+    var effectiveType = mode === 'weapon' ? (w.kind === 'magic' ? 'magic' : 'weapon') : mode;
+    var melee = mode === 'fist' || (mode === 'weapon' && w.kind === 'melee');
+    var ranged = mode === 'weapon' && w.kind === 'ranged';
+    var magicStaff = mode === 'weapon' && w.kind === 'magic';
+    if (mode === 'fist') {
+        base = me.fistDamage;
+        var mastery = Number(s.fistMastery) || 0;
+        masterBonus = ((_a = [0, 20, 35, 50][mastery]) !== null && _a !== void 0 ? _a : 0);
+        masterHit = ((_b = [-2, -2, -1, 0][mastery]) !== null && _b !== void 0 ? _b : -2);
+        hitWeapon = masterHit;
+    }
+    else if (mode === 'weapon') {
+        base = Math.max(0, n('weaponBase'));
+        scale = w.scale(me);
+        hitWeapon = w.hit + n('extraHit');
+    }
+    else {
+        base = Math.max(0, n('spellBase'));
+        scale = me[s.spellStat] * n('spellStatScale');
+    }
+    var first = base + scale;
+    var weaponPct = mode === 'weapon' ? clampPct(n('weaponDamagePct')) : 0;
+    var afterWeaponPct = first * (1 + weaponPct / 100);
+    var speedPct = melee ? speedDmgBonus(me.spd) : 0;
+    var chargePct = melee && s.charge ? (mode === 'fist' ? n('fistChargePct') : n('chargePct')) : 0;
+    var afterMaster = afterWeaponPct * (1 + masterBonus / 100);
+    var afterSpeed = afterMaster * (1 + speedPct / 100);
+    var afterCharge = afterSpeed * (1 + chargePct / 100);
+    var raw = Math.max(0, Math.ceil(afterCharge - 1e-9));
+    var speedHit = melee ? speedHitBonus(me.spd) : 0;
+    var hitBonus = hitWeapon + speedHit + n('otherHitBonus');
+    var targetDC = 11 + t.dodge, attackTotal = me.accuracy + hitBonus;
+    var hit = chanceToHit(attackTotal, targetDC);
+    var autoPen = mode === 'weapon' && w.pen ? w.pen(me) : 0;
+    var physicalPen = mode === 'weapon' && w.kind !== 'magic' ? Math.max(0, n('weaponPen')) + autoPen : 0;
+    var magicPen = magicStaff ? Math.max(0, n('staffMagicPen')) : mode === 'magic' ? Math.max(0, n('spellPen')) : 0;
+    var damage = damageAfterDefense(raw, effectiveType, t, physicalPen, magicPen, s.element, 'targetElem');
+    if (mode === 'weapon')
+        damage.stage.splice(1, 0, ['Процентный урон оружия', "".concat(weaponPct >= 0 ? '+' : '').concat(fmt(weaponPct), "% \u00B7 ").concat(fmt(first), " \u2192 ").concat(fmt(afterWeaponPct))]);
+    var statusChance = mode === 'magic' ? clamp(n('statusChance'), 0, 100) * (1 - magicElemRes('targetStatus', s.element) / 100) : 0;
+    return { mode: mode, effectiveType: effectiveType, melee: melee, ranged: ranged, magicStaff: magicStaff, base: base, scale: scale, masterBonus: masterBonus, first: first, weaponPct: weaponPct, afterWeaponPct: afterWeaponPct, speedPct: speedPct, chargePct: chargePct, raw: raw, hit: hit, hitBonus: hitBonus, weaponHit: hitWeapon, speedHit: speedHit, attackTotal: attackTotal, targetDC: targetDC, damage: damage, statusChance: statusChance, physicalPen: physicalPen, autoPen: autoPen, magicPen: magicPen, roundDmg: damage.final * hit / 100 * me.actions, expected: damage.final * hit / 100, w: w };
+}
+function getEnemyAttack(enemy, hero) {
+    var _a, _b;
+    var mode = s.targetAttackType;
+    var w = WEAPONS[s.targetWeaponType] || WEAPONS.onehand;
+    var effectiveType = mode === 'weapon' ? (w.kind === 'magic' ? 'magic' : 'weapon') : mode;
+    var melee = mode === 'fist' || (mode === 'weapon' && w.kind === 'melee');
+    var magicStaff = mode === 'weapon' && w.kind === 'magic';
+    var base = 0, scale = 0, master = 0, weaponHit = 0;
+    if (mode === 'fist') {
+        base = enemy.fistDamage;
+        var mastery = clamp(Math.floor(num(s.targetFistMastery)), 0, 3);
+        master = [0, 20, 35, 50][mastery];
+        weaponHit = [-2, -2, -1, 0][mastery];
+    }
+    else if (mode === 'weapon') {
+        base = Math.max(0, n('targetWeaponBase'));
+        scale = w.scale(enemy);
+        weaponHit = w.hit + n('targetExtraHit');
+    }
+    else {
+        base = Math.max(0, n('targetSpellBase'));
+        scale = enemy[['int', 'wis', 'cha'].includes(s.targetSpellStat) ? s.targetSpellStat : 'int'] * n('spellStatScale');
+    }
+    var weaponPct = mode === 'weapon' ? clampPct(n('targetWeaponDamagePct')) : 0;
+    var afterWeaponPct = (base + scale) * (1 + weaponPct / 100);
+    var speedPct = melee && s.targetSpeedDamageOn ? Math.max(0, Math.floor((enemy.spd - n('speedDamageThreshold')) / Math.max(1, n('speedDamageStep')))) * n('speedDamagePct') : 0;
+    var chargePct = melee && s.targetCharge ? (mode === 'fist' ? n('fistChargePct') : n('chargePct')) : 0;
+    var raw = Math.max(0, Math.ceil(afterWeaponPct * (1 + master / 100) * (1 + speedPct / 100) * (1 + chargePct / 100) - 1e-9));
+    var speedHit = melee && s.targetSpeedHitOn ? Math.min(n('speedHitMax'), Math.floor(enemy.spd / Math.max(1, n('speedHitStep')))) : 0;
+    var hitBonus = weaponHit + speedHit + n('targetOtherHitBonus');
+    var attackTotal = enemy.accuracy + hitBonus;
+    var targetDC = 11 + hero.dodge;
+    var hit = chanceToHit(attackTotal, targetDC);
+    var autoPen = mode === 'weapon' && w.pen ? w.pen(enemy) : 0;
+    var physicalPen = mode === 'weapon' && w.kind !== 'magic' ? Math.max(0, n('targetWeaponPen')) + autoPen : 0;
+    var magicPen = magicStaff ? Math.max(0, n('targetStaffMagicPen')) : mode === 'magic' ? Math.max(0, n('targetSpellPen')) : 0;
+    var def = { armor: hero.armor, magicArmor: hero.magicArmor, res: hero.physical.total, magicDefense: hero.magicDefense };
+    var damage = damageAfterDefense(raw, effectiveType, def, physicalPen, magicPen, s.targetElement, 'ownElem');
+    if (mode === 'weapon')
+        damage.stage.splice(1, 0, ['Процентный урон оружия', "".concat(weaponPct >= 0 ? '+' : '').concat(fmt(weaponPct), "% \u00B7 ").concat(fmt(base + scale), " \u2192 ").concat(fmt(afterWeaponPct))]);
+    var style = mode === 'fist' ? 'Кулаки' : mode === 'magic' ? "\u041C\u0430\u0433\u0438\u044F \u00B7 ".concat(((_a = EL.find(function (x) { return x.id === s.targetElement; })) === null || _a === void 0 ? void 0 : _a.short) || 'Стихия') : w.name + (magicStaff ? ' · ' + (((_b = EL.find(function (x) { return x.id === s.targetElement; })) === null || _b === void 0 ? void 0 : _b.short) || 'Стихия') : '');
+    return { mode: mode, effectiveType: effectiveType, melee: melee, magicStaff: magicStaff, base: base, scale: scale, master: master, weaponPct: weaponPct, afterWeaponPct: afterWeaponPct, raw: raw, speedPct: speedPct, chargePct: chargePct, hitBonus: hitBonus, attackTotal: attackTotal, targetDC: targetDC, hit: hit, damage: damage, physicalPen: physicalPen, magicPen: magicPen, style: style };
+}
+function escapeVisible(text) { return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+function quickStat(label, value, css, desc) {return '<div class="quickbox"><div class="quicklabel">'+escapeVisible(label)+'</div><div class="quickvalue '+css+'">'+escapeVisible(value)+'</div><div class="quicknote">'+escapeVisible(desc)+'</div></div>';}
+function signed(v) {return (v >= 0 ? '+' : '')+fmt(v);}
+function duelCard(name, isEnemy, person, attack, defenderDodge, hpText) {
+    var required = attack.targetDC - attack.attackTotal;
+    var rollNeeded = required <= 2 ? '2+ (1 — промах)' : required > 19 ? '20 (автопопадание)' : fmt(required)+'+';
+    var defenderName = isEnemy ? 'героя' : 'врага';
+    var maxHP = isEnemy ? person.hpMax : person.hp;
+    var sideName = isEnemy ? '⚔️ Враг атакует героя' : '🛡 Герой атакует врага';
+    function metric(name, value, cls, note) {
+      return '<div class="duel-stat"><span>'+escapeVisible(name)+'</span><strong class="'+(cls||'')+'">'+escapeVisible(value)+'</strong>'+(note?'<small>'+escapeVisible(note)+'</small>':'')+'</div>';
+    }
+    return '<div class="duel-title">'+sideName+'</div>'+
+      '<div class="duel-sub"><strong>'+escapeVisible(name)+'</strong> · '+escapeVisible(hpText)+'</div>'+
+      '<div class="duel-hp"><span>❤️ HP атакующего</span><strong>'+fmt(person.hpNow)+' / '+fmt(maxHP)+'</strong></div>'+
+      '<div class="duel-hp-track"><div class="duel-hp-fill" style="width:'+Math.max(0,Math.min(100,100*person.hpNow/Math.max(1,maxHP)))+'%"></div></div>'+
+      '<div class="duel-stats">'+
+      metric('🎯 Точность', fmt(person.accuracy), 'blue', 'Атакующий')+
+      metric('🛡 Уклонение', fmt(person.dodge), '', 'Его собственная защита')+
+      metric('🎯 Шанс попасть', fmt(attack.hit)+'%', 'green', 'По выбранной цели')+
+      metric('🎲 Бонус к броску', signed(attack.hitBonus), '', 'Оружие + Скорость + прочее')+
+      metric('💥 Урон до защиты', fmt(attack.raw), 'orange', 'До брони и сопротивлений')+
+      metric('❤️ Урон по факту', fmt(attack.damage.final), 'green', 'После защиты при попадании')+
+      metric('🏃 Скорость', fmt(person.spd*4)+' км/ч', '', 'Максимальная')+
+      metric('⚡ Инициатива', 'd20 + '+fmt(person.per), '', 'По Восприятию')+
+      '</div>'+
+      '<div class="duel-formula">🎲 Бросок: <strong>d20 + '+fmt(person.accuracy)+' (точность) '+signed(attack.hitBonus)+' (бонус) = d20 + '+fmt(attack.attackTotal)+'</strong><br>Базовая сложность попадания: <strong>11</strong> + уклонение '+defenderName+' <strong>'+fmt(defenderDodge)+'</strong> = <strong>'+fmt(attack.targetDC)+'</strong><br>Минимальный d20 для попадания: <strong>'+rollNeeded+'</strong>. При промахе урон = 0.</div>';
+}
+function renderEnemyAttack(me, t) {
+    var _a;
+    var e = getEnemyAttack(t, me);
+    $('enemyFistSettings').hidden = s.targetAttackType !== 'fist';
+    $('enemyWeaponSettings').hidden = s.targetAttackType !== 'weapon';
+    $('enemySpellSettings').hidden = s.targetAttackType !== 'magic';
+    $('enemyStaffSettings').hidden = !(s.targetAttackType === 'weapon' && e.magicStaff);
+    $('enemyScalingNote').textContent = s.targetAttackType === 'weapon' ? "\u0421\u043A\u0435\u0439\u043B\u0438\u043D\u0433: ".concat(((_a = WEAPONS[s.targetWeaponType]) === null || _a === void 0 ? void 0 : _a.desc) || '', ". \u0411\u0430\u0437\u043E\u0432\u044B\u0439 \u0443\u0440\u043E\u043D, \u043F\u0440\u043E\u0446\u0435\u043D\u0442\u043D\u044B\u0439 \u0443\u0440\u043E\u043D, \u043F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 \u0438 \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435 \u0437\u0430\u043F\u043E\u043C\u0438\u043D\u0430\u044E\u0442\u0441\u044F \u043E\u0442\u0434\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u0432\u0438\u0434\u0430 \u043E\u0440\u0443\u0436\u0438\u044F \u044D\u0442\u043E\u0433\u043E \u0432\u0440\u0430\u0433\u0430.") : '';
+    $('enemyAttackDerived').innerHTML = card('Точность врага', t.accuracy, 'Восприятие + ⌊Ловкость/3⌋') + card('Уклонение врага', t.dodge, 'Ловкость + ⌊Восприятие/3⌋') + card('Уклонение героя', me.dodge, 'Базовая сложность попадания: 11 + '+fmt(me.dodge)) + card('Шанс попасть', e.hit + '%', "d20 + ".concat(fmt(e.attackTotal), " \u043F\u0440\u043E\u0442\u0438\u0432 ").concat(fmt(e.targetDC))) + card('Урон до защиты', e.raw, "\u041E\u0440\u0443\u0436\u0438\u0435 ".concat(e.weaponPct >= 0 ? '+' : '').concat(fmt(e.weaponPct), "%, \u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C +").concat(fmt(e.speedPct), "%, \u0440\u0430\u0437\u0431\u0435\u0433 +").concat(fmt(e.chargePct), "%")) + card('Урон по герою', e.damage.final, 'После брони и резистов героя') + card('Скорость врага', t.spd * 4, 'км/ч · максимум') + card('Инициатива врага', "d20 + ".concat(fmt(t.per)), 'От Восприятия');
+}
+function render() {
+    var _a;
+    var me = own(), t = target(), a = getAttack(me, t);
+    lastData = { me: me, t: t, a: a };
+    syncEnemyUI();
+    syncCharacterUI();
+    renderEnemyAttack(me, t);
+    var enemyRollPreview = getEnemyAttack(t, me);
+    $('heroHPHeadline').textContent = fmt(me.hpNow)+' / '+fmt(me.hp)+' HP';
+    $('heroHPMaxText').textContent = fmt(me.hp)+' HP';
+    $('heroHPBar').style.width = (100*me.hpNow/Math.max(1,me.hp))+'%';
+    $('summaryHeroHP').textContent = fmt(me.hpNow)+' / '+fmt(me.hp);
+    $('summaryHeroHPBar').style.width = (100*me.hpNow/Math.max(1,me.hp))+'%';
+    $('characterQuickStats').innerHTML = quickStat('🎯 Точность героя', fmt(me.accuracy), 'accuracy', 'Восприятие + ⌊Ловкость/3⌋') + quickStat('🛡 Уклонение героя', fmt(me.dodge), 'dodge', 'Ловкость + ⌊Восприятие/3⌋') + quickStat('❤️ HP героя', fmt(me.hpNow)+' / '+fmt(me.hp), 'health', 'По Силе и уровню');
+    $('enemyQuickStats').innerHTML = quickStat('🎯 Точность врага', fmt(t.accuracy), 'accuracy', 'Восприятие + ⌊Ловкость/3⌋') + quickStat('🛡 Уклонение врага', fmt(t.dodge), 'dodge', s.targetDodgeOverride ? 'Введено вручную' : 'Из характеристик') + quickStat('❤️ HP врага', fmt(t.hpNow)+' / '+fmt(t.hpMax), 'health', 'Сейчас / максимум');
+    $('enemyHPHeadline').textContent = fmt(t.hpNow)+' / '+fmt(t.hpMax)+' HP';
+    $('enemyHPBar').style.width = (100*t.hpNow/t.hpMax)+'%';
+    $('summaryTargetHP').textContent = fmt(t.hpNow)+' / '+fmt(t.hpMax);
+    $('summaryTargetHPBar').style.width = (100*t.hpNow/t.hpMax)+'%';
+    $('battleHeroCard').innerHTML = duelCard(activeCharacterName(), false, me, a, t.dodge, 'Цель: '+activeEnemyName());
+    $('battleEnemyCard').innerHTML = duelCard(activeEnemyName(), true, t, enemyRollPreview, me.dodge, 'Цель: '+activeCharacterName());
+    $('battleHeroBonusHint').textContent = 'Сейчас: Скорость +'+fmt(a.speedPct)+'% урона · Разбег +'+fmt(a.chargePct)+'% · Общий бонус к d20 '+signed(a.hitBonus);
+    $('battleEnemyBonusHint').textContent = 'Сейчас: Скорость +'+fmt(enemyRollPreview.speedPct)+'% урона · Разбег +'+fmt(enemyRollPreview.chargePct)+'% · Общий бонус к d20 '+signed(enemyRollPreview.hitBonus);
+    $('sideCharacterName').textContent = activeCharacterName();
+    $('resultAttacker').textContent = activeCharacterName();
+    document.querySelectorAll('[data-condition="customRace"]').forEach(function (x) { return x.hidden = s.race !== 'custom'; });
+    document.querySelectorAll('[data-condition="fistAttack"]').forEach(function (x) { return x.hidden = s.attackType !== 'fist'; });
+    document.querySelectorAll('[data-condition="weaponAttack"]').forEach(function (x) { return x.hidden = s.attackType !== 'weapon'; });
+    document.querySelectorAll('[data-condition="magicAttack"]').forEach(function (x) { return x.hidden = s.attackType !== 'magic'; });
+    ['targetDodgeValue', 'targetResValue', 'targetMagicValue'].forEach(function (id, i) { var keys = ['targetDodgeOverride', 'targetResOverride', 'targetMagicOverride']; $(id).disabled = !s[keys[i]]; $(id).classList.toggle('readonly', !s[keys[i]]); });
+    $('staffMagicFields').hidden = !a.magicStaff;
+    $('weaponPhysicalPenField').hidden = a.magicStaff;
+    $('weaponDefenseExplanation').hidden = a.magicStaff;
+    $('weaponScalingNote').innerHTML = "<strong>\u0421\u043A\u0435\u0439\u043B\u0438\u043D\u0433:</strong> ".concat(a.w.desc, ". <strong>\u0411\u043E\u043D\u0443\u0441 \u043A d20:</strong> ").concat(a.w.hit >= 0 ? '+' : '').concat(a.w.hit, ". ").concat(a.mode === 'weapon' && !a.magicStaff ? "<strong>\u0412\u0441\u0435\u0433\u043E \u043F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 \u0431\u0440\u043E\u043D\u0438:</strong> ".concat(fmt(a.physicalPen), " (\u0438\u0437 \u043D\u0438\u0445 \u043E\u0442 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A: ").concat(fmt(a.autoPen), ").") : a.magicStaff ? "<strong>\u041F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u0431\u0440\u043E\u043D\u0438:</strong> ".concat(fmt(a.magicPen), ".") : '', " \u0411\u0430\u0437\u043E\u0432\u044B\u0439 \u0443\u0440\u043E\u043D, \u043F\u0440\u043E\u0446\u0435\u043D\u0442\u043D\u044B\u0439 \u0443\u0440\u043E\u043D, \u043F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 \u0438 \u0434\u043E\u043F. \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435 \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u044E\u0442\u0441\u044F \u043E\u0442\u0434\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u044D\u0442\u043E\u0433\u043E \u0432\u0438\u0434\u0430 \u043E\u0440\u0443\u0436\u0438\u044F \u0443 \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430. \u041F\u0440\u0435\u0434\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u044F \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u043D\u0435 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u044B.");
+    $('chargeText').textContent = s.attackType === 'fist' ? "\u041A\u0443\u043B\u0430\u043A\u0438: +".concat(fmt(n('fistChargePct')), "% \u0443\u0440\u043E\u043D\u0430") : a.melee ? "\u0411\u043B\u0438\u0436\u043D\u0435\u0435 \u043E\u0440\u0443\u0436\u0438\u0435: +".concat(fmt(n('chargePct')), "% \u0443\u0440\u043E\u043D\u0430") : 'Для дальнего оружия и магии бонус не применяется';
+    $('characterDerived').innerHTML = card('HP героя (сейчас / макс.)', fmt(me.hpNow)+' / '+fmt(me.hp), '30 + уровень × ' + fmt(n('hpPerLevel')) + ' + Сила × 10') + card('Выносливость', me.stamina, 'База расы + уровень + Сила + Ловкость') + card('Мана', me.mana, 'База + уровень + Интеллект') + card('Скорость, км/ч', me.speedKmh, 'Скорость × 4') + card('Точность', me.accuracy, 'Восприятие + ⌊Ловкость/3⌋') + card('Уклонение', me.dodge, 'Ловкость + ⌊Восприятие/3⌋') + card('Инициатива', 'd20 + ' + me.initiative, 'Восприятие') + card('Действий за раунд', me.actions, 'По настройке Скорости') + card('Урон кулаком', me.fistDamage, 'До бонусов от Скорости и навыков') + card('Влияние Харизмы', me.cha, 'Можно использовать для магии');
+    $('defenseDerived').innerHTML = card('Физический резист', me.physical.total + '%', 'Сила ' + fmt(me.physical.fromStr) + '% + Ловкость ' + fmt(me.physical.fromDex) + '%; предел 50%') + card('Защита от магии', me.magicDefense + '%', 'Процент после магической брони') + card('Физическая броня', me.armor, 'Поглощаемые очки') + card('Магическая броня', me.magicArmor, 'Работает и против кулаков');
+    var incomingDef = { armor: me.armor, magicArmor: me.magicArmor, res: me.physical.total, magicDefense: me.magicDefense };
+    var incoming = damageAfterDefense(Math.max(0, n('incomingDamage')), s.incomingType, incomingDef, n('incomingPen'), n('incomingMagicPen'), s.incomingElement, 'ownElem');
+    $('incomingReport').innerHTML = "<strong>\u041F\u043E\u043B\u0443\u0447\u0435\u043D\u043E ".concat(fmt(incoming.final), " \u0443\u0440\u043E\u043D\u0430</strong> \u0438\u0437 ").concat(fmt(n('incomingDamage')), " \u0434\u043E \u0437\u0430\u0449\u0438\u0442\u044B.<div class=\"tiny\" style=\"margin-top:6px\">").concat(incoming.stage.slice(1, -1).map(function (x) { return x[0] + ': ' + x[1]; }).join(' · '), "</div>");
+    $('attackDerived').innerHTML = card('Основа атаки', a.first, 'База ' + fmt(a.base) + ' + скейлинг ' + fmt(a.scale)) + card('Процентный урон оружия', (a.weaponPct >= 0 ? '+' : '') + fmt(a.weaponPct) + '%', a.mode === 'weapon' ? "\u041E\u0441\u043D\u043E\u0432\u0430 ".concat(fmt(a.first), " \u2192 ").concat(fmt(a.afterWeaponPct), " \u0434\u043E \u043F\u0440\u043E\u0447\u0438\u0445 \u0431\u043E\u043D\u0443\u0441\u043E\u0432") : 'Только для оружия') + card('Бонус скорости', a.speedPct + '%', 'Только для кулаков и ближнего оружия') + card('Разбег', a.chargePct + '%', a.mode === 'fist' ? 'Кулаки (по умолчанию +50%)' : a.melee ? 'Ближнее оружие (по умолчанию +25%)' : 'К этой атаке не применяется') + card('Попадание', a.hit + '%', 'd20 + ' + fmt(a.attackTotal) + ' против ' + fmt(a.targetDC)) + card('Урон до защиты', a.raw, 'После всех множителей') + card('Точность', me.accuracy, 'Базовое значение') + card('Бонус к d20', (a.hitBonus >= 0 ? '+' : '') + fmt(a.hitBonus), 'Вид атаки + Скорость + прочее');
+    $('targetDerived').innerHTML = card('HP врага (сейчас / макс.)', fmt(t.hpNow)+' / '+fmt(t.hpMax), 'Настраиваются выше') + card('Точность врага', t.accuracy, 'Восприятие + ⌊Ловкость/3⌋') + card('Уклонение врага', t.dodge, s.targetDodgeOverride ? 'Введено вручную' : 'Рассчитано: ' + fmt(t.autoDodge)) + card('Физ. резист', t.res + '%', s.targetResOverride ? 'Введён вручную' : 'По Силе и Ловкости') + card('Защита от магии', t.magicDefense + '%', s.targetMagicOverride ? 'Введена вручную' : 'По Интеллекту и Мудрости') + card('Магическая броня', t.magicArmor, 'Поглощаемый урон');
+    $('resultType').textContent = a.magicStaff ? 'МАГИЧЕСКИЙ ПОСОХ' : a.ranged ? 'ДАЛЬНОБОЙНАЯ АТАКА' : { fist: 'КУЛАЧНАЯ АТАКА', weapon: 'АТАКА ОРУЖИЕМ', magic: 'МАГИЧЕСКАЯ АТАКА' }[a.mode];
+    $('elementTag').textContent = a.effectiveType === 'magic' ? (((_a = EL.find(function (x) { return x.id === s.element; })) === null || _a === void 0 ? void 0 : _a.short.toUpperCase()) || 'МАГИЧЕСКИЙ') : 'ФИЗИЧЕСКИЙ';
+    $('resultDamage').textContent = fmt(a.damage.final);
+    $('heroResultAccuracy').textContent = fmt(me.accuracy);
+    $('heroResultEnemyDodge').textContent = fmt(t.dodge);
+    $('heroResultModifier').textContent = signed(a.hitBonus);
+    $('heroResultFormula').textContent = 'd20+'+fmt(a.attackTotal)+' / '+fmt(a.targetDC);
+    $('hitChance').textContent = fmt(a.hit) + '%';
+    $('hitBar').style.width = a.hit + '%';
+    $('avgDamage').textContent = fmt(a.expected, 2);
+    $('rawDamage').textContent = fmt(a.raw);
+    $('weaponPercentBonus').textContent = a.mode === 'weapon' ? (a.weaponPct >= 0 ? '+' : '') + fmt(a.weaponPct) + '%' : 'Не применяется';
+    $('speedBonus').textContent = (a.speedPct > 0 ? '+' : '') + fmt(a.speedPct) + '%';
+    $('chargeBonus').textContent = (a.chargePct > 0 ? '+' : '') + fmt(a.chargePct) + '%';
+    $('actionsResult').textContent = fmt(me.actions);
+    $('roundDamage').textContent = fmt(a.roundDmg, 2);
+    $('statusChanceOut').textContent = fmt(a.statusChance) + '%';
+    $('damageBreakdown').innerHTML = a.damage.stage.map(function (x) { return "<div class=\"step\"><span>".concat(x[0], "</span><span>").concat(x[1], "</span></div>"); }).join('');
+    $('sideStats').innerHTML = statMini('Здоровье', fmt(me.hpNow)+' / '+fmt(me.hp)) + statMini(s.classType === 'mage' ? 'Мана' : 'Выносливость', s.classType === 'mage' ? me.mana : me.stamina) + statMini('Скорость', me.speedKmh, 'км/ч') + statMini('Действия', me.actions, 'за раунд');
+    $('classLabel').textContent = { warrior: 'Воин', mage: 'Маг', hybrid: 'Гибрид' }[s.classType];
+    $('sideHeroAccuracy').textContent = fmt(me.accuracy);
+    $('sideHeroDodge').textContent = fmt(me.dodge);
+    $('sideInitiative').textContent = 'd20 + ' + fmt(me.initiative);
+    $('sidePhysicalRes').textContent = fmt(me.physical.total) + '%';
+    $('sideMagicRes').textContent = fmt(me.magicDefense) + '%';
+    $('summaryTargetAccuracy').textContent = fmt(t.accuracy);
+    $('summaryTargetDodge').textContent = fmt(t.dodge);
+    $('summaryTargetRes').textContent = fmt(t.res) + '%';
+    $('summaryTargetArmor').textContent = fmt(t.armor) + ' / ' + fmt(t.magicArmor);
+    $('summaryTargetMagic').textContent = fmt(t.magicDefense) + '%';
+}
+function rollD20() { if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    var u = new Uint32Array(1);
+    var max = 4294967296, lim = max - (max % 20);
+    do {
+        crypto.getRandomValues(u);
+    } while (u[0] >= lim);
+    return 1 + (u[0] % 20);
+} return 1 + Math.floor(Math.random() * 20); }
+function rollResolved(die, bonus, dc) { return die === 20 || (die !== 1 && die + bonus >= dc); }
+function addHistory(entry) { combatHistory.push(entry); if (combatHistory.length > MAX_HISTORY)
+    combatHistory.splice(0, combatHistory.length - MAX_HISTORY); renderHistory(); save(); }
+function describeHitMath(entry) {
+    if (entry.kind !== 'attack') return '';
+    if (typeof entry.accuracy !== 'number' || typeof entry.modifier !== 'number' || typeof entry.dodge !== 'number')
+        return 'd20 ('+entry.die+') + общий бонус '+fmt(entry.bonus)+' = '+fmt(entry.die+entry.bonus)+' · защита '+fmt(entry.dc)+' · '+entry.style;
+    return 'd20 ('+entry.die+') + точность ('+fmt(entry.accuracy)+') '+signed(entry.modifier)+' (бонус) = '+fmt(entry.die+entry.bonus)+
+       ' | Базовая сложность попадания: 11 + уклонение ('+fmt(entry.dodge)+') = '+fmt(entry.dc)+
+       ' | Шанс: '+fmt(entry.chance)+'%'+(entry.die === 1?' · натуральная 1':entry.die === 20?' · натуральная 20':'')+' | '+entry.style;
+}
+function announceRoll(entry) {
+    var e_16, _a;
+    var message;
+    if (entry.kind === 'initiative')
+        message = "".concat(entry.actor, ": \u0438\u043D\u0438\u0446\u0438\u0430\u0442\u0438\u0432\u0430 ").concat(fmt(entry.die + entry.bonus), " (d20=").concat(entry.die, " + ").concat(fmt(entry.bonus), ").");
+    else
+        message = entry.hit ? "".concat(entry.actor, " \u043F\u043E\u043F\u0430\u0434\u0430\u0435\u0442 \u043F\u043E \u00AB").concat(entry.target, "\u00BB \u2014 ").concat(fmt(entry.damage), " \u0443\u0440\u043E\u043D\u0430!") : "".concat(entry.actor, " \u043F\u0440\u043E\u043C\u0430\u0445\u0438\u0432\u0430\u0435\u0442\u0441\u044F \u043F\u043E \u00AB").concat(entry.target, "\u00BB. \u0423\u0440\u043E\u043D 0.");
+    var extra = entry.kind === 'attack' ? describeHitMath(entry) + (typeof entry.hpAfter === 'number' ? ' | HP цели: '+fmt(entry.hpBefore)+' → '+fmt(entry.hpAfter)+' / '+fmt(entry.hpMax) : '') : 'd20: '+entry.die+' + Восприятие '+fmt(entry.bonus)+' = '+fmt(entry.die + entry.bonus);
+    try {
+        for (var _b = __values(__spreadArray(['battleRollReport'], __read((entry.side === 'hero' && entry.kind === 'attack' ? ['rollReport'] : [])), false)), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var id = _c.value;
+            var node = $(id);
+            node.replaceChildren();
+            var main = document.createElement('strong');
+            main.textContent = message;
+            main.style.color = entry.kind === 'initiative' ? 'var(--bright)' : entry.hit ? 'var(--green)' : 'var(--red)';
+            var sub = document.createElement('div');
+            sub.className = 'tiny';
+            sub.style.marginTop = '6px';
+            sub.textContent = extra;
+            node.append(main, sub);
+        }
+    }
+    catch (e_16_1) { e_16 = { error: e_16_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_16) throw e_16.error; }
+    }
+}
+function applyBattleDamage(side, amount) {
+    var dealt = Math.max(0, Math.floor(num(amount)));
+    if (side === 'enemy') { // hero hit enemy
+        var before = target().hpNow;
+        s.targetHPNow = Math.max(0, before - dealt);
+        snapshotActiveEnemy();
+        return {before: before, after: s.targetHPNow, max: target().hpMax};
+    }
+    var maxHP = own().hp; // enemy hit hero
+    var previous = heroHPValue(maxHP);
+    s.heroHPNow = Math.max(0, previous - dealt);
+    snapshotActiveCharacter();
+    return {before: previous, after: s.heroHPNow, max: maxHP};
+}
+function rollAttack() {
+    var _a;
+    if (!lastData)
+        return;
+    var a = lastData.a;
+    var die = rollD20(), hit = rollResolved(die, a.attackTotal, a.targetDC);
+    var style = a.mode === 'fist' ? 'Кулаки' : a.mode === 'magic' ? "\u041C\u0430\u0433\u0438\u044F \u00B7 ".concat(((_a = EL.find(function (x) { return x.id === s.element; })) === null || _a === void 0 ? void 0 : _a.short) || 'Стихия') : a.w.name;
+    var entry = { kind: 'attack', side: 'hero', actor: activeCharacterName(), target: activeEnemyName(), die: die, bonus: a.attackTotal, accuracy: lastData.me.accuracy, modifier: a.hitBonus, dodge: lastData.t.dodge, chance: a.hit, dc: a.targetDC, hit: hit, damage: hit ? a.damage.final : 0, raw: a.raw, afterProtection: a.damage.final, style: style, stage: hit ? a.damage.stage : [], time: new Date().toISOString() };
+    var hp = applyBattleDamage('enemy', entry.damage);
+    entry.hpBefore = hp.before; entry.hpAfter = hp.after; entry.hpMax = hp.max;
+    syncControls(); render();
+    announceRoll(entry);
+    addHistory(entry);
+}
+function rollEnemyAttack() {
+    var me = own(), t = target(), a = getEnemyAttack(t, me), die = rollD20(), hit = rollResolved(die, a.attackTotal, a.targetDC);
+    var entry = { kind: 'attack', side: 'enemy', actor: activeEnemyName(), target: activeCharacterName(), die: die, bonus: a.attackTotal, accuracy: t.accuracy, modifier: a.hitBonus, dodge: me.dodge, chance: a.hit, dc: a.targetDC, hit: hit, damage: hit ? a.damage.final : 0, raw: a.raw, afterProtection: a.damage.final, style: a.style, stage: hit ? a.damage.stage : [], time: new Date().toISOString() };
+    var hp = applyBattleDamage('hero', entry.damage);
+    entry.hpBefore = hp.before; entry.hpAfter = hp.after; entry.hpMax = hp.max;
+    syncControls(); render();
+    announceRoll(entry);
+    addHistory(entry);
+}
+function rollInitiative(side) {
+    var die = rollD20(), val = side === 'hero' ? own().per : target().per;
+    var entry = { kind: 'initiative', side: side, actor: side === 'hero' ? activeCharacterName() : activeEnemyName(), target: '', die: die, bonus: val, dc: 0, hit: true, damage: 0, style: 'Инициатива', stage: [], time: new Date().toISOString() };
+    announceRoll(entry);
+    addHistory(entry);
+}
+function renderHistory() {
+    var e_17, _a, e_18, _b;
+    var _c;
+    var root = $('combatHistory');
+    if (!root)
+        return;
+    var filter = $('historyFilter').value;
+    root.replaceChildren();
+    $('combatLogCount').textContent = "".concat(combatHistory.length, " / ").concat(MAX_HISTORY, " \u0431\u0440\u043E\u0441\u043A\u043E\u0432");
+    var list = combatHistory.filter(function (e) { return filter === 'all' || e.side === filter; }).slice().reverse();
+    if (!list.length) {
+        var p = document.createElement('p');
+        p.className = 'combat-history-empty';
+        p.textContent = combatHistory.length ? 'Для этого фильтра бросков пока нет.' : 'Бросков пока нет. Начни с атаки героя или противника.';
+        root.append(p);
+        return;
+    }
+    try {
+        for (var list_1 = __values(list), list_1_1 = list_1.next(); !list_1_1.done; list_1_1 = list_1.next()) {
+            var e = list_1_1.value;
+            var box = document.createElement('article');
+            box.className = 'combat-entry ' + (e.side === 'enemy' ? 'is-enemy' : 'is-hero') + (e.kind === 'initiative' ? ' is-initiative' : '');
+            var who = document.createElement('div');
+            who.className = 'who';
+            who.textContent = "".concat(e.side === 'hero' ? '🛡 Герой' : '⚔️ Противник', " \u00B7 ").concat(e.actor).concat(e.kind === 'attack' ? ' → ' + e.target : '');
+            var body = document.createElement('div');
+            body.className = 'outcome ' + (e.hit ? 'ok' : 'fail');
+            body.textContent = e.kind === 'initiative' ? "\uD83C\uDFB2 \u0418\u043D\u0438\u0446\u0438\u0430\u0442\u0438\u0432\u0430: ".concat(fmt(e.die + e.bonus)) : e.hit ? "\u2713 \u041F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435 \u00B7 ".concat(fmt(e.damage), " \u0443\u0440\u043E\u043D\u0430") : '✕ Промах · 0 урона';
+            var details = document.createElement('div');
+            details.className = 'detail';
+            details.textContent = e.kind === 'initiative' ? 'd20 ('+e.die+') + Восприятие ('+fmt(e.bonus)+') = '+fmt(e.die+e.bonus) : describeHitMath(e) + (typeof e.raw === 'number' ? ' | Урон до защиты: '+fmt(e.raw)+' | После защиты: '+fmt(e.afterProtection)+' | Фактически: '+fmt(e.damage) : '') + (typeof e.hpAfter === 'number' ? ' | ❤️ HP: '+fmt(e.hpBefore)+' → '+fmt(e.hpAfter)+' / '+fmt(e.hpMax) : '');
+            var stamp = document.createElement('time');
+            var d = new Date(e.time);
+            stamp.textContent = Number.isNaN(d.getTime()) ? '' : d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+            box.append(who, body, details, stamp);
+            if (e.kind === 'attack' && e.hit && ((_c = e.stage) === null || _c === void 0 ? void 0 : _c.length)) {
+                var exp = document.createElement('details');
+                var summ = document.createElement('summary');
+                summ.textContent = 'Разбор защиты и урона';
+                exp.append(summ);
+                try {
+                    for (var _d = (e_18 = void 0, __values(e.stage)), _e = _d.next(); !_e.done; _e = _d.next()) {
+                        var stage = _e.value;
+                        var div = document.createElement('div');
+                        div.className = 'detail';
+                        div.textContent = "".concat(stage[0], ": ").concat(stage[1]);
+                        exp.append(div);
+                    }
+                }
+                catch (e_18_1) { e_18 = { error: e_18_1 }; }
+                finally {
+                    try {
+                        if (_e && !_e.done && (_b = _d.return)) _b.call(_d);
+                    }
+                    finally { if (e_18) throw e_18.error; }
+                }
+                box.append(exp);
+            }
+            root.append(box);
+        }
+    }
+    catch (e_17_1) { e_17 = { error: e_17_1 }; }
+    finally {
+        try {
+            if (list_1_1 && !list_1_1.done && (_a = list_1.return)) _a.call(list_1);
+        }
+        finally { if (e_17) throw e_17.error; }
+    }
+}
+function copyHistory() {
+    return __awaiter(this, void 0, void 0, function () { var body, _a, el; return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                if (!combatHistory.length) {
+                    toast('История пуста');
+                    return [2 /*return*/];
+                }
+                body = combatHistory.map(function (e) { return "[".concat(e.time, "] ").concat(e.actor).concat(e.kind === 'attack' ? ' → ' + e.target : '', ": ").concat(e.kind === 'initiative' ? 'ИНИЦИАТИВА' : 'АТАКА', "; d20=").concat(e.die, ", \u0431\u043E\u043D\u0443\u0441=").concat(e.bonus, ", \u0438\u0442\u043E\u0433=").concat(e.die + e.bonus).concat(e.kind === 'attack' ? "; \u0437\u0430\u0449\u0438\u0442\u0430=".concat(e.dc, "; ").concat(e.hit ? 'попадание' : 'промах', "; \u0443\u0440\u043E\u043D=").concat(e.damage, "; ").concat(e.style) : ''); }).join('\n');
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, navigator.clipboard.writeText(body)];
+            case 2:
+                _b.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a = _b.sent();
+                el = document.createElement('textarea');
+                el.value = body;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                el.remove();
+                return [3 /*break*/, 4];
+            case 4:
+                toast('История скопирована');
+                return [2 /*return*/];
+        }
+    }); });
+}
+function save() { snapshotActiveEnemy(); snapshotActiveCharacter(); try {
+    localStorage.setItem('tet_combat_v13', JSON.stringify({ settings: s, characters: characterProfiles, activeCharacterIndex: activeCharacterIndex, enemies: enemyProfiles, activeEnemyIndex: activeEnemyIndex, combatHistory: combatHistory }));
+}
+catch (_a) { } }
+function toast(message) { var el = $('toast'); el.textContent = message; el.classList.add('show'); clearTimeout(toast.timeout); toast.timeout = setTimeout(function () { return el.classList.remove('show'); }, 2600); }
+function buildReport() { var _a, _b; var me = lastData.me, t = lastData.t, a = lastData.a; return __spreadArray(['ТЕТ · Боевой калькулятор', "\u0418\u043C\u044F \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430: ".concat(activeCharacterName()), "\u0423\u0440\u043E\u0432\u0435\u043D\u044C ".concat(me.lev, "; \u0421\u0438\u043B\u0430 ").concat(me.str, "; \u041B\u043E\u0432\u043A\u043E\u0441\u0442\u044C ").concat(me.dex, "; \u0412\u043E\u0441\u043F\u0440\u0438\u044F\u0442\u0438\u0435 ").concat(me.per, "; \u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C ").concat(me.spd, "; \u0418\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442 ").concat(me.int, "; \u041C\u0443\u0434\u0440\u043E\u0441\u0442\u044C ").concat(me.wis, "; \u0425\u0430\u0440\u0438\u0437\u043C\u0430 ").concat(me.cha), "HP ".concat(me.hpNow, "/").concat(me.hp, "; \u0412\u044B\u043D\u043E\u0441\u043B\u0438\u0432\u043E\u0441\u0442\u044C ").concat(me.stamina, "; \u041C\u0430\u043D\u0430 ").concat(me.mana, "; \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C ").concat(me.speedKmh, " \u043A\u043C/\u0447; \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439 ").concat(me.actions, "; \u0442\u043E\u0447\u043D\u043E\u0441\u0442\u044C ").concat(me.accuracy, "; \u0443\u043A\u043B\u043E\u043D\u0435\u043D\u0438\u0435 ").concat(me.dodge, "; \u0438\u043D\u0438\u0446\u0438\u0430\u0442\u0438\u0432\u0430 d20+").concat(me.per), "\u0421\u0432\u043E\u044F \u0437\u0430\u0449\u0438\u0442\u0430: \u0431\u0440\u043E\u043D\u044F ".concat(me.armor, "; \u043C\u0430\u0433. \u0431\u0440\u043E\u043D\u044F ").concat(me.magicArmor, "; \u0444\u0438\u0437. \u0440\u0435\u0437\u0438\u0441\u0442 ").concat(me.physical.total, "%; \u0437\u0430\u0449\u0438\u0442\u0430 \u043E\u0442 \u043C\u0430\u0433\u0438\u0438 ").concat(me.magicDefense, "%"), "\u0410\u0442\u0430\u043A\u0430: ".concat(a.mode === 'fist' ? 'кулаки' : a.mode === 'weapon' ? (a.w.name + (a.magicStaff ? ' (' + ((_a = EL.find(function (e) { return e.id === s.element; })) === null || _a === void 0 ? void 0 : _a.short) + ')' : '')) : 'магия (' + ((_b = EL.find(function (e) { return e.id === s.element; })) === null || _b === void 0 ? void 0 : _b.short) + ')'), "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A \u00AB".concat(activeEnemyName(), "\u00BB: \u0443\u043A\u043B\u043E\u043D\u0435\u043D\u0438\u0435 ").concat(t.dodge, "; \u0431\u0440\u043E\u043D\u044F ").concat(t.armor, "; \u043C\u0430\u0433. \u0431\u0440\u043E\u043D\u044F ").concat(t.magicArmor, "; \u0444\u0438\u0437. \u0440\u0435\u0437\u0438\u0441\u0442 ").concat(t.res, "%; \u0437\u0430\u0449\u0438\u0442\u0430 \u043E\u0442 \u043C\u0430\u0433\u0438\u0438 ").concat(t.magicDefense, "%"), "\u041F\u0440\u043E\u0446\u0435\u043D\u0442\u043D\u044B\u0439 \u0443\u0440\u043E\u043D \u043E\u0440\u0443\u0436\u0438\u044F: ".concat(a.mode === 'weapon' ? (a.weaponPct >= 0 ? '+' : '') + fmt(a.weaponPct) + '%' : 'не применяется'), "\u0420\u0430\u0437\u0431\u0435\u0433 ".concat(s.charge ? 'включён' : 'выключен', "; \u0431\u043E\u043D\u0443\u0441 \u0440\u0430\u0437\u0431\u0435\u0433\u0430 +").concat(a.chargePct, "%; \u0431\u0440\u043E\u043D\u0435\u043F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 ").concat(a.physicalPen, "; \u043F\u0440\u043E\u0431\u0438\u0442\u0438\u0435 \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u0431\u0440\u043E\u043D\u0438 ").concat(a.magicPen), "\u0418\u0441\u0445\u043E\u0434\u043D\u044B\u0439 \u0443\u0440\u043E\u043D ".concat(a.raw, "; \u0448\u0430\u043D\u0441 \u043F\u043E\u043F\u0430\u0441\u0442\u044C ").concat(a.hit, "%; \u0443\u0441\u043F\u0435\u0448\u043D\u044B\u0439 \u0443\u0434\u0430\u0440 ").concat(a.damage.final, "; \u043C\u0430\u0442. \u043E\u0436\u0438\u0434\u0430\u043D\u0438\u0435 \u0437\u0430 \u0430\u0442\u0430\u043A\u0443 ").concat(fmt(a.expected, 2))], __read(a.damage.stage.map(function (x) { return x[0] + ': ' + x[1]; })), false).join('\n'); }
+function copyResult() {
+    return __awaiter(this, void 0, void 0, function () { var value, _a, el; return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                value = buildReport();
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, navigator.clipboard.writeText(value)];
+            case 2:
+                _b.sent();
+                toast('Расчёт скопирован');
+                return [3 /*break*/, 4];
+            case 3:
+                _a = _b.sent();
+                el = document.createElement('textarea');
+                el.value = value;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                el.remove();
+                toast('Расчёт скопирован');
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    }); });
+}
+function exportSettings() { snapshotActiveEnemy(); snapshotActiveCharacter(); var blob = new Blob([JSON.stringify({ app: 'ТЕТ · Боевой калькулятор', version: 13, settings: s, characters: characterProfiles, activeCharacterIndex: activeCharacterIndex, enemies: enemyProfiles, activeEnemyIndex: activeEnemyIndex, combatHistory: combatHistory }, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = ''; a.href = url; a.download = 'Tet_characters_enemies_battle_history_v13.json'; a.click(); setTimeout(function () { return URL.revokeObjectURL(url); }, 2000); toast('Персонажи, противники и история бросков экспортированы'); }
+function importSettings(event) {
+    return __awaiter(this, void 0, void 0, function () { var f, data, _a, _b, inp, settings, importedEnemies, importedCharacters, e_19; var _c, _d; return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                f = (_c = event.target.files) === null || _c === void 0 ? void 0 : _c[0];
+                if (!f)
+                    return [2 /*return*/];
+                _e.label = 1;
+            case 1:
+                _e.trys.push([1, 3, , 4]);
+                _b = (_a = JSON).parse;
+                return [4 /*yield*/, readFileCompat(f)];
+            case 2:
+                data = _b.apply(_a, [_e.sent()]);
+                inp = (_d = data.settings) !== null && _d !== void 0 ? _d : data;
+                if (!inp || typeof inp !== 'object' || Array.isArray(inp))
+                    throw new Error('Неверный формат');
+                settings = __assign(__assign({}, defaults), filterSettings(inp));
+                importedEnemies = normalizeEnemies(data.enemies);
+                importedCharacters = normalizeCharacters(data.characters);
+                s = settings;
+                enemyProfiles = importedEnemies.length ? importedEnemies : [createEnemy(settings, 'Противник 1')];
+                activeEnemyIndex = clamp(Math.floor(Number(data.activeEnemyIndex) || 0), 0, enemyProfiles.length - 1);
+                Object.assign(s, enemyProfiles[activeEnemyIndex].stats);
+                applyActiveEnemyWeapon();
+                characterProfiles = importedCharacters.length ? importedCharacters : [createCharacter(settings)];
+                activeCharacterIndex = clamp(Math.floor(Number(data.activeCharacterIndex) || 0), 0, characterProfiles.length - 1);
+                Object.assign(s, characterProfiles[activeCharacterIndex].stats);
+                applyActiveWeaponSettings();
+                combatHistory = normalizeHistory(data.combatHistory);
+                syncControls();
+                render();
+                renderHistory();
+                save();
+                $('rollReport').textContent = 'Настройки загружены. Проведи новую атаку.';
+                toast('Персонажи, противники и журнал загружены');
+                return [3 /*break*/, 4];
+            case 3:
+                e_19 = _e.sent();
+                console.error('Ошибка импорта:', e_19);
+                toast('Не удалось импортировать JSON');
+                return [3 /*break*/, 4];
+            case 4:
+                event.target.value = '';
+                return [2 /*return*/];
+        }
+    }); });
+}
+init();
+</script>
+</body>
+</html>
